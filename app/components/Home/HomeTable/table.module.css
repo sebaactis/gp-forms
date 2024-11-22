@@ -5,11 +5,13 @@
 
 .table {
     background-color: #4343436d;
+    text-align: center;
 }
 
 .tableHeader {
     height: 3rem;
     background-color: #107a61;
+    
 }
 
 .tableHeaderItem {
@@ -17,11 +19,14 @@
     font-size: 0.9rem;
     font-style: italic;
     font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    padding-top: 0.5rem;
 }
 
 .tableBodyItem {
     color: white;
-    height: 3rem;
+    height: 2.7rem;
 }
 
 .pagination {
@@ -30,6 +35,32 @@
     align-items: center;
     gap: 0.5rem;
     margin-top: 1rem;
+}
+
+.searchInput {
+    background-color: #1f574a;
+    padding: 0.1rem;
+    margin-top: 0.2rem;
+    margin-bottom: 0.5rem;
+    border-radius: 5px;
+}
+
+.paginationBtn {
+    background-color: #560090;
+    color: white;
+    font-weight: bold;
+    transition: all 0.2s ease-out;
+}
+
+.paginationBtn:hover {
+    background-color:#6900af ;
+}
+
+.pageSelect {
+    background-color: #434343;
+    color: white;
+    padding: 0.34rem 1rem;
+    border-radius: 8px;
 }
 
 

@@ -1,5 +1,8 @@
 "use client"
 
+import styles from "./table.module.css"
+import { useState } from "react"
+import empleados from "@/data/empleados.json"
 import {
     Table,
     TableBody,
@@ -8,39 +11,47 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import empleados from "@/data/empleados.json"
-import styles from "./table.module.css"
-import { getCoreRowModel, useReactTable, getPaginationRowModel } from "@tanstack/react-table"
+import { getCoreRowModel, useReactTable, getPaginationRowModel, getSortedRowModel, getFilteredRowModel, ColumnDef, PaginationState, SortingState, ColumnFiltersState } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
+import { Select, SelectContent, SelectItem, SelectValue } from "@/components/ui/select"
+import { SelectTrigger } from "@radix-ui/react-select"
 
+type Empleado = {
+    legajo: number;
+    nombre: string;
+    apellido: string;
+    estado: string;
+    periodo: string;
+};
 export default function HomeTable() {
-
-    const [pagination, setPagination] = useState({
+    const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
-        pageSize: 5
+        pageSize: 15
     })
 
-    const columns = [
+    const [sorting, setSorting] = useState<SortingState>([])
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+
+    const columns: ColumnDef<Empleado>[] = [
         {
-            header: "Legajo",
-            accessorKey: "Legajo"
+            header: "Nro Legajo",
+            accessorKey: "legajo",
         },
         {
             header: "Nombre",
-            accessorKey: "Nombre"
+            accessorKey: "nombre"
         },
         {
             header: "Apellido",
-            accessorKey: "Apellido"
+            accessorKey: "apellido"
         },
         {
             header: "Estado",
-            accessorKey: "Estado"
+            accessorKey: "estado"
         },
         {
             header: "Periodo",
-            accessorKey: "Periodo"
+            accessorKey: "periodo"
         }
     ]
     const table = useReactTable({
@@ -48,9 +59,15 @@ export default function HomeTable() {
         columns,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
+        onSortingChange: setSorting,
         onPaginationChange: setPagination,
+        onColumnFiltersChange: setColumnFilters,
         state: {
-            pagination
+            pagination,
+            sorting,
+            columnFilters
         }
     })
 
@@ -63,7 +80,25 @@ export default function HomeTable() {
                         <TableRow key={headerGroup.id}>
                             {
                                 headerGroup.headers.map(header => (
-                                    <TableHead key={header.id} className={styles.tableHeaderItem}>{header.column.columnDef.header}</TableHead>
+                                    <TableHead
+                                        key={header.id}
+                                        className={styles.tableHeaderItem}
+                                        onClick={header.column.getToggleSortingHandler()}
+                                    >
+                                        {header.column.columnDef.header}
+                                        {header.column.getIsSorted() === 'asc' ? ' 🔼' : header.column.getIsSorted() === 'desc' ? ' 🔽' : ''}
+
+                                        {header.column.getCanFilter() && (
+                                            <input
+                                                type="text"
+                                                value={(table.getState().columnFilters.find(filter => filter.id === header.id)?.value) ?? ""}
+                                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => header.column.setFilterValue(e.target.value as string)}
+                                                onClick={(e) => e.stopPropagation()}
+                                                className={styles.searchInput}
+                                            />
+
+                                        )}
+                                    </TableHead>
                                 ))
                             }
                         </TableRow>
@@ -84,10 +119,26 @@ export default function HomeTable() {
             </Table>
 
             <div className={styles.pagination}>
-                    <Button onClick={() => table.setPageIndex(0)}>Primer Pagina</Button>
-                    <Button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>Siguiente</Button>
-                    <Button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>Anterior</Button>
-                    <Button onClick={() => table.setPageIndex(table.getPageCount() - 1)}>Ultima Pagina</Button>
+                <Button className={styles.paginationBtn} onClick={() => table.setPageIndex(0)}>Primer Pagina</Button>
+                <Button className={styles.paginationBtn} onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>Anterior</Button>
+                <Button className={styles.paginationBtn} onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>Siguiente</Button>
+                <Button className={styles.paginationBtn} onClick={() => table.setPageIndex(table.getPageCount() - 1)}>Ultima Pagina</Button>
+                <Select
+                    value={String(table.getState().pagination.pageIndex)}
+                    onValueChange={(value) => table.setPageIndex(Number(value))}
+                    
+                >
+                    <SelectTrigger className={styles.pageSelect}>
+                        <SelectValue placeholder={`Página ${table.getState().pagination.pageIndex + 1}`} />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {Array.from({ length: table.getPageCount() }).map((_, index) => (
+                            <SelectItem key={index} value={String(index)}>
+                                {index + 1}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
             </div>
         </section>
     )
