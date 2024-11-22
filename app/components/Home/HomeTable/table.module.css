@@ -34,7 +34,9 @@
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
-    margin-top: 1rem;
+    width: 50%;
+    margin: auto;
+    margin-top: 1.5rem;
 }
 
 .searchInput {
@@ -60,7 +62,7 @@
     background-color: #434343;
     color: white;
     padding: 0.34rem 1rem;
+    width: 4.5rem;
     border-radius: 8px;
 }
-
 
