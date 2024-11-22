@@ -1,0 +1,35 @@
+.tableSection {
+    height: 100%;
+    width: 100%;
+}
+
+.table {
+    background-color: #4343436d;
+}
+
+.tableHeader {
+    height: 3rem;
+    background-color: #107a61;
+}
+
+.tableHeaderItem {
+    color: white;
+    font-size: 0.9rem;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.tableBodyItem {
+    color: white;
+    height: 3rem;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+
