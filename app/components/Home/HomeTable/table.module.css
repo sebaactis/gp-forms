@@ -6,12 +6,12 @@
 .table {
     background-color: #4343436d;
     text-align: center;
+    border-radius: 10px;
 }
 
 .tableHeader {
-    height: 3rem;
-    background-color: #107a61;
-    
+    height: 2.5rem;
+    background-color: #107a6175;
 }
 
 .tableHeaderItem {
@@ -22,11 +22,13 @@
     cursor: pointer;
     text-align: center;
     padding-top: 0.5rem;
+    
 }
 
 .tableBodyItem {
     color: white;
     height: 2.7rem;
+    
 }
 
 .pagination {
@@ -37,6 +39,7 @@
     width: 50%;
     margin: auto;
     margin-top: 1.5rem;
+    
 }
 
 .searchInput {
@@ -45,6 +48,7 @@
     margin-top: 0.2rem;
     margin-bottom: 0.5rem;
     border-radius: 5px;
+    
 }
 
 .paginationBtn {
@@ -59,10 +63,45 @@
 }
 
 .pageSelect {
-    background-color: #434343;
+    background-color: #555555;
     color: white;
-    padding: 0.34rem 1rem;
-    width: 4.5rem;
+    width: 4rem;
     border-radius: 8px;
+    height: 2.3rem;
+}
+
+.filterContainer {
+    width: 100%;
+    background-color: #1f574a;
+    padding: 0.3rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.filterSelect {
+    padding: 0.4rem;
+    border-radius: 5px;
+    background-color: #00000099;
+}
+
+.inputWrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.filterInput {
+    padding: 0.25rem 1rem;
+    border-radius: 10px;
+    padding-right: 2.5rem;
+    background-color: #00000099;
+}
+
+.searchIcon {
+   position: absolute;
+   right: 10px;
 }
 

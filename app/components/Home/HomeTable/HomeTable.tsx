@@ -6,6 +6,7 @@ import empleados from "@/data/empleados.json"
 import { getCoreRowModel, useReactTable, getPaginationRowModel, getSortedRowModel, getFilteredRowModel, ColumnDef, PaginationState, SortingState, ColumnFiltersState } from "@tanstack/react-table"
 import { TableComponent } from "./TableComponent"
 import PaginationComponent from "./PaginationComponent"
+import { TableFilters } from "./TableFilters"
 
 type Empleado = {
     legajo: number;
@@ -19,7 +20,6 @@ export default function HomeTable() {
         pageIndex: 0,
         pageSize: 15
     })
-
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
@@ -48,8 +48,11 @@ export default function HomeTable() {
         }
     })
 
+    const headers = table.getHeaderGroups().flatMap((headerGroup) => headerGroup.headers);
+
     return (
         <section className={styles.tableSection}>
+            <TableFilters headers={headers} styles={styles} />
             <TableComponent tableData={table} styles={styles} />
             <PaginationComponent tableData={table} styles={styles} />
         </section>
