@@ -9,38 +9,6 @@
     border-radius: 20px;
 }
 
-.titleContainer {
-    background-color: var(--form-builder-bg-color);
-    padding-bottom: 4rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding-left: 3rem;
-}
-
-.titleIcon {
-    margin-top: 2rem;
-    width: 2.5rem;
-    height: 2.5rem;
-    color: white;
-}
-
-.titleBagde {
-    border: 2px solid white;
-    width: fit-content;
-    padding: 0 1rem;
-    border-radius: 20px;
-    color: white;
-    background-color: rgba(255, 255, 255, 0.278);
-    font-size: 0.8rem;
-}
-
-.title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: white;
-}
-
 .subTitle {
     color: var(--text-color);
     font-weight: bold;
@@ -188,22 +156,22 @@
 }
 
 .questionDeleteBtn {
-    background-color: #5a0000;
+    background-color: #00000095;
     color: white;
     font-weight: bold;
     margin-bottom: 0.7rem;
     font-style: italic;
-    font-size: 0.8rem;
+    font-size: 0.5rem;
     transition: all 0.2s ease;
 }
 
 .questionDeleteBtn:hover {
-    background-color: #720000;
+    background-color: #19191995;
 }
 
 .checkBoxItemDeleteBtn {
-    background-color: #5a0000;
-    padding: 0 0.3rem;
+    background-color: #00000095;
+    padding: 0.3rem 0.4rem;
     border-radius: 10px;
     font-size: 0.8rem;
     margin-left: 0.5rem;
@@ -211,5 +179,5 @@
 }
 
 .checkBoxItemDeleteBtn:hover {
-    background-color: #720000;
+    background-color: #19191995;
 }

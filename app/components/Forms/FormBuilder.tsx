@@ -1,11 +1,12 @@
 "use client"
 
-import React, { useState } from "react"
+import { useState } from "react"
 import styles from "./forms.module.css"
 import { Separator } from "@/components/ui/separator";
 import { BookPlus } from "lucide-react"
 import FormAddQuestion from "./FormAddQuestion";
 import { FormQuestion } from "./FormQuestion";
+import WelcomeBanner from "../Globals/Welcome/WelcomeBanner";
 
 interface FormQuestion {
     id: number;
@@ -32,18 +33,18 @@ export const FormBuilder = () => {
         setQuestions([...questions, { id: questions.length + 1, type: typeQuestion, label: labelQuestion, options: [] }])
     }
 
-    const removeQuestion = (id) => {
+    const removeQuestion = (id: number) => {
         const newQuestions = questions.filter((q) => q.id !== id)
         setQuestions(newQuestions);
     }
 
-    const updateQuestionOptions = (id, optionValue) => {
+    const updateQuestionOptions = (id: number, optionValue: string) => {
         setQuestions(
-            questions.map((q) => q.id === id ? { ...q, options: [...q.options, { id: q.options.lenght + 1, label: optionValue }] } : q)
+            questions.map((q) => q.id === id ? { ...q, options: [...q.options, { id: q.options.length + 1, label: optionValue }] } : q)
         )
     }
 
-    const removeQuestionOptions = (questionId, optionId) => {
+    const removeQuestionOptions = (questionId: number, optionId: number) => {
         setQuestions(
             questions.map((q) =>
                 q.id === questionId ? { ...q, options: q.options.filter((option) => option.id !== optionId) } : q
@@ -53,34 +54,31 @@ export const FormBuilder = () => {
 
     return (
         <>
-            <div className={styles.titleContainer}>
-                <BookPlus className={styles.titleIcon} />
-                <h1 className={styles.title}>Creacion de formulario</h1>
-                <p className={styles.titleBagde}>RRHH</p>
-            </div>
+            <WelcomeBanner
+                title="Creacion de formulario"
+                bagde="RRHH"
+                icon={BookPlus}
+            />
 
             <section className={styles.mainContainer}>
-
-                <FormAddQuestion 
-                styles={styles} 
-                setLabelQuestion={setLabelQuestion} 
-                setTypeQuestion={setTypeQuestion} 
-                addQuestion={addQuestion}/>
-
+                <FormAddQuestion
+                    styles={styles}
+                    setLabelQuestion={setLabelQuestion}
+                    setTypeQuestion={setTypeQuestion}
+                    addQuestion={addQuestion} />
                 <Separator />
-                
                 <div className={styles.questionsContainer}>
                     {questions.map((question) => (
-                        <FormQuestion 
-                        key={question.id} 
-                        question={question} 
-                        styles={styles} 
-                        setOptionLabel={setOptionLabel}
-                        updateQuestionOptions={updateQuestionOptions}
-                        removeQuestionOptions={removeQuestionOptions}
-                        removeQuestion={removeQuestion}
-                        optionLabel={optionLabel}
-                         />
+                        <FormQuestion
+                            key={question.id}
+                            question={question}
+                            styles={styles}
+                            setOptionLabel={setOptionLabel}
+                            updateQuestionOptions={updateQuestionOptions}
+                            removeQuestionOptions={removeQuestionOptions}
+                            removeQuestion={removeQuestion}
+                            optionLabel={optionLabel}
+                        />
                     ))}
                 </div>
             </section>

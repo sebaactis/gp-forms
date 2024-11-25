@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import React from "react"
+import { Trash2 } from "lucide-react"
 
 export const FormQuestion = ({ question, styles, setOptionLabel, updateQuestionOptions, removeQuestionOptions, removeQuestion, optionLabel }) => {
     return (
@@ -28,7 +29,7 @@ export const FormQuestion = ({ question, styles, setOptionLabel, updateQuestionO
                                     <label className={styles.labelContainer}>
                                         <input className={styles.checkboxLabelItem} type="checkbox" value={option.label} disabled />
                                         {option.label}
-                                        <button className={styles.checkBoxItemDeleteBtn} onClick={() => removeQuestionOptions(question.id, option.id)}>X</button>
+                                        <button className={styles.checkBoxItemDeleteBtn} onClick={() => removeQuestionOptions(question.id, option.id)}><Trash2 style={{width: "1.1rem", height: "1.1rem"}}/></button>
                                     </label>
                                 </li>
                             ))}
@@ -38,7 +39,7 @@ export const FormQuestion = ({ question, styles, setOptionLabel, updateQuestionO
                     className={styles.questionDeleteBtn}
                     onClick={() => removeQuestion(question.id)}
                 >
-                    X
+                    <Trash2 />
                 </Button>
             </div>
         </React.Fragment>
