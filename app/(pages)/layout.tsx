@@ -4,8 +4,8 @@ import styles from "./layout.module.css"
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
-        <SidebarProvider>
-            <AppSidebar />
+        <SidebarProvider >
+            <AppSidebar/>
             <div className={styles.container}>
                 <SidebarTrigger />
                 {children}

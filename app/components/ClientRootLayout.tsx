@@ -13,7 +13,7 @@ export default function ClientRootLayout({ children }: { children: React.ReactNo
     if (!isMounted) return null;
 
     return (
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <main className="flex w-full">
                 {children}
             </main>

@@ -2,8 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --background-color: #8a8a8a22;
+  --text-color: #000000;
+  --table-bg-color: #00000025;
+  --form-builder-bg-color: #008c6b;
+}
+
+.dark {
+  --background-color: #0e0e0e23;
+  --text-color: #ffffff;
+  --table-bg-color: #3a3a3a96;
+  --form-builder-bg-color: #008c6b;
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 @layer base {

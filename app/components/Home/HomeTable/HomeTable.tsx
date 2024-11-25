@@ -52,8 +52,8 @@ export default function HomeTable() {
 
     return (
         <section className={styles.tableSection}>
-            <TableFilters headers={headers} styles={styles} />
             <TableComponent tableData={table} styles={styles} />
+            <TableFilters headers={headers} styles={styles} />
             <PaginationComponent tableData={table} styles={styles} />
         </section>
     )

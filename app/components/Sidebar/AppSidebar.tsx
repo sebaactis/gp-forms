@@ -62,20 +62,20 @@ const settingItems = [
 export function AppSidebar() {
 
     return (
-        <Sidebar>
-            <SidebarHeader>
+        <Sidebar >
+            <SidebarHeader className={styles.sidebar}>
                 <Link href="/home" className={styles.image}>
                     <Image  src={logo} alt="gp logo" />
                 </Link>
             </SidebarHeader>
 
-            <SidebarContent >
+            <SidebarContent className={styles.sidebar}>
                 <SideBarItem title="Tus evaluaciones" items={items} />
                 <SideBarItem title="RRHH" items={itemsRRHH} />
                 <SideBarItem title="Ajustes" items={settingItems} />
             </SidebarContent>
 
-            <SidebarFooter>
+            <SidebarFooter className={styles.sidebar}>
                 <ModeToggle />
             </SidebarFooter>
         </Sidebar>
