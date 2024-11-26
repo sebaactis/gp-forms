@@ -13,7 +13,7 @@ const FormMain = () => {
             </Link>
             <div className={styles.formMainContainer}>
                 {forms.map((form) => (
-                    <FormCard key={form.id} title={form.name} questions={form.questions} />
+                    <FormCard key={form.id} id={form.id} title={form.name} questions={form.questions} />
                 ))}
             </div>
         </>

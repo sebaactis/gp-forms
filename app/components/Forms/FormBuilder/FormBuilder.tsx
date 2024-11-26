@@ -22,6 +22,7 @@ export const FormBuilder = () => {
     const [typeQuestion, setTypeQuestion] = useState<string>("text")
     const [optionLabel, setOptionLabel] = useState<string>("")
     const [name, setName] = useState<string>("");
+    const [radioQuantity, setRadioQuantity] = useState<number>(0);
 
     const addQuestion = () => {
         setQuestions([...questions, { id: questions.length + 1, type: typeQuestion, label: labelQuestion, options: [] }])
@@ -32,10 +33,25 @@ export const FormBuilder = () => {
         setQuestions(newQuestions);
     }
 
-    const updateQuestionOptions = (id: number, optionValue: string) => {
-        setQuestions(
-            questions.map((q) => q.id === id ? { ...q, options: [...q.options, { id: q.options.length + 1, label: optionValue }] } : q)
-        )
+    const updateQuestionOptions = (id: number, optionValue?: string, type: string) => {
+
+        if (type === "checkbox") {
+            setQuestions(
+                questions.map((q) => q.id === id ? { ...q, options: [...q.options, { id: q.options.length + 1, label: optionValue }] } : q)
+            )
+        }
+
+        if (type === "radio") {
+            setQuestions(
+                questions.map((q) => q.id === id ? {
+                    ...q, options: [...Array.from({ length: radioQuantity }, (_, index) => ({
+                        id: q.options.length + index + 1,
+                        label: (index + 1).toString()
+                    }))],
+                } : q
+                )
+            );
+        }
     }
 
     const removeQuestionOptions = (questionId: number, optionId: number) => {
@@ -78,7 +94,9 @@ export const FormBuilder = () => {
                     styles={styles}
                     setLabelQuestion={setLabelQuestion}
                     setTypeQuestion={setTypeQuestion}
-                    addQuestion={addQuestion} />
+                    addQuestion={addQuestion}
+                    typeQuestion={typeQuestion}
+                />
                 <Separator />
                 <div className={styles.questionsContainer}>
                     {questions.map((question) => (
@@ -91,6 +109,7 @@ export const FormBuilder = () => {
                             removeQuestionOptions={removeQuestionOptions}
                             removeQuestion={removeQuestion}
                             optionLabel={optionLabel}
+                            setRadioQuantity={setRadioQuantity}
                         />
                     ))}
                 </div>

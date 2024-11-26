@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 
 export const FormAddQuestion = ({ styles, setLabelQuestion, setTypeQuestion, addQuestion }) => {
+
     return (
         <div className={styles.createContainer}>
             <h3 className={styles.subTitle}>Agregar pregunta</h3>
@@ -17,7 +18,7 @@ export const FormAddQuestion = ({ styles, setLabelQuestion, setTypeQuestion, add
                     className={styles.selectType}
                 >
                     <option value="text">Texto</option>
-                    <option value="range">Rango (1-10)</option>
+                    <option value="radio">Rango</option>
                     <option value="checkbox">Checkbox</option>
                 </select>
                 <Button className={styles.createBtn} onClick={addQuestion}> Agregar pregunta </Button>

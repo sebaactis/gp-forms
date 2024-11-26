@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import React from "react"
 import { Trash2 } from "lucide-react"
 
-export const FormQuestion = ({ question, styles, setOptionLabel, updateQuestionOptions, removeQuestionOptions, removeQuestion, optionLabel }) => {
+export const FormQuestion = ({ question, styles, setOptionLabel, updateQuestionOptions, removeQuestionOptions, removeQuestion, optionLabel, setRadioQuantity }) => {
     return (
         <React.Fragment key={question.id}>
             <div className={styles.questionContainer}>
@@ -19,7 +19,7 @@ export const FormQuestion = ({ question, styles, setOptionLabel, updateQuestionO
                     <div className={styles.checkboxContainer}>
                         <div>
                             <input className={styles.inputCheckbox} type="text" placeholder="Opción" onChange={(e) => setOptionLabel(e.target.value)} />
-                            <Button className={styles.addOptionBtn} onClick={() => updateQuestionOptions(question.id, optionLabel)}>
+                            <Button className={styles.addOptionBtn} onClick={() => updateQuestionOptions(question.id, optionLabel, question.type)}>
                                 Agregar opcion
                             </Button>
                         </div>
@@ -29,11 +29,42 @@ export const FormQuestion = ({ question, styles, setOptionLabel, updateQuestionO
                                     <label className={styles.labelContainer}>
                                         <input className={styles.checkboxLabelItem} type="checkbox" value={option.label} disabled />
                                         {option.label}
-                                        <button className={styles.checkBoxItemDeleteBtn} onClick={() => removeQuestionOptions(question.id, option.id)}><Trash2 style={{width: "1.1rem", height: "1.1rem"}}/></button>
+                                        <button className={styles.checkBoxItemDeleteBtn} onClick={() => removeQuestionOptions(question.id, option.id)}><Trash2 style={{ width: "1.1rem", height: "1.1rem" }} /></button>
                                     </label>
                                 </li>
                             ))}
                         </ul>
+                    </div>}
+
+                {question.type === "radio" &&
+                    <div className={styles.radioContainer}>
+                        
+                            <>
+                                <label>
+                                    Cantidad de opciones
+                                    <input className={styles.radioInput} type="text" onChange={(e) => setRadioQuantity(e.target.value)} />
+                                </label>
+                                <Button className={styles.addOptionBtn} onClick={() => updateQuestionOptions(question.id, null, question.type)}>
+                                    Confirmar
+                                </Button>
+                            </>
+                        <ul className={styles.radioItem}>
+                            {question.options.map((option) => (
+                                <li key={option.id}>
+                                    <label>
+                                        <input
+                                            className={styles.radioLabelItem}
+                                            type="radio"
+                                            value={option.label}
+                                            name={`question-${question.id}`}
+                                            disabled
+                                        />
+                                        {option.label}
+                                    </label>
+                                </li>
+                            ))}
+                        </ul>
+
                     </div>}
                 <Button
                     className={styles.questionDeleteBtn}

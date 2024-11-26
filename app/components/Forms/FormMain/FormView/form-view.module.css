@@ -1,0 +1,55 @@
+.questionContainer {
+    border-radius: 10px;
+    background-color: #007c5f6b;
+    color: white;
+    margin: 3rem 9rem;
+    padding: 1rem;
+}
+
+.questionType {
+    font-size: 1.1rem;
+    margin-top: 0.7rem;
+}
+
+.questionTypeId {
+    font-weight: bold;
+    margin-right: 0.3rem;
+}
+
+.questionTypeSpan {
+    font-size: 1.1rem;
+    font-style: italic;
+    margin-left: 0.3rem;
+}
+
+.questionLabel {
+    padding: 1rem 0;
+    background-color: #007c5f4d;
+    margin: 1rem 0rem;
+    padding-left: 1rem;
+    margin-right: 1.5rem;
+    font-size: 1.1rem;
+    border-radius: 10px;
+    font-style: italic;
+}
+
+.checkboxContainer {
+    margin-left: 1.5rem;
+}
+
+.checkboxItemLabel {
+    margin-right: 0.5rem;
+    transform: scale(1.3);
+    margin-bottom: 1rem;
+}
+
+.radioContainer {
+    display: flex;
+    gap: 1rem;
+}
+
+
+.radioInput {
+    transform: scale(1.2);
+    margin-right: 0.6rem;
+}

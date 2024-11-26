@@ -193,3 +193,36 @@
 .formCreateBtn:hover {
     background-color: #00b98e;
 }
+
+.radioInput {
+    background-color: #00b98e44;
+    width: 4rem;
+    padding: 0.1rem 0.8rem;
+    border-radius: 10px;
+    margin-left: 0.5rem;
+    margin-right: 1rem;
+}
+
+.radioLabelItem {
+    margin-right: 10px; /* Espaciado entre el círculo y la etiqueta */
+}
+
+/* Estilo para la lista de opciones */
+.radioItem {
+    list-style: none; /* Elimina los puntos por defecto */
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 1rem;
+    margin: 1.5rem 1rem;
+}
+
+/* Los radio buttons por defecto deberían estar visibles si no se les da display: none */
+.radioLabelItem {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #333;
+    border-radius: 50%;
+    margin-right: 8px;
+    transform: scale(1.2);
+}
