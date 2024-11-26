@@ -1,12 +1,13 @@
 "use client"
 
 import { useState } from "react"
-import styles from "./forms.module.css"
+import styles from "./forms-builder.module.css"
 import { Separator } from "@/components/ui/separator";
 import { BookPlus } from "lucide-react"
 import FormAddQuestion from "./FormAddQuestion";
 import { FormQuestion } from "./FormQuestion";
-import WelcomeBanner from "../Globals/Welcome/WelcomeBanner";
+import WelcomeBanner from "../../Globals/Welcome/WelcomeBanner";
+import { Button } from "@/components/ui/button";
 
 interface FormQuestion {
     id: number;
@@ -16,18 +17,11 @@ interface FormQuestion {
 }
 export const FormBuilder = () => {
 
-    const [questions, setQuestions] = useState<FormQuestion>([
-        { id: 1, type: "text", label: "Pregunta texto", options: [] },
-        { id: 2, type: "range", label: "Pregunta range", options: [] },
-        {
-            id: 3, type: "checkbox", label: "Pregunta checkbox", options: [
-                { id: 1, label: "Opcion 1" },
-                { id: 2, label: "Opcion 2" }]
-        }
-    ])
+    const [questions, setQuestions] = useState<FormQuestion>([])
     const [labelQuestion, setLabelQuestion] = useState<string>("")
     const [typeQuestion, setTypeQuestion] = useState<string>("text")
     const [optionLabel, setOptionLabel] = useState<string>("")
+    const [name, setName] = useState<string>("");
 
     const addQuestion = () => {
         setQuestions([...questions, { id: questions.length + 1, type: typeQuestion, label: labelQuestion, options: [] }])
@@ -52,6 +46,16 @@ export const FormBuilder = () => {
         );
     }
 
+    const createForm = () => {
+        const form = {
+            id: (Math.random() * 100000).toFixed(0),
+            name,
+            questions,
+        }
+
+        console.log(form);
+    }
+
     return (
         <>
             <WelcomeBanner
@@ -61,6 +65,15 @@ export const FormBuilder = () => {
             />
 
             <section className={styles.mainContainer}>
+
+                <h3 className={styles.subTitle}>Nombre del formulario</h3>
+                <input
+                    type="text"
+                    placeholder="Ingresa la pregunta aqui..."
+                    onChange={(e) => setName(e.target.value)}
+                    className={styles.inputCreate}
+                />
+
                 <FormAddQuestion
                     styles={styles}
                     setLabelQuestion={setLabelQuestion}
@@ -81,6 +94,7 @@ export const FormBuilder = () => {
                         />
                     ))}
                 </div>
+                <Button className={styles.formCreateBtn} onClick={createForm}>Crear</Button>
             </section>
         </>
     )

@@ -1,9 +1,16 @@
-import FormBuilder from "@/app/components/Forms/FormBuilder";
+import FormMain from "@/app/components/Forms/FormMain/FormMain";
+import WelcomeBanner from "@/app/components/Globals/Welcome/WelcomeBanner";
+import { FileSpreadsheetIcon } from "lucide-react"
 
 export default function Forms() {
     return (
         <div>
-            <FormBuilder />
+            <WelcomeBanner 
+            title="Formularios"
+            icon={FileSpreadsheetIcon}
+            bagde="RRHH"
+            />
+            <FormMain />
         </div>
     )
 }

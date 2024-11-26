@@ -1,0 +1,29 @@
+.card {
+    background-color: var(--table-bg-color);
+    padding: 0.5rem 0.5rem;
+    border-radius: 10px;
+    padding-right: 5rem;
+    padding-left: 1rem;
+    padding-top: 1rem;
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+-webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+-moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+}
+
+.cardTitle {
+    font-size: 1rem;
+    background-color: #6f005cab;
+    border: 2px solid #92007a8e;
+    width: fit-content;
+    border-radius: 20px;
+    opacity: 0.9;
+    font-weight: bold;
+    padding: 0 0.8rem;
+    color: white;
+}
+
+.cardQuantity {
+    font-size: 4rem;
+    font-weight: bold;
+    margin-left: 0.5rem;
+}

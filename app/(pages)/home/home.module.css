@@ -11,3 +11,9 @@
     padding: 0rem 2rem;
     margin-top: 5rem;
 }
+
+.cardContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}

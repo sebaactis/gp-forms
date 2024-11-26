@@ -181,3 +181,15 @@
 .checkBoxItemDeleteBtn:hover {
     background-color: #19191995;
 }
+
+.formCreateBtn {
+    width: 10%;
+    background-color: #00a47e;
+    color: white;
+    font-weight: bold;
+    transition: all 0.2s ease-in;
+}
+
+.formCreateBtn:hover {
+    background-color: #00b98e;
+}

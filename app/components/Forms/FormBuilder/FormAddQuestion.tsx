@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 export const FormAddQuestion = ({ styles, setLabelQuestion, setTypeQuestion, addQuestion }) => {
     return (
         <div className={styles.createContainer}>
-            <h3 className={styles.subTitle}>Agregar pregunta:</h3>
+            <h3 className={styles.subTitle}>Agregar pregunta</h3>
             <input
                 type="text"
                 placeholder="Ingresa la pregunta aqui..."

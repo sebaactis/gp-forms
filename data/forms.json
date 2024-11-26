@@ -1,0 +1,80 @@
+[
+    {
+        "id": "38753",
+        "name": "Analista",
+        "questions": [
+            {
+                "id": 1,
+                "type": "text",
+                "label": "Pregunta texto",
+                "options": []
+            },
+            {
+                "id": 2,
+                "type": "radio",
+                "label": "Pregunta radio",
+                "options": []
+            },
+            {
+                "id": 3,
+                "type": "checkbox",
+                "label": "Pregunta checkbox",
+                "options": [
+                    {
+                        "id": 1,
+                        "label": "Opción 1"
+                    },
+                    {
+                        "id": 2,
+                        "label": "Opción 2"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "23212",
+        "name": "Lideres",
+        "questions": [
+            {
+                "id": 1,
+                "type": "text",
+                "label": "Pregunta texto",
+                "options": []
+            },
+            {
+                "id": 2,
+                "type": "range",
+                "label": "Pregunta range",
+                "options": []
+            },
+            {
+                "id": 3,
+                "type": "checkbox",
+                "label": "Pregunta checkbox",
+                "options": [
+                    {
+                        "id": 1,
+                        "label": "Opción 1"
+                    },
+                    {
+                        "id": 2,
+                        "label": "Opción 2"
+                    }
+                ]
+            },
+            {
+                "id": 4,
+                "type": "text",
+                "label": "Pregunta texto",
+                "options": []
+            },
+            {
+                "id": 5,
+                "type": "text",
+                "label": "Pregunta texto",
+                "options": []
+            }
+        ]
+    }
+]

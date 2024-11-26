@@ -1,0 +1,95 @@
+.btnCreate {
+    margin: 1rem 2rem;
+}
+
+.formMainContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-items: center;
+    margin-top: 2rem;
+}
+
+.btnCreate {
+    background-color: #00c194b5;
+    font-weight: bold;
+    color: white;
+    transition: all 0.2s ease;
+}
+
+.btnCreate:hover {
+    background-color: #00e6b0b5;
+}
+
+.card {
+    background-color: var(--table-bg-color);
+    width: 18rem;
+    height: 11rem;
+    padding-top: 1rem;
+    padding-left: 0.8rem;
+    border-radius: 5px;
+    margin-bottom: 3rem;
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+-webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+-moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+}
+
+.cardTitle {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 0.7rem;
+    margin-top: 0.3rem;
+    width: fit-content;
+    padding: 0.15rem 0.6rem;
+    border-radius: 20px;
+    background-color: #00b18884;
+}
+
+.cardSubTitle {
+    font-style: italic;
+    font-size: 1.1rem;
+}
+
+.cardQuantity {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.cardBtnContainer {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    padding-top: 2rem;
+    padding-bottom: 0.7rem;
+    gap: 0.3rem;
+    padding-right: 0.5rem;
+}
+
+.cardViewBtn {
+    background-color: #800087;
+    padding: 0rem 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.cardViewBtn:hover {
+    background-color: #a100aa;
+}
+
+.cardEditBtn {
+    background-color: #4d4d4d;
+    padding: 0rem 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.cardEditBtn:hover {
+    background-color: #6d6d6d;
+}
+
+.cardDeleteBtn {
+    background-color: #880101;
+    padding: 0rem 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.cardDeleteBtn:hover {
+    background-color: #ab0000;
+}
