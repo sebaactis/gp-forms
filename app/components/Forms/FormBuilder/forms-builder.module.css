@@ -19,11 +19,10 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    padding-top: 2rem;
 }
 
 .inputCreate {
-    background-color: #007c5fa7;
+    background-color: #7d7d7d33;
     padding: 0.5rem 1rem;
     border-radius: 10px;
     color: white;
@@ -50,21 +49,21 @@
     width: 11%;
     padding: 0.5rem 1rem;
     border-radius: 10px;
-    background-color: #007c5fa7;
+    background-color: #7d7d7d33;
     color: white;
     font-weight: bold;
 }
 
 .createBtn {
     width: 12%;
-    background-color: #7d0069;
+    background-color: #00a47e;
     transition: all 0.2s ease-out;
     font-weight: bold;
     color: white;
 }
 
 .createBtn:hover {
-    background-color: #a20087;
+    background-color: #00bb8f;
 }
 
 .questionsContainer {
@@ -77,7 +76,7 @@
 .questionContainer {
     border-radius: 10px;
     padding-left: 1rem;
-    background-color: #007c5fa7;
+    background-color: #7d7d7d33;
     color: white
 }
 
@@ -99,7 +98,7 @@
 
 .questionLabel {
     padding: 1rem 0;
-    background-color: #007c5f4d;
+    background-color: #7d7d7d33;
     margin: 1rem 0rem;
     padding-left: 1rem;
     margin-right: 1.5rem;
@@ -119,12 +118,9 @@
     padding: 0.4rem 1rem;
     border-radius: 10px;
     margin-right: 1rem;
-    background-color: #007c5fb1;
+    background-color: #7d7d7d33;
 }
 
-.inputCheckbox::placeholder {
-    color: rgba(255, 255, 255, 0.736);
-}
 
 .labelContainer {
     display: flex;
@@ -144,15 +140,14 @@
 }
 
 .addOptionBtn {
-    background-color: #7d0069;
+    background-color: #00a47e;
     color: white;
     font-weight: bold;
     transition: all 0.2s ease-out;
 }
 
 .addOptionBtn:hover {
-    background-color: #a20087;
-    
+    background-color: #00bb8f;
 }
 
 .questionDeleteBtn {
@@ -195,7 +190,7 @@
 }
 
 .radioInput {
-    background-color: #00b98e44;
+    background-color: #7d7d7d33;
     width: 4rem;
     padding: 0.1rem 0.8rem;
     border-radius: 10px;

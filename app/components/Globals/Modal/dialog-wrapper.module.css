@@ -1,0 +1,40 @@
+.title {
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.description {
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+    text-align: center;
+    font-style: italic;
+}
+
+.btnContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+    gap: 1rem;
+}
+
+.confirmBtn {
+    background-color: #005400;
+    padding: 0.3rem 0.8rem;
+    border-radius: 5px;
+    transition: all 0.2s ease;
+}
+
+.confirmBtn:hover {
+    background-color: #007c00;
+}
+
+.cancelBtn {
+    background-color: #3a3a3aa0;
+    padding: 0.3rem 0.8rem;
+    border-radius: 5px;
+    transition: all 0.2s ease;
+}
+
+.cancelBtn:hover {
+    background-color: #525252a0;
+}

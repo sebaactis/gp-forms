@@ -8,16 +8,11 @@ import FormAddQuestion from "./FormAddQuestion";
 import { FormQuestion } from "./FormQuestion";
 import WelcomeBanner from "../../Globals/Welcome/WelcomeBanner";
 import { Button } from "@/components/ui/button";
+import { FormQuestionType } from "../types";
 
-interface FormQuestion {
-    id: number;
-    type: string;
-    label: string;
-    options: Array<string>;
-}
 export const FormBuilder = () => {
 
-    const [questions, setQuestions] = useState<FormQuestion>([])
+    const [questions, setQuestions] = useState<FormQuestionType>([])
     const [labelQuestion, setLabelQuestion] = useState<string>("")
     const [typeQuestion, setTypeQuestion] = useState<string>("text")
     const [optionLabel, setOptionLabel] = useState<string>("")

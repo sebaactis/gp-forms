@@ -1,6 +1,6 @@
 .questionContainer {
     border-radius: 10px;
-    background-color: #007c5f6b;
+    background-color: #7d7d7d33;
     color: white;
     margin: 3rem 9rem;
     padding: 1rem;
@@ -24,7 +24,7 @@
 
 .questionLabel {
     padding: 1rem 0;
-    background-color: #007c5f4d;
+    background-color: #7d7d7d33;
     margin: 1rem 0rem;
     padding-left: 1rem;
     margin-right: 1.5rem;
