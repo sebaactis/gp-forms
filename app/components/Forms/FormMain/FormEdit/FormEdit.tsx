@@ -7,12 +7,14 @@ import { FormQuestion } from "../../FormBuilder/FormQuestion";
 import { Button } from "@/components/ui/button";
 import { FormQuestionType, FormType } from "../types";
 import styles from "@/app/components/Forms/FormBuilder/forms-builder.module.css"
+import { useParams } from "next/navigation";
 
 interface FormEditorProps {
     existingForm: FormType;
 }
 
 export const FormEditor = ({ existingForm }: FormEditorProps) => {
+    const { id } = useParams();
     const [questions, setQuestions] = useState<FormQuestionType[]>([]);
     const [labelQuestion, setLabelQuestion] = useState<string>("");
     const [typeQuestion, setTypeQuestion] = useState<string>("text");
@@ -45,9 +47,9 @@ export const FormEditor = ({ existingForm }: FormEditorProps) => {
                 questions.map((q) =>
                     q.id === id
                         ? {
-                              ...q,
-                              options: [...q.options, { id: q.options.length + 1, label: optionValue }],
-                          }
+                            ...q,
+                            options: [...q.options, { id: q.options.length + 1, label: optionValue }],
+                        }
                         : q
                 )
             );
@@ -58,14 +60,14 @@ export const FormEditor = ({ existingForm }: FormEditorProps) => {
                 questions.map((q) =>
                     q.id === id
                         ? {
-                              ...q,
-                              options: [
-                                  ...Array.from({ length: radioQuantity }, (_, index) => ({
-                                      id: q.options.length + index + 1,
-                                      label: (index + 1).toString(),
-                                  })),
-                              ],
-                          }
+                            ...q,
+                            options: [
+                                ...Array.from({ length: radioQuantity }, (_, index) => ({
+                                    id: q.options.length + index + 1,
+                                    label: (index + 1).toString(),
+                                })),
+                            ],
+                        }
                         : q
                 )
             );
@@ -82,14 +84,35 @@ export const FormEditor = ({ existingForm }: FormEditorProps) => {
         );
     };
 
-    const updateForm = () => {
-        const updatedForm: FormType = {
-            ...existingForm,
+    const updateForm = async (id) => {
+        if (name === "") return;
+        
+        if (questions.length === 0) return;
+        
+    
+        const form = {
             name,
             questions,
         };
-        console.log("Updated Form:", updatedForm);
-
+    
+        try {
+            const response = await fetch(`/api/forms/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(form),
+            });
+    
+            if (!response.ok) {
+                throw new Error("Error al actualizar el formulario");
+            }
+    
+            const data = await response.json();
+            console.log(data);
+        } catch {
+            console.log("Error")
+        }
     };
 
     return (
@@ -127,7 +150,7 @@ export const FormEditor = ({ existingForm }: FormEditorProps) => {
                         />
                     ))}
                 </div>
-                <Button className={styles.formCreateBtn} onClick={updateForm}>
+                <Button className={styles.formCreateBtn} onClick={() => updateForm(id)}>
                     Guardar Cambios
                 </Button>
             </section>

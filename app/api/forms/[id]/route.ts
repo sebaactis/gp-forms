@@ -26,3 +26,64 @@ export async function GET(request: Request, { params }: { params: { id: string }
         return NextResponse.json({ message: 'Error al obtener el formulario' }, { status: 500 });
     }
 }
+
+export async function PUT(request: Request, { params }: { params: { id: string } }) {
+    const { id } = params;
+    const body = await request.json();
+    const { name, questions } = body;
+
+    try {
+
+
+        await db.question.deleteMany({
+            where: {
+                formId: id
+            },
+        });
+
+        await db.form.update({
+            where: { id },
+            data: { name },
+        });
+
+        for (const question of questions) {
+            await db.question.create({
+                data: {
+                    label: question.label,
+                    type: question.type,
+                    formId: id,
+                    options: {
+                        create: question.options.map((option) => ({
+                            label: option.label
+                        })),
+                    },
+                },
+            });
+        }
+
+        return NextResponse.json({ message: "Formulario actualizado con éxito" }, { status: 200 });
+    } catch (error) {
+        console.error("Error al actualizar el formulario:", error);
+        return NextResponse.json({ message: "Error al actualizar el formulario" }, { status: 500 });
+    }
+}
+
+export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+    const { id } = params;
+
+    try {
+
+        const deletedForm = await db.form.delete({
+            where: { id },
+        });
+
+        if (!deletedForm) {
+            return NextResponse.json({ message: "Formulario no encontrado" }, { status: 404 });
+        }
+
+        return NextResponse.json({ message: "Formulario eliminado con éxito" }, { status: 200 });
+    } catch (error) {
+        console.error("Error al eliminar el formulario:", error);
+        return NextResponse.json({ message: "Error al eliminar el formulario" }, { status: 500 });
+    }
+}

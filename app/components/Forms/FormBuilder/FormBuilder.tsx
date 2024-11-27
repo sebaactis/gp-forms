@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import { FormQuestionType } from "../types";
 
 export const FormBuilder = () => {
-
     const [questions, setQuestions] = useState<FormQuestionType>([])
     const [labelQuestion, setLabelQuestion] = useState<string>("")
     const [typeQuestion, setTypeQuestion] = useState<string>("text")
@@ -57,15 +56,34 @@ export const FormBuilder = () => {
         );
     }
 
-    const createForm = () => {
+    const createForm = async () => {
+        if (name === "") return;
+        if (questions.length === 0) return;
+    
         const form = {
-            id: (Math.random() * 100000).toFixed(0),
             name,
-            questions,
+            questions
+        };
+    
+        try {
+            const response = await fetch('/api/forms', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(form),
+            });
+    
+            if (!response.ok) {
+                throw new Error('Error al crear el formulario');
+            }
+    
+            const data = await response.json();
+            return console.log(data);
+        } catch {
+            alert('Hubo un error al crear el formulario');
         }
-
-        console.log(form);
-    }
+    };
 
     return (
         <>

@@ -28,14 +28,14 @@ model Question {
   label   String
   options Option[]
   formId  String
-  form    Form         @relation(fields: [formId], references: [id])
+  form    Form         @relation(fields: [formId], references: [id],  onDelete: Cascade)
 }
 
 model Option {
   id         Int      @id @default(autoincrement())
   label      String
   questionId Int
-  question   Question @relation(fields: [questionId], references: [id])
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 }
 
 enum QuestionType {
