@@ -1,13 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Separator } from "@/components/ui/separator";
 import FormAddQuestion from "../../FormBuilder/FormAddQuestion";
 import { FormQuestion } from "../../FormBuilder/FormQuestion";
 import { Button } from "@/components/ui/button";
-import { FormQuestionType, FormType } from "../types";
+import { FormType } from "../types";
 import styles from "@/app/components/Forms/FormBuilder/forms-builder.module.css"
 import { useParams } from "next/navigation";
+import { useQuestions } from "@/hooks/useQuestions";
 
 interface FormEditorProps {
     existingForm: FormType;
@@ -15,86 +16,35 @@ interface FormEditorProps {
 
 export const FormEditor = ({ existingForm }: FormEditorProps) => {
     const { id } = useParams();
-    const [questions, setQuestions] = useState<FormQuestionType[]>([]);
-    const [labelQuestion, setLabelQuestion] = useState<string>("");
-    const [typeQuestion, setTypeQuestion] = useState<string>("text");
-    const [optionLabel, setOptionLabel] = useState<string>("");
-    const [name, setName] = useState<string>("");
-    const [radioQuantity, setRadioQuantity] = useState<number>(0);
 
-    useEffect(() => {
-        if (existingForm) {
-            setName(existingForm.name);
-            setQuestions(existingForm.questions);
-        }
-    }, [existingForm]);
-
-    const addQuestion = () => {
-        setQuestions([
-            ...questions,
-            { id: questions.length + 1, type: typeQuestion, label: labelQuestion, options: [] },
-        ]);
-    };
-
-    const removeQuestion = (id: number) => {
-        const newQuestions = questions.filter((q) => q.id !== id);
-        setQuestions(newQuestions);
-    };
-
-    const updateQuestionOptions = (id: number, optionValue?: string, type: string) => {
-        if (type === "checkbox") {
-            setQuestions(
-                questions.map((q) =>
-                    q.id === id
-                        ? {
-                            ...q,
-                            options: [...q.options, { id: q.options.length + 1, label: optionValue }],
-                        }
-                        : q
-                )
-            );
-        }
-
-        if (type === "radio") {
-            setQuestions(
-                questions.map((q) =>
-                    q.id === id
-                        ? {
-                            ...q,
-                            options: [
-                                ...Array.from({ length: radioQuantity }, (_, index) => ({
-                                    id: q.options.length + index + 1,
-                                    label: (index + 1).toString(),
-                                })),
-                            ],
-                        }
-                        : q
-                )
-            );
-        }
-    };
-
-    const removeQuestionOptions = (questionId: number, optionId: number) => {
-        setQuestions(
-            questions.map((q) =>
-                q.id === questionId
-                    ? { ...q, options: q.options.filter((option) => option.id !== optionId) }
-                    : q
-            )
-        );
-    };
+    const {
+        questions,
+        typeQuestion,
+        optionLabel,
+        name,
+        setQuestions,
+        setLabelQuestion,
+        setTypeQuestion,
+        setOptionLabel,
+        setName,
+        setRadioQuantity,
+        addQuestion,
+        removeQuestion,
+        updateQuestionOptions,
+        removeQuestionOptions,
+    } = useQuestions();
 
     const updateForm = async (id) => {
         if (name === "") return;
-        
+
         if (questions.length === 0) return;
-        
-    
+
+
         const form = {
             name,
             questions,
         };
-    
+
         try {
             const response = await fetch(`/api/forms/${id}`, {
                 method: "PUT",
@@ -103,17 +53,25 @@ export const FormEditor = ({ existingForm }: FormEditorProps) => {
                 },
                 body: JSON.stringify(form),
             });
-    
+
             if (!response.ok) {
                 throw new Error("Error al actualizar el formulario");
             }
-    
+
             const data = await response.json();
             console.log(data);
         } catch {
             console.log("Error")
         }
     };
+
+    useEffect(() => {
+        if (existingForm) {
+            setName(existingForm.name);
+            setQuestions(existingForm.questions);
+        }
+    }, [existingForm, setName, setQuestions]);
+
 
     return (
         <>
