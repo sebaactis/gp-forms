@@ -42,12 +42,16 @@
     font-weight: 600;
 }
 
+.btnCompleteLink {
+    align-self: center;
+}
+
 .btnComplete {
     background-color: #ff3fdf71;
     color: white;
-    width: 50%;
-    align-self: center;
+    width: 100%;
     margin-bottom: 0.5rem;
+    padding: 0 2rem;
     transition: all 0.2s ease;
 }
 

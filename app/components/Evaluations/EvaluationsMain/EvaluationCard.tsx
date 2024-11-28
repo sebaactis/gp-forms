@@ -1,12 +1,16 @@
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { CompletedFormWithRelations } from "@/types"
+import Link from "next/link"
 
 interface EvaluationsProps {
     evaluation: CompletedFormWithRelations
     styles: Record<string, string>
 }
 const EvaluationCard = ({ evaluation, styles }: EvaluationsProps) => {
+
+    console.log(evaluation)
+
     return (
         <div className={styles.cardContainer}>
             <div className={styles.nameContainer}>
@@ -50,8 +54,10 @@ const EvaluationCard = ({ evaluation, styles }: EvaluationsProps) => {
                     {new Date(evaluation.endDate).toLocaleDateString("es-ES")}
                 </p>
             </div>
+            <Link className={styles.btnCompleteLink} href={`evaluations/${evaluation.employee.id}`}>
+                <Button className={styles.btnComplete}>Completar</Button>
+            </Link>
 
-            <Button className={styles.btnComplete}>Completar</Button>
         </div>
     )
 }
