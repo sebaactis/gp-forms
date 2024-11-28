@@ -12,23 +12,58 @@ model User {
   id       String @id @default(uuid())
   email    String
   password String
+
+  employees Employee[]
+
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  CompletedForm CompletedForm[]
+}
+
+model Employee {
+  id        String @id @default(uuid())
+  nombre    String
+  apellido  String
+  email     String
+  gerencia  String
+  puesto    String
+  seniority String
+  legajo    Int @default(0)
+
+  formId String?
+  form   Form?   @relation(fields: [formId], references: [id])
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  CompletedForm CompletedForm[]
 }
 
 model Form {
-  id        String     @id @default(uuid())
-  name      String
+  id   String @id @default(uuid())
+  name String
+
   questions Question[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  employees Employee[]
+
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  CompletedForm CompletedForm[]
 }
 
 model Question {
-  id      Int          @id @default(autoincrement())
-  type    QuestionType
-  label   String
+  id    Int          @id @default(autoincrement())
+  type  QuestionType
+  label String
+
   options Option[]
-  formId  String
-  form    Form         @relation(fields: [formId], references: [id],  onDelete: Cascade)
+
+  formId String
+  form   Form   @relation(fields: [formId], references: [id], onDelete: Cascade)
+
+  Response Response[]
 }
 
 model Option {
@@ -38,8 +73,47 @@ model Option {
   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 }
 
+model CompletedForm {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  employeeId String
+  employee   Employee @relation(fields: [employeeId], references: [id])
+  formId     String
+  form       Form     @relation(fields: [formId], references: [id])
+
+  responses Response[]
+
+  completedAt DateTime?
+  status      FormStatus @default(PENDIENTE)
+
+  startDate DateTime
+  endDate   DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Response {
+  id String @id @default(uuid())
+
+  questionId Int
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  completedFormId String
+  completedForm   CompletedForm @relation(fields: [completedFormId], references: [id])
+
+  answer String
+}
+
 enum QuestionType {
   text
   radio
   checkbox
+}
+
+enum FormStatus {
+  PENDIENTE
+  EN_PROGRESO
+  COMPLETADO
 }

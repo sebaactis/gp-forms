@@ -1,34 +1,36 @@
 "use client"
 
 import styles from "./table.module.css"
-import { useState } from "react"
-import empleados from "@/data/empleados.json"
+import { useEffect, useState } from "react"
 import { getCoreRowModel, useReactTable, getPaginationRowModel, getSortedRowModel, getFilteredRowModel, ColumnDef, PaginationState, SortingState, ColumnFiltersState } from "@tanstack/react-table"
 import { TableComponent } from "./TableComponent"
 import PaginationComponent from "./PaginationComponent"
 import { TableFilters } from "./TableFilters"
 
-type Empleado = {
-    legajo: number;
-    nombre: string;
-    apellido: string;
-    estado: string;
-    periodo: string;
-};
 export default function HomeTable() {
+    const [empleados, setEmpleados] = useState([]);
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
-        pageSize: 15
+        pageSize: 10
     })
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
-    const columns: ColumnDef<Empleado>[] = [
+    const columns: ColumnDef[] = [
         { header: "Nro Legajo", accessorKey: "legajo", },
+        { header: "Correo", accessorKey: "email" },
         { header: "Nombre", accessorKey: "nombre" },
         { header: "Apellido", accessorKey: "apellido" },
-        { header: "Estado", accessorKey: "estado" },
-        { header: "Periodo", accessorKey: "periodo" }
+        { header: "Gerencia", accessorKey: "gerencia" },
+        { header: "Puesto", accessorKey: "puesto" },
+        { header: "seniority", accessorKey: "seniority" },
+        { header: "Estado", accessorFn: (row) => row.CompletedForm[0]?.status || "No asignado", },
+        {
+            header: "Fecha Limite", accessorFn: (row) => {
+                const endDate = row.CompletedForm[0]?.endDate;
+                return endDate ? new Date(endDate).toLocaleDateString("es-ES") : "No asignado";
+            },
+        }
     ]
 
     const table = useReactTable({
@@ -47,8 +49,20 @@ export default function HomeTable() {
             columnFilters
         }
     })
-
     const headers = table.getHeaderGroups().flatMap((headerGroup) => headerGroup.headers);
+
+    const getEmployees = async () => {
+        const response = await fetch('/api/employees')
+
+        if (!response.ok) {
+            throw new Error("Error al traer los empleados")
+        }
+
+        const data = await response.json();
+        setEmpleados(data)
+    }
+
+    useEffect(() => { getEmployees() }, [])
 
     return (
         <section className={styles.tableSection}>

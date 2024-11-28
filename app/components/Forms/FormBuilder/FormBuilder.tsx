@@ -9,35 +9,22 @@ import WelcomeBanner from "../../Globals/Welcome/WelcomeBanner";
 import { Button } from "@/components/ui/button";
 import { useQuestions } from "@/hooks/useQuestions";
 
-
 export const FormBuilder = () => {
 
-    const {
-        questions,
-        typeQuestion,
-        optionLabel,
-        name,
-        setLabelQuestion,
-        setTypeQuestion,
-        setOptionLabel,
-        setName,
-        setRadioQuantity,
-        addQuestion,
-        removeQuestion,
-        updateQuestionOptions,
-        removeQuestionOptions,
-      } = useQuestions();
+    const { questions, typeQuestion, optionLabel, name, setLabelQuestion,
+        setTypeQuestion, setOptionLabel, setName, setRadioQuantity,
+        addQuestion, removeQuestion, updateQuestionOptions, removeQuestionOptions, } = useQuestions();
 
 
     const createForm = async () => {
         if (name === "") return;
         if (questions.length === 0) return;
-    
+
         const form = {
             name,
             questions
         };
-    
+
         try {
             const response = await fetch('/api/forms', {
                 method: 'POST',
@@ -46,11 +33,11 @@ export const FormBuilder = () => {
                 },
                 body: JSON.stringify(form),
             });
-    
+
             if (!response.ok) {
                 throw new Error('Error al crear el formulario');
             }
-    
+
             const data = await response.json();
             return console.log(data);
         } catch {
