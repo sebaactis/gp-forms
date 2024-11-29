@@ -5,7 +5,7 @@ export async function GET() {
     const forms = await db.completedForm.findMany({
         include: {
             form: true,
-            employee: true
+            employee: true,
         }
     })
 

@@ -1,0 +1,62 @@
+.question {
+    border-radius: 10px;
+    background-color: #7d7d7d33;
+    color: white;
+    margin: 3rem 9rem;
+    padding: 1rem;
+}
+
+.questionLabelIndex {
+    font-weight: bold;
+    color: #00ffc3;
+    margin-right: 0.1rem;
+}
+
+.questionLabel {
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
+    font-style: italic;
+}
+
+.textInput {
+    width: 100%;
+    padding: 0.7rem;
+    border-radius: 5px;
+    font-size: 1.1rem;
+}
+
+.checkboxContainer {
+    margin-left: 1.5rem;
+}
+
+.labelCheckbox {
+    display: flex;
+    gap: 0.7rem;
+    margin: 0.8rem 0;
+    align-items: center;
+}
+
+.checkboxSquare {
+    transform: scale(1.3);
+}
+
+.radioContainer {
+    margin-left: 1.5rem;
+    display: flex;
+    gap: 0.6rem;
+}
+
+.labelRadio {
+    display: flex;
+    gap: 0.7rem;
+}
+
+.radioItem {
+    transform: scale(1.3);
+}
+
+
+
+
+
+

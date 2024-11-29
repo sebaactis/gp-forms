@@ -12,14 +12,14 @@ const Evaluation = () => {
     const [empleado, setEmpleado] = useState<Employee>({});
     const [loading, setLoading] = useState(false);
 
-    const { id } = useParams()
+    const { employeeId, formId } = useParams()
 
     useEffect(() => {
         const getEmpleado = async () => {
             setLoading(true)
 
             try {
-                const response = await fetch(`/api/employees/${id}`)
+                const response = await fetch(`/api/employees/${employeeId}`)
 
                 if (!response.ok) {
                     throw new Error("Problemas al traer el empelado")
@@ -36,9 +36,11 @@ const Evaluation = () => {
         }
 
         getEmpleado()
-    }, [id])
+    }, [employeeId])
 
     if (loading) return <p>Cargando empleado...</p>
+
+    console.log(empleado)
 
     return (
         <div>
@@ -47,7 +49,7 @@ const Evaluation = () => {
                 bagde="Sebastian Actis"
                 icon={CheckSquareIcon}
             />
-            <EvaluationComplete empleado={empleado} />
+            <EvaluationComplete empleado={empleado} formId={formId} />
         </div>
     )
 }

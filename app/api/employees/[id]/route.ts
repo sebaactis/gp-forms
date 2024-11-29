@@ -8,7 +8,11 @@ export async function GET(request: Request, { params }: { params: { id: string }
     const employee = await db.employee.findFirst({
         where: { id },
         include: {
-          CompletedForm: true,
+          CompletedForm: {
+            include: {
+              responses: true
+            }
+          },
           form: {              
             include: {        
               questions: {      

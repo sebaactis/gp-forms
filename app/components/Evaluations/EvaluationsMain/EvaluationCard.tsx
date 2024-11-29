@@ -54,7 +54,7 @@ const EvaluationCard = ({ evaluation, styles }: EvaluationsProps) => {
                     {new Date(evaluation.endDate).toLocaleDateString("es-ES")}
                 </p>
             </div>
-            <Link className={styles.btnCompleteLink} href={`evaluations/${evaluation.employee.id}`}>
+            <Link className={styles.btnCompleteLink} href={`evaluations/${evaluation.employee.id}/form/${evaluation.id}`}>
                 <Button className={styles.btnComplete}>Completar</Button>
             </Link>
 

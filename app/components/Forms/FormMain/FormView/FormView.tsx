@@ -1,4 +1,3 @@
-import React from 'react'
 import styles from './form-view.module.css'
 
 const FormView = ({ question }) => {

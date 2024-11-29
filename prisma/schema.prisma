@@ -104,6 +104,8 @@ model Response {
   completedForm   CompletedForm @relation(fields: [completedFormId], references: [id])
 
   answer String
+
+   @@unique([completedFormId, questionId])
 }
 
 enum QuestionType {
