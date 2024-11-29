@@ -17,7 +17,6 @@ const Evaluation = () => {
     useEffect(() => {
         const getEmpleado = async () => {
             setLoading(true)
-
             try {
                 const response = await fetch(`/api/employees/${employeeId}`)
 

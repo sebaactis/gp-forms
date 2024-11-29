@@ -9,8 +9,6 @@ interface EvaluationsProps {
 }
 const EvaluationCard = ({ evaluation, styles }: EvaluationsProps) => {
 
-    console.log(evaluation)
-
     return (
         <div className={styles.cardContainer}>
             <div className={styles.nameContainer}>

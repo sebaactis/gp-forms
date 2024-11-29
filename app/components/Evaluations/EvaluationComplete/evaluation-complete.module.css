@@ -1,8 +1,14 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    margin: 0rem 10rem;
+}
+
 .question {
     border-radius: 10px;
     background-color: #7d7d7d33;
     color: white;
-    margin: 3rem 9rem;
+    margin: 3rem 0rem;
     padding: 1rem;
 }
 
@@ -53,6 +59,18 @@
 
 .radioItem {
     transform: scale(1.3);
+}
+
+.btnEnviar {
+    align-self: center;
+    width: 30%;
+    background-color: #007258;
+    color: white;
+    transition: all 0.2s ease;
+}
+
+.btnEnviar:hover {
+    background-color: #00906e;
 }
 
 

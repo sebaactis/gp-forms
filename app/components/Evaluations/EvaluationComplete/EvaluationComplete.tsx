@@ -1,13 +1,14 @@
 import { Button } from '@/components/ui/button'
 import styles from './evaluation-complete.module.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FormStatus } from '@prisma/client'
 const EvaluationComplete = ({ empleado, formId }) => {
 
     const [form, setForm] = useState({
         newResponses: [],
         status: FormStatus.PENDIENTE
-    })
+    });
+    const [loading, setLoading] = useState(false);
 
     const handleAnswers = (questionId, newAnswer, isCheckbox = false) => {
         let updatedResponses;
@@ -17,6 +18,7 @@ const EvaluationComplete = ({ empleado, formId }) => {
         );
 
         if (answerCheck) {
+
             if (isCheckbox) {
                 const existingAnswers = answerCheck.answer ? answerCheck.answer.split(', ') : [];
 
@@ -51,7 +53,7 @@ const EvaluationComplete = ({ empleado, formId }) => {
                     ...form.newResponses,
                     {
                         questionId: questionId,
-                        completedFormId: empleado.CompletedForm[0].id,
+                        completedFormId: formId,
                         answer: newAnswer,
                     },
                 ],
@@ -64,13 +66,23 @@ const EvaluationComplete = ({ empleado, formId }) => {
 
     const handleSubmit = async () => {
 
+        const isCompleted = empleado.form?.questions.length === form.newResponses.length
+            && form.newResponses.every(response => response.answer && response.answer.trim() !== "");
+
+        const updatedForm = {
+            ...form,
+            status: isCompleted ? FormStatus.COMPLETADO : FormStatus.EN_PROGRESO
+        };
+
+        setForm(updatedForm);
+
         try {
             const response = await fetch(`/api/employees-forms/${formId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(form),
+                body: JSON.stringify(updatedForm),
             });
 
             if (!response.ok) {
@@ -86,8 +98,41 @@ const EvaluationComplete = ({ empleado, formId }) => {
 
     };
 
+    const getAnswerForQuestion = (questionId) => {
+        const answerObj = form.newResponses.find((response) => response.questionId === questionId);
+        return answerObj ? answerObj.answer : '';
+    };
+
+    useEffect(() => {
+        const fetchResponses = async () => {
+            setLoading(true);
+            try {
+                const response = await fetch(`/api/employees-forms/${formId}`);
+
+                if (!response.ok) {
+                    throw new Error("Error al obtener las respuestas del formulario");
+                }
+
+                const data = await response.json();
+
+                setForm({
+                    newResponses: data.responses || [],
+                    status: data.status || FormStatus.PENDIENTE
+                });
+            } catch (error) {
+                console.error("Error al obtener las respuestas:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchResponses();
+    }, [formId]);
+
+    if(loading) return <p>Cargando...</p>
+
     return (
-        <div>
+        <div className={styles.container}>
             {empleado.form?.questions.map((question, index) => (
                 <div className={styles.question} key={question.id}>
                     <p className={styles.questionLabel}> <span className={styles.questionLabelIndex}>{index + 1}.</span> {question.label}</p>
@@ -97,6 +142,7 @@ const EvaluationComplete = ({ empleado, formId }) => {
                         <input
                             className={styles.textInput}
                             type="text"
+                            value={getAnswerForQuestion(question.id)}
                             onChange={(e) => handleAnswers(question.id, e.target.value)}
                         />
                     }
@@ -109,6 +155,7 @@ const EvaluationComplete = ({ empleado, formId }) => {
                                         <input
                                             type="checkbox"
                                             className={styles.checkboxSquare}
+                                            checked={getAnswerForQuestion(question.id).split(', ').includes(option.label)}
                                             onChange={() => handleAnswers(question.id, option.label, true)}
                                         />
                                         {option.label}
@@ -127,6 +174,7 @@ const EvaluationComplete = ({ empleado, formId }) => {
                                             className={styles.radioItem}
                                             type="radio"
                                             name={`question_${question.id}`}
+                                            checked={getAnswerForQuestion(question.id) === option.label}
                                             onChange={() => handleAnswers(question.id, option.label)}
                                         />
                                         {option.label}
@@ -139,7 +187,12 @@ const EvaluationComplete = ({ empleado, formId }) => {
                 </div>
             ))}
 
-            <Button onClick={handleSubmit}>{empleado.form?.questions.length === form.newResponses.length ? "Enviar" : "Guardar Cambios"}</Button>
+            <Button className={styles.btnEnviar} onClick={handleSubmit}>
+                {empleado.form?.questions.length === form.newResponses.length &&
+                    form.newResponses.every(response => response.answer && response.answer.trim() !== "")
+                    ? "Enviar"
+                    : "Guardar Cambios"}
+            </Button>
         </div>
     )
 }

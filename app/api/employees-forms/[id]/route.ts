@@ -2,12 +2,28 @@ import { db } from "@/data/prisma";
 import { randomUUID } from "crypto";
 import { NextResponse } from "next/server";
 
+export async function GET(request: Request, { params }: { params: { id: string } }) {
+
+  const { id } = params;
+
+  const forms = await db.completedForm.findFirst({
+    where: { id },
+    include: {
+      form: true,
+      employee: true,
+      responses: true
+    }
+  })
+
+  return NextResponse.json(forms);
+}
+
 export async function PUT(request: Request, { params }: { params: { id: string } }) {
   const { id } = params;
   const body = await request.json();
   const { status, newResponses } = body;
 
-  // Iteramos sobre las respuestas y realizamos la actualización o creación.
+
   for (const response of newResponses) {
     const existingResponse = await db.response.findUnique({
       where: {
