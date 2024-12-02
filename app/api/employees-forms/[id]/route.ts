@@ -50,6 +50,8 @@ export async function PUT(request: Request, { params }: { params: { id: string }
           id: randomUUID(),
           completedFormId: id,
           questionId: response.questionId,
+          questionText: response.questionText,
+          questionType: response.questionType,
           answer: response.answer,
         },
       });

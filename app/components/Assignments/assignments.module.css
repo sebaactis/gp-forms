@@ -1,0 +1,45 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem 6rem;
+    gap: 2rem;
+}
+
+.title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.selectContainer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.selectLabel {
+    background-color: #72005f;
+    padding: 0.2rem 1.5rem;
+    border-radius: 5px;
+    font-weight: bold;
+    color: white;
+}
+
+.selectItem {
+    background-color: var(--table-bg-color);
+    padding: 0.4rem 1.5rem;
+    border-radius: 5px;
+}
+
+.sendBtn {
+    width: 10%;
+    background-color: #00ab83;
+    color: white;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+.sendBtn:hover {
+    background-color: #00c093;
+}

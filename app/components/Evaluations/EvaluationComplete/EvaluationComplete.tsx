@@ -10,13 +10,15 @@ interface Props {
 }
 const EvaluationComplete = ({ empleado, formId }: Props) => {
 
+
     const [form, setForm] = useState({
         newResponses: [],
         status: FormStatus.PENDIENTE
     });
+
     const [loading, setLoading] = useState(false);
 
-    const handleAnswers = (questionId, newAnswer, isCheckbox = false) => {
+    const handleAnswers = (questionId, questionText, questionType, newAnswer, isCheckbox = false) => {
         let updatedResponses;
 
         const answerCheck = form.newResponses.find(
@@ -59,6 +61,8 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
                     ...form.newResponses,
                     {
                         questionId: questionId,
+                        questionText,
+                        questionType,
                         completedFormId: formId,
                         answer: newAnswer,
                     },
@@ -148,7 +152,7 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
                             className={styles.textInput}
                             type="text"
                             value={getAnswerForQuestion(question.id)}
-                            onChange={(e) => handleAnswers(question.id, e.target.value)}
+                            onChange={(e) => handleAnswers(question.id, question.label, question.type, e.target.value)}
                         />
                     }
 
@@ -161,7 +165,7 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
                                             type="checkbox"
                                             className={styles.checkboxSquare}
                                             checked={getAnswerForQuestion(question.id).split(', ').includes(option.label)}
-                                            onChange={() => handleAnswers(question.id, option.label, true)}
+                                            onChange={() => handleAnswers(question.id, question.label, question.type, option.label, true)}
                                         />
                                         {option.label}
                                     </label>
@@ -180,7 +184,7 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
                                             type="radio"
                                             name={`question_${question.id}`}
                                             checked={getAnswerForQuestion(question.id) === option.label}
-                                            onChange={() => handleAnswers(question.id, option.label)}
+                                            onChange={() => handleAnswers(question.id, question.label, question.type, option.label)}
                                         />
                                         {option.label}
                                     </label>

@@ -6,6 +6,11 @@ export async function GET() {
         include: {
             form: true,
             employee: true,
+        },
+        where: {
+            status: {
+                not: 'COMPLETADO'
+            }
         }
     })
 

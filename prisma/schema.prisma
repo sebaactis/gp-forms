@@ -12,6 +12,8 @@ model User {
   id       String @id @default(uuid())
   email    String
   password String
+  nombre   String? 
+  apellido String? 
 
   employees Employee[]
 
@@ -28,10 +30,10 @@ model Employee {
   gerencia  String
   puesto    String
   seniority String
-  legajo    Int @default(0)
+  legajo    Int    @default(0)
 
   formId String?
-  form   Form?   @relation(fields: [formId], references: [id])
+  form   Form?   @relation(fields: [formId], references: [id], onDelete: SetNull)
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
@@ -79,8 +81,9 @@ model CompletedForm {
   user       User     @relation(fields: [userId], references: [id])
   employeeId String
   employee   Employee @relation(fields: [employeeId], references: [id])
-  formId     String
-  form       Form     @relation(fields: [formId], references: [id])
+  formId     String?
+  form       Form?    @relation(fields: [formId], references: [id], onDelete: SetNull)
+  formTitle  String?
 
   responses Response[]
 
@@ -97,15 +100,17 @@ model CompletedForm {
 model Response {
   id String @id @default(uuid())
 
-  questionId Int
-  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId   Int?
+  question     Question? @relation(fields: [questionId], references: [id], onDelete: SetNull)
+  questionText String?
+  questionType String?
 
   completedFormId String
   completedForm   CompletedForm @relation(fields: [completedFormId], references: [id])
 
   answer String
 
-   @@unique([completedFormId, questionId])
+  @@unique([completedFormId, questionId])
 }
 
 enum QuestionType {
