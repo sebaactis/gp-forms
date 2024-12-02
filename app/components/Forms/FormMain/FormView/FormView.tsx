@@ -1,6 +1,12 @@
+import { Question } from '@prisma/client'
 import styles from './form-view.module.css'
 
-const FormView = ({ question }) => {
+interface Props {
+    question: Question
+}
+
+const FormView = ({ question }: Props) => {
+
     return (
         <div className={styles.questionContainer} key={question.id}>
             <div>

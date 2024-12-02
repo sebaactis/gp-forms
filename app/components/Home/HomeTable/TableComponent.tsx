@@ -10,6 +10,7 @@ import React from "react";
 
 export const TableComponent = ({ tableData, styles }) => {
 
+
     return (
             <Table className={styles.table}>
                 <TableHeader className={styles.tableHeader}>

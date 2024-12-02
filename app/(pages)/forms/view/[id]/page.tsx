@@ -5,12 +5,13 @@ import { useEffect, useState } from 'react';
 import WelcomeBanner from '@/app/components/Globals/Welcome/WelcomeBanner';
 import { LucideScanEye } from 'lucide-react';
 import FormView from '@/app/components/Forms/FormMain/FormView/FormView';
+import { FormWithRelations } from '@/types';
 
 const FormPage = () => {
     const { id } = useParams();
-    const [form, setForm] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [form, setForm] = useState<FormWithRelations>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string>(null);
 
     useEffect(() => {
         const fetchForm = async () => {

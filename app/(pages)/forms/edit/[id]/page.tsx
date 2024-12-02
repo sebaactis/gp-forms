@@ -5,13 +5,14 @@ import { useParams } from 'next/navigation'
 import { EditIcon } from 'lucide-react'
 import FormEdit from '@/app/components/Forms/FormMain/FormEdit/FormEdit';
 import { useEffect, useState } from 'react';
+import { FormWithRelations } from '@/types';
 
 const Edit = () => {
 
     const { id } = useParams();
-    const [form, setForm] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [form, setForm] = useState<FormWithRelations>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string>(null);
 
     useEffect(() => {
         const fetchForm = async () => {

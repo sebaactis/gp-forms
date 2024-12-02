@@ -2,7 +2,13 @@ import { Button } from '@/components/ui/button'
 import styles from './evaluation-complete.module.css'
 import { useEffect, useState } from 'react'
 import { FormStatus } from '@prisma/client'
-const EvaluationComplete = ({ empleado, formId }) => {
+import { EmployeeWithRelations } from '@/types'
+
+interface Props {
+    empleado: EmployeeWithRelations;
+    formId: string;
+}
+const EvaluationComplete = ({ empleado, formId }: Props) => {
 
     const [form, setForm] = useState({
         newResponses: [],
@@ -74,8 +80,6 @@ const EvaluationComplete = ({ empleado, formId }) => {
             status: isCompleted ? FormStatus.COMPLETADO : FormStatus.EN_PROGRESO
         };
 
-        setForm(updatedForm);
-
         try {
             const response = await fetch(`/api/employees-forms/${formId}`, {
                 method: "PUT",
@@ -90,6 +94,7 @@ const EvaluationComplete = ({ empleado, formId }) => {
             }
 
             const data = await response.json();
+            setForm(updatedForm);
 
             console.log(data);
         } catch {
@@ -129,7 +134,7 @@ const EvaluationComplete = ({ empleado, formId }) => {
         fetchResponses();
     }, [formId]);
 
-    if(loading) return <p>Cargando...</p>
+    if (loading) return <p>Cargando...</p>
 
     return (
         <div className={styles.container}>

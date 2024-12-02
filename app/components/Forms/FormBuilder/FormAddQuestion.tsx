@@ -1,6 +1,13 @@
 import { Button } from "@/components/ui/button"
 
-export const FormAddQuestion = ({ styles, setLabelQuestion, setTypeQuestion, addQuestion }) => {
+interface Props {
+    styles: Record<string, string>;
+    setLabelQuestion: React.Dispatch<React.SetStateAction<string>>;
+    setTypeQuestion: React.Dispatch<React.SetStateAction<string>>;
+    addQuestion: () => void;
+}
+
+export const FormAddQuestion = ({ styles, setLabelQuestion, setTypeQuestion, addQuestion }: Props) => {
 
     return (
         <div className={styles.createContainer}>

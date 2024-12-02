@@ -1,6 +1,13 @@
+import { ComponentType } from 'react';
 import styles from './welcome.module.css'
 
-const WelcomeBanner = ({title, icon: Icon, bagde }) => {
+interface Props {
+    title: string;
+    icon: ComponentType;
+    bagde: string;
+}
+
+const WelcomeBanner = ({title, icon: Icon, bagde }: Props) => {
     return (
         <div className={styles.titleContainer}>
             <Icon className={styles.titleIcon} />

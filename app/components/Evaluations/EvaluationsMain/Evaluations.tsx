@@ -8,7 +8,7 @@ import { CompletedFormWithRelations } from "@/types";
 const Evaluations = () => {
 
     const [evaluations, setEvaluations] = useState<CompletedFormWithRelations[]>([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const getEvaluations = async () => {
         setIsLoading(true);

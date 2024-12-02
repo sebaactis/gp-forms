@@ -5,16 +5,16 @@ import { Separator } from "@/components/ui/separator";
 import FormAddQuestion from "../../FormBuilder/FormAddQuestion";
 import { FormQuestion } from "../../FormBuilder/FormQuestion";
 import { Button } from "@/components/ui/button";
-import { FormType } from "../types";
 import styles from "@/app/components/Forms/FormBuilder/forms-builder.module.css"
 import { useParams } from "next/navigation";
 import { useQuestions } from "@/hooks/useQuestions";
+import { FormWithRelations } from "@/types";
 
-interface FormEditorProps {
-    existingForm: FormType;
+interface Props {
+    existingForm: FormWithRelations
 }
 
-export const FormEditor = ({ existingForm }: FormEditorProps) => {
+export const FormEditor = ({ existingForm }: Props) => {
     const { id } = useParams();
 
     const {
@@ -38,7 +38,6 @@ export const FormEditor = ({ existingForm }: FormEditorProps) => {
         if (name === "") return;
 
         if (questions.length === 0) return;
-
 
         const form = {
             name,

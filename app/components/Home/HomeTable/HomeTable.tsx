@@ -6,9 +6,10 @@ import { getCoreRowModel, useReactTable, getPaginationRowModel, getSortedRowMode
 import { TableComponent } from "./TableComponent"
 import PaginationComponent from "./PaginationComponent"
 import { TableFilters } from "./TableFilters"
+import { Employee } from "@prisma/client"
 
 export default function HomeTable() {
-    const [empleados, setEmpleados] = useState([]);
+    const [empleados, setEmpleados] = useState<Employee[]>([]);
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
         pageSize: 10

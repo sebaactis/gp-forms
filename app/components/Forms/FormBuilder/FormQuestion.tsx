@@ -1,8 +1,19 @@
 import { Button } from "@/components/ui/button"
 import React from "react"
 import { Trash2 } from "lucide-react"
+import { FormQuestionType } from "@/hooks/useQuestions"
 
-export const FormQuestion = ({ question, styles, setOptionLabel, updateQuestionOptions, removeQuestionOptions, removeQuestion, optionLabel, setRadioQuantity }) => {
+interface Props {
+    question: FormQuestionType;
+    styles: Record<string, string>;
+    setOptionLabel: React.Dispatch<React.SetStateAction<string>>;
+    updateQuestionOptions: (id: number, optionValue?: string, type: string) => void;
+    removeQuestionOptions: (questionId: number, optionId: number) => void;
+    optionLabel: string;
+    setRadioQuantity: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export const FormQuestion = ({ question, styles, setOptionLabel, updateQuestionOptions, removeQuestionOptions, removeQuestion, optionLabel, setRadioQuantity }: Props) => {
     return (
         <React.Fragment key={question.id}>
             <div className={styles.questionContainer}>
@@ -38,16 +49,16 @@ export const FormQuestion = ({ question, styles, setOptionLabel, updateQuestionO
 
                 {question.type === "radio" &&
                     <div className={styles.radioContainer}>
-                        
-                            <>
-                                <label>
-                                    Cantidad de opciones
-                                    <input className={styles.radioInput} type="text" onChange={(e) => setRadioQuantity(e.target.value)} />
-                                </label>
-                                <Button className={styles.addOptionBtn} onClick={() => updateQuestionOptions(question.id, null, question.type)}>
-                                    Confirmar
-                                </Button>
-                            </>
+
+                        <>
+                            <label>
+                                Cantidad de opciones
+                                <input className={styles.radioInput} type="text" onChange={(e) => setRadioQuantity(e.target.value)} />
+                            </label>
+                            <Button className={styles.addOptionBtn} onClick={() => updateQuestionOptions(question.id, null, question.type)}>
+                                Confirmar
+                            </Button>
+                        </>
                         <ul className={styles.radioItem}>
                             {question.options.map((option) => (
                                 <li key={option.id}>

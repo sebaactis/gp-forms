@@ -3,8 +3,16 @@ import styles from "./form-main.module.css"
 import { Trash2, Eye, Pencil } from "lucide-react"
 import Link from 'next/link';
 import DialogWrapper from '../../Globals/Modal/DialogWrapper';
+import { Question } from '@prisma/client';
 
-const FormCard = ({ id, title, questions, onDelete }) => {
+interface Props {
+    id: string;
+    title: string;
+    questions: Question[];
+    onDelete: (id: string) => void;
+}
+
+const FormCard = ({ id, title, questions, onDelete }: Props) => {
 
     const quantity = questions.length;
 

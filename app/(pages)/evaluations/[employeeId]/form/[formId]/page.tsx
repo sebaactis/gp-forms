@@ -10,7 +10,7 @@ import { CheckSquareIcon } from "lucide-react"
 const Evaluation = () => {
 
     const [empleado, setEmpleado] = useState<Employee>({});
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const { employeeId, formId } = useParams()
 

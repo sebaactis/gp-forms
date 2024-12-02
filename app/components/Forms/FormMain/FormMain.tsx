@@ -5,11 +5,12 @@ import FormCard from "./FormCard";
 import styles from "./form-main.module.css";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { FormWithRelations } from "@/types";
 
 const FormMain = () => {
-    const [forms, setForms] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [forms, setForms] = useState<FormWithRelations[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string>(null);
 
     const fetchForms = async () => {
         try {
