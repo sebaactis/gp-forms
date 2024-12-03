@@ -17,3 +17,16 @@
     flex-direction: column;
     gap: 3rem;
 }
+
+@media (width < 1367px) {
+    .infoContainer {
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: center;    
+    }
+
+    .cardContainer {
+        flex-direction: row;
+        
+    }
+}

@@ -27,3 +27,14 @@
     font-weight: bold;
     margin-left: 0.5rem;
 }
+
+@media (width < 1367px) {
+    .card {
+        margin-bottom: 2rem;
+        
+    }
+
+    .cardTitle {
+        font-size: 0.7rem;
+    }
+}

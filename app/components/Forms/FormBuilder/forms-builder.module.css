@@ -221,3 +221,13 @@
     margin-right: 8px;
     transform: scale(1.2);
 }
+
+@media (width < 1367px) {
+    .selectType {
+        width: 20%;
+    }
+
+    .createBtn {
+        width: 25%;
+    }
+}
