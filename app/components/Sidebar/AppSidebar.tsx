@@ -14,6 +14,7 @@ import styles from "./AppSidebar.module.css"
 import { ModeToggle } from "@/components/theme/theme-toggle"
 import SideBarItem from "./SideBarItem"
 import Link from "next/link"
+import { Separator } from "@/components/ui/separator"
 
 const itemsRRHH = [
     {
@@ -68,6 +69,8 @@ export function AppSidebar() {
                     <Image  src={logo} alt="gp logo" />
                 </Link>
             </SidebarHeader>
+
+            <Separator className="bg-slate-300 dark:bg-slate-600"/>
 
             <SidebarContent className={styles.sidebar}>
                 <SideBarItem title="Tus evaluaciones" items={items} />

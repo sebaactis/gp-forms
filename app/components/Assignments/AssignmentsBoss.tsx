@@ -21,8 +21,6 @@ const AssignmentsBoss = () => {
         selectedEmployee: null
     });
 
-    console.log(data);
-
     const fetchData = async () => {
         try {
             const [bossesResponse, employeesResponse] = await Promise.all([

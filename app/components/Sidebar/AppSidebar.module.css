@@ -17,3 +17,11 @@
 .itemTitle {
     font-size: 0.9rem;
 }
+
+.itemButton {
+    transition: all 0.3s ease;
+}
+
+.itemButton:hover {
+    background-color: var(--sidebar-item-color)
+}

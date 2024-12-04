@@ -7,6 +7,7 @@
   --text-color: #000000;
   --table-bg-color: #00000025;
   --form-builder-bg-color: #008c6b;
+  --sidebar-item-color: #bbbbbb72;
 }
 
 .dark {
@@ -14,6 +15,7 @@
   --text-color: #ffffff;
   --table-bg-color: #3a3a3a96;
   --form-builder-bg-color: #008c6b;
+  --sidebar-item-color: #0000005b;
 }
 
 body {
