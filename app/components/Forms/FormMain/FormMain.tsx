@@ -6,8 +6,11 @@ import styles from "./form-main.module.css";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FormWithRelations } from "@/types";
+import ClockLoader from "react-spinners/ClockLoader";
+import { useToast } from "@/hooks/use-toast";
 
 const FormMain = () => {
+    const { toast } = useToast();
     const [forms, setForms] = useState<FormWithRelations[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>(null);
@@ -40,6 +43,11 @@ const FormMain = () => {
                 throw new Error("Error al eliminar el formulario");
             }
             setForms(forms.filter((form) => form.id !== id));
+            
+            toast({
+                title: 'El formulario se eliminó correctamente!',
+                duration: 2000
+            })
         } catch (error) {
             console.error(error);
         }
@@ -52,7 +60,11 @@ const FormMain = () => {
             </Link>
 
             {isLoading ? (
-                <p>Cargando formularios...</p>
+                <div className="flex justify-center items-center mt-10">
+                    <ClockLoader
+                        size={100}
+                        color="#0DE6B4" />
+                </div>
             ) : error ? (
                 <p>Error: {error}</p>
             ) : (

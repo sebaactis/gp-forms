@@ -6,6 +6,7 @@ import WelcomeBanner from '@/app/components/Globals/Welcome/WelcomeBanner';
 import { LucideScanEye } from 'lucide-react';
 import FormView from '@/app/components/Forms/FormMain/FormView/FormView';
 import { FormWithRelations } from '@/types';
+import ClockLoader from 'react-spinners/ClockLoader';
 
 const FormPage = () => {
     const { id } = useParams();
@@ -23,7 +24,7 @@ const FormPage = () => {
 
                 const data = await response.json();
                 setForm(data);
-                
+
             } catch (error) {
                 setError(error.message);
             } finally {
@@ -35,15 +36,17 @@ const FormPage = () => {
     }, [id]);
 
     if (isLoading) {
-        return <p>Cargando formulario...</p>;
+        return (
+            <div className="flex justify-center items-center h-full">
+                <ClockLoader
+                    size={100}
+                    color="#0DE6B4" />
+            </div>
+        )
     }
 
     if (error) {
         return <p>Error: {error}</p>;
-    }
-
-    if (!form) {
-        return <p>No se encontró el formulario</p>;
     }
 
     return (

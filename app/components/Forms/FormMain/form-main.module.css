@@ -65,13 +65,13 @@
 }
 
 .cardViewBtn {
-    background-color: #800087;
+    background-color: #1a1a1a;
     padding: 0rem 0.8rem;
     transition: all 0.2s ease;
 }
 
 .cardViewBtn:hover {
-    background-color: #a100aa;
+    background-color: #2d2d2d;
 }
 
 .cardEditBtn {

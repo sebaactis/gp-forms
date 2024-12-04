@@ -8,9 +8,13 @@ import { FormQuestion } from "./FormQuestion";
 import WelcomeBanner from "../../Globals/Welcome/WelcomeBanner";
 import { Button } from "@/components/ui/button";
 import { useQuestions } from "@/hooks/useQuestions";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
 
 export const FormBuilder = () => {
 
+    const router = useRouter()
+    const { toast } = useToast()
     const { questions, typeQuestion, optionLabel, name, setLabelQuestion,
         setTypeQuestion, setOptionLabel, setName, setRadioQuantity,
         addQuestion, removeQuestion, updateQuestionOptions, removeQuestionOptions, } = useQuestions();
@@ -38,8 +42,12 @@ export const FormBuilder = () => {
                 throw new Error('Error al crear el formulario');
             }
 
-            const data = await response.json();
-            return console.log(data);
+            toast({
+                title: 'El formulario se creó correctamente!',
+                duration: 2000
+            })       
+            router.push('/forms')
+
         } catch {
             alert('Hubo un error al crear el formulario');
         }

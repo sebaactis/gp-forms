@@ -6,16 +6,20 @@ import FormAddQuestion from "../../FormBuilder/FormAddQuestion";
 import { FormQuestion } from "../../FormBuilder/FormQuestion";
 import { Button } from "@/components/ui/button";
 import styles from "@/app/components/Forms/FormBuilder/forms-builder.module.css"
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useQuestions } from "@/hooks/useQuestions";
 import { FormWithRelations } from "@/types";
+import { useToast } from "@/hooks/use-toast";
 
 interface Props {
     existingForm: FormWithRelations
 }
 
 export const FormEditor = ({ existingForm }: Props) => {
+    
     const { id } = useParams();
+    const router = useRouter()
+    const { toast } = useToast()
 
     const {
         questions,
@@ -57,8 +61,14 @@ export const FormEditor = ({ existingForm }: Props) => {
                 throw new Error("Error al actualizar el formulario");
             }
 
-            const data = await response.json();
-            console.log(data);
+            await response.json();
+
+            toast({
+                title: 'El formulario se modificó correctamente!',
+                duration: 2000
+            })
+            router.push('/forms')
+
         } catch {
             console.log("Error")
         }

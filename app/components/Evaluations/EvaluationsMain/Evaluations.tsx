@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import EvaluationCard from "./EvaluationCard";
 import styles from './evaluations.module.css'
 import { CompletedFormWithRelations } from "@/types";
+import ClockLoader from "react-spinners/ClockLoader";
 
 const Evaluations = () => {
 
@@ -33,9 +34,18 @@ const Evaluations = () => {
         getEvaluations();
     }, [])
 
-    console.log(evaluations)
 
-    if (isLoading) return <p>Cargando...</p>
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center mt-10">
+                <ClockLoader
+                    size={100}
+                    color="#0DE6B4" />
+            </div>
+        )
+    }
+
+    if(evaluations.length <= 0) return <p>No tienes evaluaciones para completar actualmente</p>
 
     return (
         <div className={styles.container}>

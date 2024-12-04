@@ -6,16 +6,18 @@ import { EditIcon } from 'lucide-react'
 import FormEdit from '@/app/components/Forms/FormMain/FormEdit/FormEdit';
 import { useEffect, useState } from 'react';
 import { FormWithRelations } from '@/types';
+import ClockLoader from 'react-spinners/ClockLoader';
 
 const Edit = () => {
 
     const { id } = useParams();
     const [form, setForm] = useState<FormWithRelations>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>(null);
 
     useEffect(() => {
         const fetchForm = async () => {
+            setIsLoading(true);
             try {
                 const response = await fetch(`/api/forms/${id}`);
                 if (!response.ok) {
@@ -36,15 +38,17 @@ const Edit = () => {
     }, [id]);
 
     if (isLoading) {
-        return <p>Cargando formulario...</p>;
+        return (
+            <div className="flex justify-center items-center h-full">
+                <ClockLoader
+                    size={100}
+                    color="#0DE6B4" />
+            </div>
+        )
     }
 
     if (error) {
         return <p>Error: {error}</p>;
-    }
-
-    if (!form) {
-        return <p>No se encontró el formulario</p>;
     }
 
     return (
