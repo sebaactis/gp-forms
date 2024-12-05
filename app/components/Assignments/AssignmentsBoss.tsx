@@ -4,6 +4,7 @@ import { Employee, User } from '@prisma/client'
 import { useEffect, useState } from 'react'
 import styles from './assignments.module.css'
 import { ArrowBigRight } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 type dataState = {
     bosses: User[];
@@ -13,6 +14,7 @@ type dataState = {
 }
 
 const AssignmentsBoss = () => {
+    const { toast } = useToast();
 
     const [data, setData] = useState<dataState>({
         bosses: [],
@@ -70,10 +72,17 @@ const AssignmentsBoss = () => {
                 throw new Error("Error asignando el jefe al empleado");
             }
 
-            alert('Jefe asignado correctamente');
-        } catch (error) {
-            console.error(error);
-            alert('Ocurrió un error al asignar el jefe');
+            toast({
+                title: 'Jefe asignado correctamente!',
+                className: 'bg-green-800',
+                duration: 3000
+            })
+        } catch {
+            toast({
+                title: 'Error al asignar el jefe',
+                className: 'bg-red-800',
+                duration: 3000
+            })
         }
     }
 
@@ -97,6 +106,9 @@ const AssignmentsBoss = () => {
                     }))}
                     className={styles.selectItem}
                 >
+                    <option value="" disabled selected>
+                        Selecciona un jefe
+                    </option>
                     {data.bosses.map((bosses) => (
                         <option key={bosses.id} value={bosses.id}> {bosses.nombre} {bosses.apellido}</option>
                     ))}
@@ -114,6 +126,9 @@ const AssignmentsBoss = () => {
                     }))}
                     className={styles.selectItem}
                 >
+                    <option value="" disabled selected>
+                        Selecciona un empleado
+                    </option>
                     {data.employees.map((employee) => (
                         <option key={employee.id} value={employee.id}> {employee.nombre} {employee.apellido}</option>
                     ))}

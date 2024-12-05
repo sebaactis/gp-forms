@@ -43,13 +43,18 @@ const FormMain = () => {
                 throw new Error("Error al eliminar el formulario");
             }
             setForms(forms.filter((form) => form.id !== id));
-            
+
             toast({
-                title: 'El formulario se eliminó correctamente!',
-                duration: 2000
+                title: 'Formulario eliminado correctamente!',
+                className: 'bg-green-800',
+                duration: 3000
             })
-        } catch (error) {
-            console.error(error);
+        } catch {
+            toast({
+                title: 'Error al intentar eliminar formulario!',
+                className: 'bg-red-800',
+                duration: 3000
+            })
         }
     };
 

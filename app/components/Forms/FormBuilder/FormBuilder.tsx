@@ -43,13 +43,18 @@ export const FormBuilder = () => {
             }
 
             toast({
-                title: 'El formulario se creó correctamente!',
-                duration: 2000
-            })       
+                title: 'Formulario creado correctamente!',
+                className: 'bg-green-800',
+                duration: 3000
+            })    
             router.push('/forms')
 
         } catch {
-            alert('Hubo un error al crear el formulario');
+            toast({
+                title: 'Error al crear formulario!',
+                className: 'bg-red-800',
+                duration: 3000
+            })  
         }
     };
 

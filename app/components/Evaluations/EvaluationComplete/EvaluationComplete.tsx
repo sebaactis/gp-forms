@@ -3,7 +3,6 @@ import styles from './evaluation-complete.module.css'
 import { useEffect, useState } from 'react'
 import { FormStatus } from '@prisma/client'
 import { EmployeeWithRelations } from '@/types'
-
 interface Props {
     empleado: EmployeeWithRelations;
     formId: string;
@@ -15,8 +14,6 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
         newResponses: [],
         status: FormStatus.PENDIENTE
     });
-
-    const [loading, setLoading] = useState(false);
 
     const handleAnswers = (questionId, questionText, questionType, newAnswer, isCheckbox = false) => {
         let updatedResponses;
@@ -114,7 +111,6 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
 
     useEffect(() => {
         const fetchResponses = async () => {
-            setLoading(true);
             try {
                 const response = await fetch(`/api/employees-forms/${formId}`);
 
@@ -130,15 +126,11 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
                 });
             } catch (error) {
                 console.error("Error al obtener las respuestas:", error);
-            } finally {
-                setLoading(false);
             }
         };
 
         fetchResponses();
     }, [formId]);
-
-    if (loading) return <p>Cargando...</p>
 
     return (
         <div className={styles.container}>

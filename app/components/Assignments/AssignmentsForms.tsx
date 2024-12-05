@@ -4,8 +4,10 @@ import { Button } from '@/components/ui/button'
 import { ArrowBigRight } from 'lucide-react'
 import styles from './assignments.module.css'
 import { useEffect, useState } from 'react';
+import { useToast } from '@/hooks/use-toast';
 
 const AssignmentsForms = () => {
+    const { toast } = useToast()
 
     const [formAssignData, setFormAssignData] = useState<dataState>({
         forms: [],
@@ -64,10 +66,17 @@ const AssignmentsForms = () => {
                 throw new Error("Error asignando el jefe al empleado");
             }
 
-            alert('Jefe asignado correctamente');
-        } catch (error) {
-            console.error(error);
-            alert('Ocurrió un error al asignar el jefe');
+            toast({
+                title: 'Formulario asignado correctamente!',
+                className: 'bg-green-800',
+                duration: 3000
+            })
+        } catch {
+            toast({
+                title: 'Error al asignar el formulario',
+                className: 'bg-red-800',
+                duration: 3000
+            })
         }
     }
 
@@ -91,6 +100,9 @@ const AssignmentsForms = () => {
                     }))}
                     className={styles.selectItem}
                 >
+                    <option value="" disabled selected>
+                        Selecciona un empleado
+                    </option>
                     {formAssignData.employees.map((employee) => (
                         <option key={employee.id} value={employee.id}> {employee.nombre} {employee.apellido}</option>
                     ))}
@@ -110,6 +122,9 @@ const AssignmentsForms = () => {
                     }))}
                     className={styles.selectItem}
                 >
+                    <option value="" disabled selected>
+                        Selecciona un formulario
+                    </option>
                     {formAssignData.forms.map((form) => (
                         <option key={form.id} value={form.id}> {form.name}</option>
                     ))}

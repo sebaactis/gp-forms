@@ -4,6 +4,7 @@ import { ListCollapseIcon } from 'lucide-react'
 import AssignmentsBoss from './AssignmentsBoss'
 import { Separator } from '@/components/ui/separator'
 import AssignmentsForms from './AssignmentsForms'
+import AssignmentsCompletedForm from './AssignmentsCompletedForm'
 
 
 const AssignmentsMain = () => {
@@ -18,6 +19,8 @@ const AssignmentsMain = () => {
             <AssignmentsBoss />
             <Separator />
             <AssignmentsForms />
+            <Separator />
+            <AssignmentsCompletedForm />
 
         </div>
     )

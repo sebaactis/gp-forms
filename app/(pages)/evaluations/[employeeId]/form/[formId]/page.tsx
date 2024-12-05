@@ -6,6 +6,7 @@ import { Employee } from '@prisma/client'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { CheckSquareIcon } from "lucide-react"
+import ClockLoader from 'react-spinners/ClockLoader'
 
 const Evaluation = () => {
 
@@ -37,9 +38,15 @@ const Evaluation = () => {
         getEmpleado()
     }, [employeeId])
 
-    if (loading) return <p>Cargando empleado...</p>
-
-    console.log(empleado)
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center h-full">
+                <ClockLoader
+                    size={100}
+                    color="#0DE6B4" />
+            </div>
+        )
+    }
 
     return (
         <div>

@@ -16,7 +16,7 @@ interface Props {
 }
 
 export const FormEditor = ({ existingForm }: Props) => {
-    
+
     const { id } = useParams();
     const router = useRouter()
     const { toast } = useToast()
@@ -64,13 +64,18 @@ export const FormEditor = ({ existingForm }: Props) => {
             await response.json();
 
             toast({
-                title: 'El formulario se modificó correctamente!',
-                duration: 2000
+                title: 'Formulario editado correctamente!',
+                className: 'bg-green-800',
+                duration: 3000
             })
             router.push('/forms')
 
         } catch {
-            console.log("Error")
+            toast({
+                title: 'Error al editar formulario!',
+                className: 'bg-red-800',
+                duration: 3000
+            })
         }
     };
 

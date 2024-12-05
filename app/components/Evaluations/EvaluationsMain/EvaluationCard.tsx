@@ -47,6 +47,13 @@ const EvaluationCard = ({ evaluation, styles }: EvaluationsProps) => {
 
                 <p className={styles.formName}>
                     <span className={styles.formNameTitle}>
+                        Periodo:
+                    </span>
+                    {evaluation.period}
+                </p>
+
+                <p className={styles.formName}>
+                    <span className={styles.formNameTitle}>
                         Fecha Limite
                     </span>
                     {new Date(evaluation.endDate).toLocaleDateString("es-ES")}
