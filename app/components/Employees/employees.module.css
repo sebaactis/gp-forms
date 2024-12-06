@@ -1,6 +1,24 @@
 .container {
-    margin-top: 4rem;
     padding: 0 2rem;
+}
+
+.addIcon {
+    background-color: #00ce86dd;
+    padding: 0.4rem;
+    margin: 2rem 0;
+    transition: all 0.2s ease;
+    font-weight: bold;
+    color: white;
+}
+
+.addIcon:hover {
+    background-color: #00fca4dd;
+}
+
+.linkIcon {
+    display: flex;
+    gap: 0.3rem;
+    align-items: center;
 }
 
 .tableHeaderItem {

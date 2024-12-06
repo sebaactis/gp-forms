@@ -1,6 +1,6 @@
 import React from 'react'
 
-const InputEmployeeEdit = ({ label, name, onChange, value, styles }) => {
+const InputEmployee = ({ label, name, onChange, value, styles }) => {
     return (
         <div className={styles.inputDetails}>
             <label className={styles.inputLabel}>{label}</label>
@@ -15,4 +15,4 @@ const InputEmployeeEdit = ({ label, name, onChange, value, styles }) => {
     );
 };
 
-export default InputEmployeeEdit
+export default InputEmployee

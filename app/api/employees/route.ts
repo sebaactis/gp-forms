@@ -11,7 +11,34 @@ export async function GET() {
     return NextResponse.json(employees)
 }
 
-export async function POST(req: Request) {
+export async function POST(request: Request) {
+    try {
+        const body = await request.json();
+        const { legajo, email, nombre, apellido, gerencia, puesto, seniority, userId } = body;
+
+        const empleado = await db.employee.create({
+            data: {
+                legajo: Number(legajo),
+                email,
+                nombre,
+                apellido,
+                gerencia,
+                puesto,
+                seniority,
+                userId
+            }
+        })
+
+        console.log(empleado);
+
+        return NextResponse.json(empleado)
+    } catch (err) {
+        return NextResponse.json(err)
+    }
+
+}
+
+export async function PUT(req: Request) {
     try {
         const body = await req.json(); // Parsear el cuerpo de la solicitud
         const { bossId, employeeId } = body;

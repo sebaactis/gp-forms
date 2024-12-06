@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import WelcomeBanner from '../../Globals/Welcome/WelcomeBanner'
 import { UserPenIcon } from "lucide-react"
 import { EmployeeWithRelations } from '@/types'
-import InputEmployeeEdit from './InputEmployeeEdit'
+import InputEmployee from '../InputEmployee'
 import styles from "./employeeEdit.module.css"
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
@@ -87,50 +87,51 @@ const EmployeeEdit = ({ id }) => {
                     color="#0DE6B4" />
             </div> : <div className={styles.container}>
                 <h3 className={styles.title}>Editar empleado</h3>
+
                 <div className={styles.inputContainer}>
-                    <InputEmployeeEdit
+                    <InputEmployee
                         label="Nro Legajo"
                         name="legajo"
                         value={employee?.legajo}
                         onChange={handleInputChange}
                         styles={styles}
                     />
-                    <InputEmployeeEdit
+                    <InputEmployee
                         label="Correo"
                         name="email"
                         value={employee?.email}
                         onChange={handleInputChange}
                         styles={styles}
                     />
-                    <InputEmployeeEdit
+                    <InputEmployee
                         label="Nombre"
                         name="nombre"
                         value={employee?.nombre}
                         onChange={handleInputChange}
                         styles={styles}
                     />
-                    <InputEmployeeEdit
+                    <InputEmployee
                         label="Apellido"
                         name="apellido"
                         value={employee?.apellido}
                         onChange={handleInputChange}
                         styles={styles}
                     />
-                    <InputEmployeeEdit
+                    <InputEmployee
                         label="Gerencia"
                         name="gerencia"
                         value={employee?.gerencia}
                         onChange={handleInputChange}
                         styles={styles}
                     />
-                    <InputEmployeeEdit
+                    <InputEmployee
                         label="Puesto"
                         name="puesto"
                         value={employee?.puesto}
                         onChange={handleInputChange}
                         styles={styles}
                     />
-                    <InputEmployeeEdit
+                    <InputEmployee
                         label="Seniority"
                         name="seniority"
                         value={employee?.seniority}

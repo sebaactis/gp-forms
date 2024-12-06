@@ -58,7 +58,7 @@ const AssignmentsBoss = () => {
 
         try {
             const response = await fetch('/api/employees', {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },

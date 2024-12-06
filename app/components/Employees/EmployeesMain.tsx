@@ -7,6 +7,9 @@ import EmployeesTable from "./EmployeesTable";
 import styles from "./employees.module.css"
 import { TableFilters } from "../Table/TableFilters";
 import PaginationComponent from "../Table/PaginationComponent";
+import Link from "next/link";
+import { UserPlus2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const EmployeesMain = () => {
 
@@ -63,6 +66,12 @@ const EmployeesMain = () => {
 
     return (
         <div className={styles.container}>
+            <Button className={styles.addIcon}>
+                <Link className={styles.linkIcon} href="/employees/create">
+                <UserPlus2 color="white"size={20}/> Agregar GPeer 
+                </Link>
+            </Button>
+
             <TableFilters headers={headers} styles={styles} />
             <EmployeesTable tableData={table} styles={styles} />
             <PaginationComponent tableData={table} styles={styles} />

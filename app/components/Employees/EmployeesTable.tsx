@@ -4,12 +4,48 @@ import { EmployeeWithRelations } from '@/types'
 import React from 'react'
 import { PencilIcon, Trash2 } from "lucide-react"
 import Link from 'next/link'
+import { useToast } from '@/hooks/use-toast'
+import { useRouter } from 'next/navigation'
 
 interface Props {
     tableData: EmployeeWithRelations[]
     styles: Record<string, string>
 }
 const EmployeesTable = ({ tableData, styles }: Props) => {
+
+    const { toast } = useToast();
+    const router = useRouter();
+
+    const handleDelete = async (id) => {
+
+        try {
+            const response = await fetch(`/api/employees/${id}`, {
+                method: "DELETE",
+            });
+
+            if (!response.ok) {
+                throw new Error("Error al eliminar el empleado");
+            }
+
+            toast({
+                title: 'Empleado eliminado correctamente!',
+                className: 'bg-green-800',
+                duration: 3000
+            })
+
+            router.refresh()
+
+        } catch {
+            toast({
+                title: 'Error al intentar eliminar empleado!',
+                className: 'bg-red-800',
+                duration: 3000
+            })
+        }
+
+
+    }
+
     return (
         <Table>
             <TableHeader>
@@ -52,7 +88,7 @@ const EmployeesTable = ({ tableData, styles }: Props) => {
                                     </Link>
                                 </Button>
 
-                                <Button className={styles.deleteBtn}>
+                                <Button onClick={() => handleDelete(row.original.id)} className={styles.deleteBtn}>
                                     <Trash2 color='white' />
                                 </Button>
                             </div>

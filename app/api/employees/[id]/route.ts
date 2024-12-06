@@ -54,3 +54,18 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   }
 
 }
+
+export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+  try {
+
+    const { id } = params;
+    const empleado = await db.employee.delete({
+      where: { id },
+    })
+
+    return NextResponse.json(empleado)
+  } catch (err) {
+    return NextResponse.json(err)
+  }
+
+}
