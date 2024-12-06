@@ -26,7 +26,6 @@
 .tableBodyItem {
     color: white;
     height: 2.7rem;
-    font-weight: bold;
     color: var(--text-color)
 }
 
@@ -57,7 +56,7 @@
 }
 
 .paginationBtn:hover {
-    background-color: #6900af;
+    background-color: #6e6e6ec6;
 }
 
 .pageSelect {

@@ -99,8 +99,9 @@ const AssignmentsForms = () => {
                         selectedEmployee: e.target.value
                     }))}
                     className={styles.selectItem}
+                    defaultValue=""
                 >
-                    <option value="" disabled selected>
+                    <option value="" disabled>
                         Selecciona un empleado
                     </option>
                     {formAssignData.employees.map((employee) => (
@@ -121,6 +122,7 @@ const AssignmentsForms = () => {
                         selectedForm: e.target.value
                     }))}
                     className={styles.selectItem}
+                    defaultValue=""
                 >
                     <option value="" disabled selected>
                         Selecciona un formulario

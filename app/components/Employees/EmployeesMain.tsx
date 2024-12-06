@@ -19,6 +19,7 @@ const EmployeesMain = () => {
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
     const columns: ColumnDef<EmployeeWithRelations>[] = [
+        { header: "ID", accessorKey: "id" },
         { header: "Nro Legajo", accessorKey: "legajo", },
         { header: "Correo", accessorKey: "email" },
         { header: "Nombre", accessorKey: "nombre" },
@@ -64,7 +65,7 @@ const EmployeesMain = () => {
         <div className={styles.container}>
             <TableFilters headers={headers} styles={styles} />
             <EmployeesTable tableData={table} styles={styles} />
-            <PaginationComponent tableData={table} styles={styles} /> 
+            <PaginationComponent tableData={table} styles={styles} />
         </div>
     )
 }

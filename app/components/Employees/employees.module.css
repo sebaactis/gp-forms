@@ -55,10 +55,39 @@
     transition: all 0.2s ease-out;
 }
 
+.paginationBtn:hover {
+    background-color: #525252c6;
+}
+
 .pageSelect {
     background-color: #555555;
     color: white;
     width: 4rem;
     border-radius: 8px;
     height: 2.3rem;
+}
+
+.btnContainer {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.editBtn {
+    padding: 0.7rem;
+    background-color: #008f91c6;
+    transition: all 0.2s ease;
+}
+
+.editBtn:hover {
+    background-color: #00b7bac6;
+}
+
+.deleteBtn {
+    padding: 0.7rem;
+    background-color: #690000;
+    transition: all 0.2s ease;
+}
+
+.deleteBtn:hover {
+    background-color: #920000;
 }

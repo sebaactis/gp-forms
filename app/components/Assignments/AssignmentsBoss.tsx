@@ -105,8 +105,9 @@ const AssignmentsBoss = () => {
                         selectedBoss: e.target.value
                     }))}
                     className={styles.selectItem}
+                    defaultValue=""
                 >
-                    <option value="" disabled selected>
+                    <option value="" disabled>
                         Selecciona un jefe
                     </option>
                     {data.bosses.map((bosses) => (
@@ -125,8 +126,9 @@ const AssignmentsBoss = () => {
                         selectedEmployee: e.target.value
                     }))}
                     className={styles.selectItem}
+                    defaultValue=""
                 >
-                    <option value="" disabled selected>
+                    <option value="" disabled>
                         Selecciona un empleado
                     </option>
                     {data.employees.map((employee) => (

@@ -1,0 +1,52 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5rem;
+}
+
+.title {
+    font-size: 1.5rem;
+    margin: 2rem 0;
+}
+
+.inputContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: rgba(57, 57, 57, 0.26);
+    padding: 1.5rem 7rem; 
+    border-radius: 10px;
+}
+
+.inputDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.inputLabel {
+    text-align: center;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.input {
+    border-radius: 5px;
+    padding: 0.3rem 1rem;
+    width: 25rem;
+}
+
+.btnEnviar {
+    background-color: #0de6b378;
+    margin-top: 1.5rem;
+    color: white;
+    font-weight: bold;
+    width: 10%;
+    transition: all 0.2s ease;
+}
+
+.btnEnviar:hover {
+    background-color: #0adeadad;
+}

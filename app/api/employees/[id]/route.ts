@@ -3,27 +3,54 @@ import { NextResponse } from "next/server";
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
 
-    const { id } = params;
+  const { id } = params;
 
-    const employee = await db.employee.findFirst({
-        where: { id },
+  const employee = await db.employee.findFirst({
+    where: { id },
+    include: {
+      CompletedForm: {
         include: {
-          CompletedForm: {
+          responses: true
+        }
+      },
+      form: {
+        include: {
+          questions: {
             include: {
-              responses: true
-            }
-          },
-          form: {              
-            include: {        
-              questions: {      
-                include: {
-                  options: true
-                }
-              }
+              options: true
             }
           }
         }
-      });
+      }
+    }
+  });
 
-    return NextResponse.json(employee)
+  return NextResponse.json(employee)
+}
+
+export async function PUT(request: Request, { params }: { params: { id: string } }) {
+  try {
+
+    const { id } = params;
+    const body = await request.json();
+    const { legajo, email, nombre, apellido, gerencia, puesto, seniority } = body;
+
+    const empleado = await db.employee.update({
+      where: { id },
+      data: {
+        legajo: Number(legajo),
+        email,
+        nombre,
+        apellido,
+        gerencia,
+        puesto,
+        seniority
+      }
+    })
+
+    return NextResponse.json(empleado)
+  } catch (err) {
+    return NextResponse.json(err)
+  }
+
 }

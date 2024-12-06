@@ -97,8 +97,9 @@ const AssignmentsCompletedForm = () => {
                     value={completedData.employeeId}
                     onChange={handleChange}
                     className={styles.selectItem}
+                    defaultValue=""
                 >
-                    <option value="" disabled selected>
+                    <option value="" disabled>
                         Selecciona un empleado
                     </option>
                     {employees.map((employee) => (
