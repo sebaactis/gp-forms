@@ -29,7 +29,7 @@ export const TableComponent = ({ tableData, styles }) => {
                                         </TableHead>
                                     ))}
                                 </TableRow>
-
+                                
                             </React.Fragment>
                         );
                     })}

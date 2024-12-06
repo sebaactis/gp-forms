@@ -1,15 +1,16 @@
 "use client"
 
-import styles from "./table.module.css"
-import { useEffect, useState } from "react"
+import { EmployeeWithRelations } from "@/types";
 import { getCoreRowModel, useReactTable, getPaginationRowModel, getSortedRowModel, getFilteredRowModel, ColumnDef, PaginationState, SortingState, ColumnFiltersState } from "@tanstack/react-table"
-import { TableComponent } from "./TableComponent"
-import PaginationComponent from "../../Table/PaginationComponent"
-import { TableFilters } from "../../Table/TableFilters"
-import { Employee } from "@prisma/client"
+import { useEffect, useState } from "react";
+import EmployeesTable from "./EmployeesTable";
+import styles from "./employees.module.css"
+import { TableFilters } from "../Table/TableFilters";
+import PaginationComponent from "../Table/PaginationComponent";
 
-export default function HomeTable() {
-    const [empleados, setEmpleados] = useState<Employee[]>([]);
+const EmployeesMain = () => {
+
+    const [empleados, setEmpleados] = useState<EmployeeWithRelations[]>([]);
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
         pageSize: 10
@@ -17,24 +18,17 @@ export default function HomeTable() {
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
-    const columns: ColumnDef[] = [
+    const columns: ColumnDef<EmployeeWithRelations>[] = [
         { header: "Nro Legajo", accessorKey: "legajo", },
         { header: "Correo", accessorKey: "email" },
         { header: "Nombre", accessorKey: "nombre" },
         { header: "Apellido", accessorKey: "apellido" },
         { header: "Gerencia", accessorKey: "gerencia" },
         { header: "Puesto", accessorKey: "puesto" },
-        { header: "Seniority", accessorKey: "seniority" },
-        { header: "Estado", accessorFn: (row) => row.CompletedForm[0]?.status || "No asignado", },
-        {
-            header: "Fecha Limite", accessorFn: (row) => {
-                const endDate = row.CompletedForm[0]?.endDate;
-                return endDate ? new Date(endDate).toLocaleDateString("es-ES") : "No asignado";
-            },
-        }
+        { header: "Seniority", accessorKey: "seniority" }
     ]
 
-    const table = useReactTable({
+    const table = useReactTable<EmployeeWithRelations>({
         data: empleados,
         columns,
         getCoreRowModel: getCoreRowModel(),
@@ -50,6 +44,7 @@ export default function HomeTable() {
             columnFilters
         }
     })
+
     const headers = table.getHeaderGroups().flatMap((headerGroup) => headerGroup.headers);
 
     const getEmployees = async () => {
@@ -66,12 +61,12 @@ export default function HomeTable() {
     useEffect(() => { getEmployees() }, [])
 
     return (
-        <section className={styles.tableSection}>
-            <TableComponent tableData={table} styles={styles} />
+        <div className={styles.container}>
             <TableFilters headers={headers} styles={styles} />
-            <PaginationComponent tableData={table} styles={styles} />
-        </section>
+            <EmployeesTable tableData={table} styles={styles} />
+            <PaginationComponent tableData={table} styles={styles} /> 
+        </div>
     )
 }
 
-
+export default EmployeesMain

@@ -1,0 +1,64 @@
+.container {
+    margin-top: 4rem;
+    padding: 0 2rem;
+}
+
+.tableHeaderItem {
+    color: var(--text-color);
+    font-weight: bold;
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+.filterContainer {
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.filterSelect {
+    background-color: #484848b1;
+    padding: 0.3rem 0.9rem;
+    border-radius: 5px;
+    margin-right: 1rem;
+}
+
+.inputWrapper {
+    position: relative;
+    display: flex;
+}
+
+.filterInput {
+    background-color: #484848b1;
+    padding: 0.165rem 0.9rem;
+    border-radius: 5px;
+}
+
+.searchIcon {
+    position: absolute;
+    right: 10px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    width: 50%;
+    margin: auto;
+    margin-top: 1.5rem;
+}
+
+.paginationBtn {
+    background-color: #404040ca;
+    color: white;
+    font-weight: bold;
+    transition: all 0.2s ease-out;
+}
+
+.pageSelect {
+    background-color: #555555;
+    color: white;
+    width: 4rem;
+    border-radius: 8px;
+    height: 2.3rem;
+}
