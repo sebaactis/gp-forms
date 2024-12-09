@@ -6,10 +6,12 @@ import { Button } from '@/components/ui/button'
 import { useEffect, useState } from 'react'
 import { useToast } from '@/hooks/use-toast'
 import { EmployeeWithRelations } from '@/types'
+import PulseLoader from 'react-spinners/PulseLoader';
 
 const AssignmentsCompletedForm = () => {
     const { toast } = useToast()
     const [employees, setEmployees] = useState<EmployeeWithRelations>([]);
+    const [loading, setLoading] = useState(false);
 
     const [completedData, setCompletedData] = useState({
         employeeId: "",
@@ -43,12 +45,15 @@ const AssignmentsCompletedForm = () => {
     };
 
     const createEvaluation = async () => {
+
         const { employeeId, period, endDate } = completedData;
 
         if (!employeeId || !period || !endDate) {
             alert("Algun dato esta sin completar");
             return;
         }
+
+        setLoading(true)
 
         try {
             const response = await fetch('/api/employees-forms', {
@@ -80,6 +85,8 @@ const AssignmentsCompletedForm = () => {
                 className: 'bg-red-800',
                 duration: 3000
             })
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -130,7 +137,7 @@ const AssignmentsCompletedForm = () => {
                     type="date" />
             </article>
 
-            <Button className={styles.sendBtn} onClick={createEvaluation}>Enviar</Button>
+            <Button className={styles.sendBtn} onClick={createEvaluation}>{loading ? <PulseLoader size={10} color="white" /> : "Enviar"} </Button>
         </div>
     )
 }

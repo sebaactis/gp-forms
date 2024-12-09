@@ -8,6 +8,7 @@
     justify-items: center;
     margin-top: 2rem;
     padding: 0 11rem;
+    gap: 1.5rem;
 }
 
 .btnCreate {

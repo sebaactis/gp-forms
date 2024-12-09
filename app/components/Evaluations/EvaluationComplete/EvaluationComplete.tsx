@@ -5,6 +5,7 @@ import { FormStatus } from '@prisma/client'
 import { EmployeeWithRelations } from '@/types'
 import { useToast } from '@/hooks/use-toast'
 import { useRouter } from 'next/navigation'
+import PulseLoader from 'react-spinners/PulseLoader'
 interface Props {
     empleado: EmployeeWithRelations;
     formId: string;
@@ -12,7 +13,8 @@ interface Props {
 const EvaluationComplete = ({ empleado, formId }: Props) => {
 
     const { toast } = useToast();
-    const router = useRouter()
+    const router = useRouter();
+    const [loading, setLoading] = useState(false);
 
     const [form, setForm] = useState({
         newResponses: [],
@@ -77,6 +79,8 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
 
     const handleSubmit = async () => {
 
+        setLoading(true);
+
         const isCompleted = empleado.form?.questions.length === form.newResponses.length
             && form.newResponses.every(response => response.answer && response.answer.trim() !== "");
 
@@ -108,7 +112,7 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
             setForm(updatedForm);
 
             router.push('/evaluations')
-            
+
         } catch {
             toast({
                 title: "Error al enviar la evaluacion!",
@@ -204,10 +208,16 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
             ))}
 
             <Button className={styles.btnEnviar} onClick={handleSubmit}>
-                {empleado.form?.questions.length === form.newResponses.length &&
-                    form.newResponses.every(response => response.answer && response.answer.trim() !== "")
-                    ? "Enviar"
-                    : "Guardar Cambios"}
+                {loading ? (
+                    <PulseLoader size={10} color="white" />
+                ) : (
+                    empleado.form?.questions.length === form.newResponses.length &&
+                        form.newResponses.every(
+                            response => response.answer && response.answer.trim() !== ""
+                        )
+                        ? "Enviar"
+                        : "Guardar Cambios"
+                )}
             </Button>
         </div>
     )

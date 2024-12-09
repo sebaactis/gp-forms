@@ -5,9 +5,11 @@ import { ArrowBigRight } from 'lucide-react'
 import styles from './assignments.module.css'
 import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import PulseLoader from 'react-spinners/PulseLoader';
 
 const AssignmentsForms = () => {
     const { toast } = useToast()
+    const [loading, setLoading] = useState(false);
 
     const [formAssignData, setFormAssignData] = useState<dataState>({
         forms: [],
@@ -42,12 +44,15 @@ const AssignmentsForms = () => {
     };
 
     const assignRelationForm = async () => {
+        
         const { selectedForm, selectedEmployee } = formAssignData;
 
         if (!selectedForm || !selectedEmployee) {
             alert("Selecciona un jefe y un empleado");
             return;
         }
+
+        setLoading(true)
 
         try {
             const response = await fetch('/api/employees/form', {
@@ -77,6 +82,8 @@ const AssignmentsForms = () => {
                 className: 'bg-red-800',
                 duration: 3000
             })
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -133,7 +140,7 @@ const AssignmentsForms = () => {
                 </select>
             </article>
 
-            <Button className={styles.sendBtn} onClick={assignRelationForm}>Enviar</Button>
+            <Button className={styles.sendBtn} onClick={assignRelationForm}>{loading ? <PulseLoader size={10} color="white" /> : "Enviar"} </Button>
         </div>)
 }
 

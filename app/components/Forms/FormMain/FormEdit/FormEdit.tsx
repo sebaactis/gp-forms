@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import FormAddQuestion from "../../FormBuilder/FormAddQuestion";
 import { FormQuestion } from "../../FormBuilder/FormQuestion";
@@ -10,6 +10,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useQuestions } from "@/hooks/useQuestions";
 import { FormWithRelations } from "@/types";
 import { useToast } from "@/hooks/use-toast";
+import PulseLoader from "react-spinners/PulseLoader";
 
 interface Props {
     existingForm: FormWithRelations
@@ -20,6 +21,7 @@ export const FormEditor = ({ existingForm }: Props) => {
     const { id } = useParams();
     const router = useRouter()
     const { toast } = useToast()
+    const [loading, setLoading] = useState();
 
     const {
         questions,
@@ -47,6 +49,8 @@ export const FormEditor = ({ existingForm }: Props) => {
             name,
             questions,
         };
+
+        setLoading(true);
 
         try {
             const response = await fetch(`/api/forms/${id}`, {
@@ -76,6 +80,8 @@ export const FormEditor = ({ existingForm }: Props) => {
                 className: 'bg-red-800',
                 duration: 3000
             })
+        } finally {
+            setLoading(false)
         }
     };
 
@@ -123,7 +129,7 @@ export const FormEditor = ({ existingForm }: Props) => {
                     ))}
                 </div>
                 <Button className={styles.formCreateBtn} onClick={() => updateForm(id)}>
-                    Guardar Cambios
+                    {loading ? <PulseLoader size={10} color="white" /> : "Enviar"}
                 </Button>
             </section>
         </>

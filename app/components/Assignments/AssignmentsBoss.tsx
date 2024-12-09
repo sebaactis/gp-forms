@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import styles from './assignments.module.css'
 import { ArrowBigRight } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import PulseLoader from 'react-spinners/PulseLoader';
 
 type dataState = {
     bosses: User[];
@@ -15,6 +16,7 @@ type dataState = {
 
 const AssignmentsBoss = () => {
     const { toast } = useToast();
+    const [loading, setLoading] = useState(false);
 
     const [data, setData] = useState<dataState>({
         bosses: [],
@@ -49,12 +51,15 @@ const AssignmentsBoss = () => {
     };
 
     const assignRelation = async () => {
+        
         const { selectedBoss, selectedEmployee } = data;
 
         if (!selectedBoss || !selectedEmployee) {
             alert("Selecciona un jefe y un empleado");
             return;
         }
+
+        setLoading(true)
 
         try {
             const response = await fetch('/api/employees', {
@@ -83,6 +88,8 @@ const AssignmentsBoss = () => {
                 className: 'bg-red-800',
                 duration: 3000
             })
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -137,7 +144,7 @@ const AssignmentsBoss = () => {
                 </select>
             </article>
 
-            <Button className={styles.sendBtn} onClick={assignRelation}>Enviar</Button>
+            <Button className={styles.sendBtn} onClick={assignRelation}>{loading ? <PulseLoader size={10} color="white" /> : "Enviar"}</Button>
         </div>
     )
 }

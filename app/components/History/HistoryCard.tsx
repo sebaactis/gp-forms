@@ -3,10 +3,11 @@ import { CompletedFormWithRelations } from '@/types'
 import React from 'react'
 
 interface Props {
-    evaluation: CompletedFormWithRelations
+    evaluation: CompletedFormWithRelations;
+    styles: Record<string, string>
 }
 
-const HistoryCard = ({ evaluation }: Props) => {
+const HistoryCard = ({ evaluation, styles }: Props) => {
     return (
         <div className={styles}>
             <p>{evaluation.employee?.nombre} {evaluation.employee?.apellido}</p>

@@ -1,8 +1,10 @@
 .container {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     gap: 2rem;
     margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
 .cardContainer {

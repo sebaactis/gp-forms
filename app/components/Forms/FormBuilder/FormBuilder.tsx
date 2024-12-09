@@ -10,11 +10,15 @@ import { Button } from "@/components/ui/button";
 import { useQuestions } from "@/hooks/useQuestions";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
+import PulseLoader from "react-spinners/PulseLoader";
 
 export const FormBuilder = () => {
 
     const router = useRouter()
     const { toast } = useToast()
+    const [loading, setLoading] = useState(false)
+
     const { questions, typeQuestion, optionLabel, name, setLabelQuestion,
         setTypeQuestion, setOptionLabel, setName, setRadioQuantity,
         addQuestion, removeQuestion, updateQuestionOptions, removeQuestionOptions, } = useQuestions();
@@ -29,6 +33,7 @@ export const FormBuilder = () => {
             questions
         };
 
+        setLoading(true)
         try {
             const response = await fetch('/api/forms', {
                 method: 'POST',
@@ -46,7 +51,7 @@ export const FormBuilder = () => {
                 title: 'Formulario creado correctamente!',
                 className: 'bg-green-800',
                 duration: 3000
-            })    
+            })
             router.push('/forms')
 
         } catch {
@@ -54,7 +59,9 @@ export const FormBuilder = () => {
                 title: 'Error al crear formulario!',
                 className: 'bg-red-800',
                 duration: 3000
-            })  
+            })
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -99,7 +106,7 @@ export const FormBuilder = () => {
                         />
                     ))}
                 </div>
-                <Button className={styles.formCreateBtn} onClick={createForm}>Crear</Button>
+                <Button className={styles.formCreateBtn} onClick={createForm}>{loading ? <PulseLoader size={10} color="white" /> : "Crear"}</Button>
             </section>
         </>
     )
