@@ -107,7 +107,7 @@ model Response {
   questionType String?
 
   completedFormId String
-  completedForm   CompletedForm @relation(fields: [completedFormId], references: [id])
+  completedForm   CompletedForm @relation(fields: [completedFormId], references: [id], onDelete: Cascade)
 
   answer String
 

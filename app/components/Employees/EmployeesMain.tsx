@@ -73,7 +73,7 @@ const EmployeesMain = () => {
             </Button>
 
             <TableFilters headers={headers} styles={styles} />
-            <EmployeesTable tableData={table} styles={styles} />
+            <EmployeesTable tableData={table} styles={styles} setEmpleados={setEmpleados} />
             <PaginationComponent tableData={table} styles={styles} />
         </div>
     )

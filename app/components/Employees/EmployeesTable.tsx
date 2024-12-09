@@ -5,16 +5,16 @@ import React from 'react'
 import { PencilIcon, Trash2 } from "lucide-react"
 import Link from 'next/link'
 import { useToast } from '@/hooks/use-toast'
-import { useRouter } from 'next/navigation'
+import DialogWrapper from '../Globals/Modal/DialogWrapper'
 
 interface Props {
     tableData: EmployeeWithRelations[]
     styles: Record<string, string>
+    setEmpleados: React.Dispatch<React.SetStateAction<EmployeeWithRelations[]>>
 }
-const EmployeesTable = ({ tableData, styles }: Props) => {
+const EmployeesTable = ({ tableData, styles, setEmpleados }: Props) => {
 
     const { toast } = useToast();
-    const router = useRouter();
 
     const handleDelete = async (id) => {
 
@@ -27,13 +27,13 @@ const EmployeesTable = ({ tableData, styles }: Props) => {
                 throw new Error("Error al eliminar el empleado");
             }
 
+            setEmpleados(prevState => prevState.filter(e => e.id !== id))
+
             toast({
                 title: 'Empleado eliminado correctamente!',
                 className: 'bg-green-800',
                 duration: 3000
             })
-
-            router.refresh()
 
         } catch {
             toast({
@@ -88,9 +88,16 @@ const EmployeesTable = ({ tableData, styles }: Props) => {
                                     </Link>
                                 </Button>
 
-                                <Button onClick={() => handleDelete(row.original.id)} className={styles.deleteBtn}>
-                                    <Trash2 color='white' />
-                                </Button>
+                                <DialogWrapper
+                                    triggerButton={<Button className={styles.deleteBtn}>
+                                        <Trash2 color='white' />
+                                    </Button>}
+                                    title="Eliminar GPeer"
+                                    description="Estás seguro de eliminar este empleado?"
+                                    onConfirm={() => handleDelete(row.original.id)}
+                                >
+
+                                </DialogWrapper>
                             </div>
                         </TableCell>
                     </TableRow>

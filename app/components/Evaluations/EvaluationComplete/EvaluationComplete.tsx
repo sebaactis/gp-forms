@@ -3,12 +3,16 @@ import styles from './evaluation-complete.module.css'
 import { useEffect, useState } from 'react'
 import { FormStatus } from '@prisma/client'
 import { EmployeeWithRelations } from '@/types'
+import { useToast } from '@/hooks/use-toast'
+import { useRouter } from 'next/navigation'
 interface Props {
     empleado: EmployeeWithRelations;
     formId: string;
 }
 const EvaluationComplete = ({ empleado, formId }: Props) => {
 
+    const { toast } = useToast();
+    const router = useRouter()
 
     const [form, setForm] = useState({
         newResponses: [],
@@ -94,12 +98,23 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
                 throw new Error("Error al actualizar el formulario");
             }
 
-            const data = await response.json();
+            toast({
+                title: "Evaluacion enviada con éxito!",
+                duration: 2000,
+                className: 'bg-green-600'
+            })
+
+            await response.json();
             setForm(updatedForm);
 
-            console.log(data);
+            router.push('/evaluations')
+            
         } catch {
-            console.log("Error")
+            toast({
+                title: "Error al enviar la evaluacion!",
+                duration: 2000,
+                className: 'bg-red-300'
+            })
         }
 
     };
