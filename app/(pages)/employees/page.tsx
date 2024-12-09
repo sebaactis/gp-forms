@@ -1,6 +1,6 @@
 import EmployeesMain from "@/app/components/Employees/EmployeesMain";
 import WelcomeBanner from "@/app/components/Globals/Welcome/WelcomeBanner";
-import {UserCog2} from "lucide-react"
+import { UserCog2 } from "lucide-react"
 
 export default function Employees() {
     return (

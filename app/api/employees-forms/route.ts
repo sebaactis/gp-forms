@@ -1,17 +1,33 @@
 import { db } from "@/data/prisma";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req: Request) {
+
+    const { searchParams } = new URL(req.url);
+    const statusFilter = searchParams.get('status');
+
+    let whereClause = {};
+
+    if (statusFilter) {
+        if (statusFilter.startsWith('not:')) {
+            whereClause = {
+                status: {
+                    not: statusFilter.replace('not:', ''),
+                },
+            };
+        } else {
+            whereClause = {
+                status: statusFilter,
+            };
+        }
+    }
+
     const forms = await db.completedForm.findMany({
         include: {
             form: true,
             employee: true,
         },
-        where: {
-            status: {
-                not: 'COMPLETADO'
-            }
-        }
+        where: whereClause
     })
 
     return NextResponse.json(forms);

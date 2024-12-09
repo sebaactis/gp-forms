@@ -58,3 +58,16 @@
 .btnComplete:hover {
     background-color: #ff4ce1a5;
 }
+
+.noEvaluations {
+    text-align: center;
+    margin-top: 7rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+@media (width < 1367px) {
+    .cardContainer {
+        width: 40%;
+    }
+}

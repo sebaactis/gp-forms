@@ -1,20 +1,19 @@
 "use client"
+import { useState, useEffect } from 'react'
+import ClockLoader from 'react-spinners/ClockLoader';
+import HistoryCard from './HistoryCard';
+import { CompletedFormWithRelations } from '@/types';
+import styles from "./history.module.css"
 
-import { useEffect, useState } from "react"
-import EvaluationCard from "./EvaluationCard";
-import styles from './evaluations.module.css'
-import { CompletedFormWithRelations } from "@/types";
-import ClockLoader from "react-spinners/ClockLoader";
-
-const Evaluations = () => {
+const HistoryMain = () => {
 
     const [evaluations, setEvaluations] = useState<CompletedFormWithRelations[]>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const getEvaluations = async () => {
         setIsLoading(true);
         try {
-            const response = await fetch('/api/employees-forms?status=not:COMPLETADO')
+            const response = await fetch('/api/employees-forms?status=COMPLETADO')
 
             if (!response.ok) {
                 throw new Error("Problemas al traer las evaluaciones")
@@ -34,6 +33,7 @@ const Evaluations = () => {
         getEvaluations();
     }, [])
 
+    console.log(evaluations);
 
     if (isLoading) {
         return (
@@ -45,15 +45,13 @@ const Evaluations = () => {
         )
     }
 
-    if(evaluations.length <= 0) return <p className={styles.noEvaluations}>No tienes evaluaciones para completar actualmente 😉</p>
-
     return (
-        <div className={styles.container}>
+        <div>
             {evaluations.map(evaluation => (
-                <EvaluationCard key={evaluation.id} evaluation={evaluation} styles={styles} />
+                <HistoryCard key={evaluation.id} evaluation={evaluation} />
             ))}
         </div>
     )
 }
 
-export default Evaluations
+export default HistoryMain
