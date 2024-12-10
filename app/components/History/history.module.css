@@ -1,5 +1,62 @@
 .container {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-top: 1rem;
+}
+
+.inputContainer {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 3rem 0;
+}
+
+.label {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.input {
+    background-color: #48484875;
+    border-radius: 5px;
+    padding: 0.2rem 1rem;
+}
+
+.evaluationContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2rem;
+    
+}
+
+.evaluationCard {
+    background-color: #48484874;
+    padding: 1rem 0;
+    padding-left: 1rem;
+    padding-right: 2rem;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    box-shadow: 2px 2px 33px 0px rgba(56,56,56,0.75);
+    -webkit-box-shadow: 2px 2px 33px 0px rgba(56,56,56,0.75);
+    -moz-box-shadow: 2px 2px 33px 0px rgba(56,56,56,0.75);
+    border-top: 5px solid #00ffc392;
+}
+
+.btnContainer {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+}
+
+.iconBtn {
+   transition: all 0.3s ease;
+}
+
+.iconBtn:hover {
+    transform: scale(1.1);
+    color: #00c7c7;
 }

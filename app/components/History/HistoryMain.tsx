@@ -4,11 +4,14 @@ import ClockLoader from 'react-spinners/ClockLoader';
 import HistoryCard from './HistoryCard';
 import { CompletedFormWithRelations } from '@/types';
 import styles from "./history.module.css"
+import { FileSearchIcon } from 'lucide-react';
 
 const HistoryMain = () => {
 
     const [evaluations, setEvaluations] = useState<CompletedFormWithRelations[]>([]);
+    const [evaluationsFiltered, setEvaluationsFiltered] = useState<CompletedFormWithRelations[]>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [search, setSearch] = useState<string>("");
 
     const getEvaluations = async () => {
         setIsLoading(true);
@@ -21,19 +24,29 @@ const HistoryMain = () => {
 
             const data = await response.json()
             setEvaluations(data);
+            setEvaluationsFiltered(data);
         } catch (err) {
             console.log(err);
         } finally {
             setIsLoading(false);
         }
-
     }
 
     useEffect(() => {
         getEvaluations();
     }, [])
 
-    console.log(evaluations);
+    useEffect(() => {
+        const filtered = evaluations.filter((evaluation) => {
+            const nombre = evaluation.employee?.nombre?.toLowerCase() || "";
+            const apellido = evaluation.employee?.apellido?.toLowerCase() || "";
+            const searchLower = search.toLowerCase();
+
+            return nombre.includes(searchLower) || apellido.includes(searchLower);
+        });
+
+        setEvaluationsFiltered(filtered);
+    }, [search, evaluations]);
 
     if (isLoading) {
         return (
@@ -47,9 +60,21 @@ const HistoryMain = () => {
 
     return (
         <div className={styles.container}>
-            {evaluations.map(evaluation => (
-                <HistoryCard key={evaluation.id} evaluation={evaluation} />
-            ))}
+            <div className={styles.inputContainer}>
+                <FileSearchIcon />
+                <label className={styles.label}>Buscar por nombre</label>
+                <input
+                    className={styles.input}
+                    type="text"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                />
+            </div>
+            <div className={styles.evaluationContainer}>
+                {evaluationsFiltered.map(evaluation => (
+                    <HistoryCard key={evaluation.id} evaluation={evaluation} styles={styles} />
+                ))}
+            </div>
         </div>
     )
 }
