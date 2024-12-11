@@ -1,0 +1,51 @@
+.evaluationContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+}
+
+.infoContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    background-color: #333333a8;
+    border-radius: 5px;
+    width: 30%;
+    padding: 1.3rem;
+    margin-top: 2rem;
+}
+
+.titleInfo {
+    font-weight: bold;
+    font-style: italic;
+}
+
+.responsesContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.responsesTitle {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-decoration: underline;
+    text-align: center;
+}
+
+.responsesInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    background-color: #333333a8;
+    padding: 1.1rem;
+    padding-right: 1.5rem;
+    border-radius: 5px;
+}
+
+.titleResponse {
+    font-weight: bold;
+    font-style: italic;
+}

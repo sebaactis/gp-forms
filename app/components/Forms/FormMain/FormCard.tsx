@@ -44,7 +44,6 @@ const FormCard = ({ id, title, questions, onDelete }: Props) => {
                 >
 
                 </DialogWrapper>
-
             </div>
         </div>
     )

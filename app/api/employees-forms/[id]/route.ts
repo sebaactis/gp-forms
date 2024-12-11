@@ -68,3 +68,22 @@ export async function PUT(request: Request, { params }: { params: { id: string }
 
   return NextResponse.json({ message: "Formulario actualizado/finalizado con éxito" }, { status: 200 });
 }
+
+export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+
+  const { id } = params;
+
+  const checkEvaluation = await db.completedForm.findFirst({
+    where: { id }
+  })
+
+  if (!checkEvaluation) {
+    throw new Error("No existe la evaluacion")
+  }
+
+  await db.completedForm.delete({
+    where: { id }
+  })
+
+  return NextResponse.json({ message: "Evaluacion eliminada con éxito" })
+}

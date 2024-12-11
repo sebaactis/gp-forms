@@ -1,9 +1,12 @@
 "use client"
 
+import WelcomeBanner from '@/app/components/Globals/Welcome/WelcomeBanner';
+import HistoryView from '@/app/components/History/View/HistoryView';
 import { CompletedFormWithRelations } from '@/types';
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react';
 import ClockLoader from 'react-spinners/ClockLoader';
+import { LucideEye } from 'lucide-react';
 
 const Page = () => {
     const { id } = useParams();
@@ -33,8 +36,6 @@ const Page = () => {
         getEvaluation();
     }, [id])
 
-    console.log(evaluation);
-
     if (loading) {
         return (
             <div className="flex justify-center items-center mt-10">
@@ -46,7 +47,14 @@ const Page = () => {
     }
 
     return (
-        <div></div>
+        <div>
+            <WelcomeBanner
+                title="Ver evaluacion"
+                bagde='Sebastian Actis'
+                icon={LucideEye}
+            />
+            <HistoryView evaluation={evaluation} />
+        </div>
     )
 }
 

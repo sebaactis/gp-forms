@@ -72,7 +72,7 @@ const HistoryMain = () => {
             </div>
             <div className={styles.evaluationContainer}>
                 {evaluationsFiltered.map(evaluation => (
-                    <HistoryCard key={evaluation.id} evaluation={evaluation} styles={styles} />
+                    <HistoryCard key={evaluation.id} evaluation={evaluation} styles={styles} setEvaluations={setEvaluations} />
                 ))}
             </div>
         </div>
