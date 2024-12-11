@@ -23,50 +23,93 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   const body = await request.json();
   const { status, newResponses } = body;
 
-
-  for (const response of newResponses) {
-    const existingResponse = await db.response.findUnique({
-      where: {
-        completedFormId_questionId: {
-          completedFormId: id,
-          questionId: response.questionId,
-        },
-      },
-    });
-
-    if (existingResponse) {
-
-      await db.response.update({
-        where: {
-          id: existingResponse.id,
-        },
-        data: {
-          answer: response.answer,
-        },
-      });
-    } else {
-      await db.response.create({
-        data: {
-          id: randomUUID(),
-          completedFormId: id,
-          questionId: response.questionId,
-          questionText: response.questionText,
-          questionType: response.questionType,
-          answer: response.answer,
-        },
-      });
-    }
+  if (!newResponses || !Array.isArray(newResponses)) {
+    return NextResponse.json(
+      { message: 'Las respuestas no son válidas.' },
+      { status: 400 }
+    );
   }
 
-  await db.completedForm.update({
-    where: { id },
-    data: {
-      completedAt: new Date(),
-      status,
-    },
-  });
+  try {
+    const transaction = await db.$transaction(async (prisma) => {
+      // Obtener todas las respuestas existentes para el formulario
+      const existingResponses = await prisma.response.findMany({
+        where: { completedFormId: id },
+      });
 
-  return NextResponse.json({ message: "Formulario actualizado/finalizado con éxito" }, { status: 200 });
+      const existingResponsesMap = existingResponses.reduce((map, response) => {
+        map[response.questionId] = response;
+        return map;
+      }, {});
+
+      // Procesar las respuestas nuevas o actualizadas
+      for (const response of newResponses) {
+        const { questionId, questionText, questionType, answer } = response;
+
+        if (!questionId || !questionText || !questionType) {
+          throw new Error(`Datos incompletos para la pregunta con ID ${questionId}`);
+        }
+
+        // Obtener las opciones de la pregunta original
+        const question = await prisma.question.findUnique({
+          where: { id: questionId },
+          include: { options: true },
+        });
+
+        if (!question) {
+          throw new Error(`La pregunta con ID ${questionId} no existe`);
+        }
+
+        const optionsJson = JSON.stringify(question.options.map((option) => ({
+          id: option.id,
+          label: option.label,
+        })));
+
+        const existingResponse = existingResponsesMap[questionId];
+
+        if (existingResponse) {
+          // Actualizar la respuesta existente
+          await prisma.response.update({
+            where: { id: existingResponse.id },
+            data: {
+              answer,
+              optionsJson
+            },
+          });
+        } else {
+          // Crear una nueva respuesta
+          await prisma.response.create({
+            data: {
+              id: randomUUID(),
+              completedFormId: id,
+              questionId,
+              questionText,
+              questionType,
+              optionsJson,
+              answer,
+            },
+          });
+        }
+      }
+
+      // Actualizar el formulario
+      await prisma.completedForm.update({
+        where: { id },
+        data: {
+          completedAt: new Date(),
+          status,
+        },
+      });
+    });
+
+    return NextResponse.json({ message: 'Formulario actualizado/finalizado con éxito' }, { status: 200 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { message: 'Error al procesar el formulario', error: error.message },
+      { status: 500 }
+    );
+  }
 }
 
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {

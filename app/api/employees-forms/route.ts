@@ -23,12 +23,21 @@ export async function GET(req: Request) {
     }
 
     const forms = await db.completedForm.findMany({
+        where: whereClause,
         include: {
             form: true,
             employee: true,
-        },
-        where: whereClause
-    })
+            responses: {
+                include: {
+                    question: {
+                        include: {
+                            options: true
+                        }
+                    }
+                }
+            }
+        }
+    });
 
     return NextResponse.json(forms);
 }

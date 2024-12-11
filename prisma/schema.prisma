@@ -106,6 +106,8 @@ model Response {
   questionText String?
   questionType String?
 
+  optionsJson String?
+
   completedFormId String
   completedForm   CompletedForm @relation(fields: [completedFormId], references: [id], onDelete: Cascade)
 

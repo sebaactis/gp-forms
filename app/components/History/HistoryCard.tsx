@@ -47,12 +47,16 @@ const HistoryCard = ({ evaluation, styles, setEvaluations }: Props) => {
             <p><span className='font-bold'>Completado el:</span> {new Date(evaluation.completedAt).toLocaleDateString()}</p>
             <p><span className='font-bold'>Formulario:</span> {evaluation.formTitle}</p>
             <div className={styles.btnContainer}>
+
                 <Link href={`/history/${evaluation.id}`}>
                     <button className={styles.iconBtn}>
                         <EyeIcon />
                     </button>
                 </Link>
-                <button className={styles.iconBtn}><PencilIcon /></button>
+
+                <Link href={`/history/edit/${evaluation.id}`}>
+                    <button className={styles.iconBtn}><PencilIcon /></button>
+                </Link>
 
                 <DialogWrapper
                     triggerButton={<button className={styles.iconBtn}><Trash2 /></button>}
