@@ -1,0 +1,82 @@
+.evaluationContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+
+}
+
+.infoContainer {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    gap: 0.7rem;
+    background-color: #333333a8;
+    border-radius: 5px;
+    width: 30%;
+    padding: 1.3rem;
+    margin-top: 2rem;
+}
+
+.titleInfo {
+    font-weight: bold;
+    font-style: italic;
+}
+
+.responseContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 0 5rem;
+}
+
+.inputTextContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    background-color: #333333a8;
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+.inputTextLabel {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.inputText {
+    border-radius: 2px;
+    padding: 0.4rem 0.2rem;
+}
+
+.inputRadioContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    background-color: #333333a8;
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+.inputRadioLabel {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.radioOptionsContainer {
+    display: flex;
+}
+
+.radioOptions {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-right: 0.7rem;
+}
+
+.radioLabel {
+    font-size: 1.05rem;
+}
+
+.radioInput {
+    transform: scale(1.2);
+}

@@ -1,6 +1,7 @@
 import { CompletedFormWithRelations } from '@/types';
 import styles from './historyView.module.css'
 import { BadgeInfo, FileQuestion } from "lucide-react"
+import { Separator } from '@/components/ui/separator';
 
 interface Props {
     evaluation: CompletedFormWithRelations
@@ -21,6 +22,8 @@ const HistoryView = ({ evaluation }: Props) => {
                 <p><span className={styles.titleInfo}>Cantidad de preguntas respondidas:</span>  {evaluation?.responses.length}</p>
             </div>
 
+            <Separator />
+
             <div className={styles.responsesContainer}>
                 <h3 className={styles.responsesTitle}>Preguntas respondidas</h3>
                 {evaluation?.responses.map((response) => (
@@ -32,6 +35,8 @@ const HistoryView = ({ evaluation }: Props) => {
                     </div>
                 ))}
             </div>
+
+            
 
         </div>
     )
