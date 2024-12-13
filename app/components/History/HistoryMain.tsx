@@ -70,11 +70,15 @@ const HistoryMain = () => {
                     onChange={(e) => setSearch(e.target.value)}
                 />
             </div>
-            <div className={styles.evaluationContainer}>
-                {evaluationsFiltered.map(evaluation => (
-                    <HistoryCard key={evaluation.id} evaluation={evaluation} styles={styles} setEvaluations={setEvaluations} />
-                ))}
-            </div>
+
+            {evaluations.length <= 0
+                ? <p className={styles.emptyEvaluations}>No tienes evaluaciones en el historial 😕</p>
+                : <div className={styles.evaluationContainer}>
+                    {evaluationsFiltered.map(evaluation => (
+                        <HistoryCard key={evaluation.id} evaluation={evaluation} styles={styles} setEvaluations={setEvaluations} />
+                    ))}
+                </div>}
+
         </div>
     )
 }

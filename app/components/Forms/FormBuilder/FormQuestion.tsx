@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import React from "react"
-import { Trash2 } from "lucide-react"
+import { ArrowRightSquareIcon, Trash2 } from "lucide-react"
 import { FormQuestionType } from "@/hooks/useQuestions"
 
 interface Props {
@@ -18,7 +18,7 @@ export const FormQuestion = ({ question, styles, setOptionLabel, updateQuestionO
         <React.Fragment key={question.id}>
             <div className={styles.questionContainer}>
                 <p className={styles.questionType}>
-                    <span className={styles.questionTypeId}>{question.id}.</span>
+                    <span className={styles.questionTypeId}><ArrowRightSquareIcon size={25}/></span>
                     Tipo:
                     <span className={styles.questionTypeSpan}>
                         {question.type}

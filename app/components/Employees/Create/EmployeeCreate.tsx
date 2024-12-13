@@ -6,11 +6,13 @@ import styles from './employeesCreate.module.css'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
 import { useRouter } from 'next/navigation'
+import PulseLoader from 'react-spinners/PulseLoader'
 
 const EmployeeCreate = () => {
 
     const { toast } = useToast();
     const router = useRouter();
+    const [loading, setLoading] = useState(false);
     const [bosses, setBosses] = useState([]);
     const [employee, setEmployee] = useState({
         nombre: "",
@@ -22,6 +24,7 @@ const EmployeeCreate = () => {
         legajo: "",
         userId: ""
     })
+    
 
     const fetchData = async () => {
         try {
@@ -45,6 +48,7 @@ const EmployeeCreate = () => {
     };
 
     const handleSubmit = async () => {
+        setLoading(true);
         try {
             const response = await fetch('/api/employees', {
                 method: "POST",
@@ -71,6 +75,8 @@ const EmployeeCreate = () => {
                 duration: 2000,
                 className: 'bg-red-800'
             })
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -143,7 +149,7 @@ const EmployeeCreate = () => {
                 </select>
             </div>
 
-            <Button onClick={handleSubmit} className={styles.btnEnviar}>Crear</Button>
+            <Button onClick={handleSubmit} className={styles.btnEnviar}>{loading ? <PulseLoader size={10} color="white" /> : "Crear"}</Button>
         </div>
     )
 }

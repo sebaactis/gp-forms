@@ -16,6 +16,7 @@ const FormCard = ({ id, title, questions, onDelete }: Props) => {
 
     const quantity = questions.length;
 
+
     return (
         <div className={styles.card}>
             <p className={styles.cardTitle}>{title}</p>

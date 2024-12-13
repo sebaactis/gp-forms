@@ -28,7 +28,12 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 2rem;
-    
+}
+
+.emptyEvaluations {
+    font-size: 1.3rem;
+    margin-top: 1rem;
+    font-weight: bold;
 }
 
 .evaluationCard {

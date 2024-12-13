@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
 import { useRouter } from 'next/navigation'
 import ClockLoader from 'react-spinners/ClockLoader'
+import PulseLoader from 'react-spinners/PulseLoader'
 
 const EmployeeEdit = ({ id }) => {
 
@@ -15,6 +16,7 @@ const EmployeeEdit = ({ id }) => {
     const router = useRouter();
     const [employee, setEmployee] = useState<EmployeeWithRelations>();
     const [isLoading, setIsLoading] = useState(false);
+    const [sendLoading, setSendLoading] = useState(false);
 
     useEffect(() => {
         const getEmployee = async () => {
@@ -42,6 +44,7 @@ const EmployeeEdit = ({ id }) => {
     };
 
     const handleSubmit = async () => {
+        setSendLoading(true);
         try {
             const response = await fetch(`/api/employees/${id}`, {
                 method: "PUT",
@@ -68,6 +71,8 @@ const EmployeeEdit = ({ id }) => {
                 duration: 2000,
                 className: 'bg-red-800'
             })
+        } finally {
+            setSendLoading(false)
         }
     };
 
@@ -139,7 +144,7 @@ const EmployeeEdit = ({ id }) => {
                         styles={styles}
                     />
                 </div>
-                <Button onClick={handleSubmit} className={styles.btnEnviar}>Enviar</Button>
+                <Button onClick={handleSubmit} className={styles.btnEnviar}>{sendLoading ? <PulseLoader size={10} color="white" /> : "Crear"}</Button>
             </div>}
 
 

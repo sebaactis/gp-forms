@@ -1,5 +1,6 @@
 import { Question } from '@prisma/client'
 import styles from './form-view.module.css'
+import { ArrowRightSquareIcon } from "lucide-react"
 
 interface Props {
     question: Question
@@ -11,7 +12,7 @@ const FormView = ({ question }: Props) => {
         <div className={styles.questionContainer} key={question.id}>
             <div>
                 <p className={styles.questionType}>
-                    <span className={styles.questionTypeId}>{question.id}.</span>
+                    <span className={styles.questionTypeId}><ArrowRightSquareIcon size={25}/></span>
                     Tipo:
                     <span className={styles.questionTypeSpan}>
                         {question.type}

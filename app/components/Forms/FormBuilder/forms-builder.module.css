@@ -83,6 +83,8 @@
 .questionType {
     font-size: 1.1rem;
     margin-top: 0.7rem;
+    display: flex;
+    align-items: center;
 }
 
 .questionTypeId {
