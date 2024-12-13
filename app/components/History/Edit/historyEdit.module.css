@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     gap: 3rem;
-
+    margin-bottom: 2rem;
 }
 
 .infoContainer {
@@ -79,4 +79,47 @@
 
 .radioInput {
     transform: scale(1.2);
+}
+
+.inputCheckboxContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    background-color: #333333a8;
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+.inputCheckLabel {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.checkboxOptions {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-right: 0.7rem;
+}
+
+.checkboxLabel {
+    font-size: 1.05rem;
+}
+
+.checkboxInput {
+    transform: scale(1.2);
+}
+
+.btnEnviar {
+    background-color: #009180;
+    width: 10%;
+    margin: auto;
+    padding: 0.3rem 0;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+.btnEnviar:hover {
+    background-color: #00a390;
 }

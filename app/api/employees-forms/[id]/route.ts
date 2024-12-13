@@ -23,6 +23,8 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   const body = await request.json();
   const { status, newResponses } = body;
 
+  console.log(status, newResponses);
+
   if (!newResponses || !Array.isArray(newResponses)) {
     return NextResponse.json(
       { message: 'Las respuestas no son válidas.' },
@@ -31,7 +33,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   }
 
   try {
-    const transaction = await db.$transaction(async (prisma) => {
+    await db.$transaction(async (prisma) => {
       // Obtener todas las respuestas existentes para el formulario
       const existingResponses = await prisma.response.findMany({
         where: { completedFormId: id },

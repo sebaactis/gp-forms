@@ -1,7 +1,13 @@
-import { BadgeInfo, MousePointer2, TextCursorInputIcon } from "lucide-react"
+"use client"
+
+import { BadgeInfo, CheckCircle, MousePointer2, TextCursorInputIcon } from "lucide-react"
 import styles from "./historyEdit.module.css"
 import { Separator } from "@/components/ui/separator"
 import { CompletedFormWithRelations } from "@/types";
+import { useToast } from "@/hooks/use-toast";
+import PulseLoader from "react-spinners/PulseLoader";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface Props {
     evaluation: CompletedFormWithRelations
@@ -9,6 +15,65 @@ interface Props {
 }
 
 const HistoryEdit = ({ evaluation, setEvaluation }: Props) => {
+
+    const { toast } = useToast();
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
+
+    const prepareNewResponses = (responses) => {
+        return responses.map((response) => ({
+            questionId: response.questionId,
+            questionText: response.questionText,
+            questionType: response.questionType,
+            answer: response.answer
+        }));
+    };
+
+    const handleSubmit = async () => {
+        const newResponses = prepareNewResponses(evaluation.responses);
+
+        const payload = {
+            status: "COMPLETADO",
+            newResponses,
+        };
+
+        setLoading(true);
+
+        try {
+            const response = await fetch(`/api/employees-forms/${evaluation.id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || "Error al enviar las respuestas.");
+            }
+
+            await response.json();
+
+            toast({
+                title: "Evaluacion editada con éxito!",
+                duration: 2000,
+                className: 'bg-green-600'
+            })
+
+            router.push("/history")
+
+        } catch {
+            toast({
+                title: "Error al editar la evaluacion!",
+                duration: 2000,
+                className: 'bg-red-600'
+            })
+
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleChange = (id, value, type, isChecked = false) => {
         setEvaluation((prev) => ({
@@ -20,13 +85,18 @@ const HistoryEdit = ({ evaluation, setEvaluation }: Props) => {
                     case "text":
                         return { ...response, answer: value };
 
-                    case "checkbox":
+                    case "checkbox": {
+                        const currentAnswers = response.answer ? response.answer.split(', ') : [];
+
+                        const updatedAnswers = isChecked
+                            ? [...currentAnswers, value]
+                            : currentAnswers.filter((item) => item !== value);
+
                         return {
                             ...response,
-                            answer: isChecked
-                                ? [...response.answer, value] // Agregar la opción seleccionada
-                                : response.answer.filter((item) => item !== value), // Quitar la opción deseleccionada
+                            answer: updatedAnswers.join(', '),
                         };
+                    }
 
                     case "radio":
                         return { ...response, answer: value };
@@ -37,8 +107,6 @@ const HistoryEdit = ({ evaluation, setEvaluation }: Props) => {
             }),
         }));
     };
-
-    console.log(evaluation)
 
     return (
         <div className={styles.evaluationContainer}>
@@ -76,17 +144,20 @@ const HistoryEdit = ({ evaluation, setEvaluation }: Props) => {
                     if (response.questionType === "checkbox") {
                         const options = JSON.parse(response.optionsJson);
                         return (
-                            <div className={styles.inputTextContainer} key={response.id}>
-                                <p>{response.questionText}</p>
+                            <div className={styles.inputCheckboxContainer} key={response.id}>
+                                <CheckCircle />
+                                <p className={styles.inputCheckLabel}>{response.questionText}</p>
                                 {options.map((option) => (
-                                    <label key={option.id}>
+                                    <div className={styles.checkboxOptions} key={option.id}>
+                                        <p className={styles.checkboxLabel}>{option.label}</p>
                                         <input
+                                            className={styles.checkboxInput}
                                             type="checkbox"
                                             checked={response.answer.includes(option.label)}
                                             onChange={(e) => handleChange(response.id, option.label, "checkbox", e.target.checked)}
                                         />
-                                        {option.label}
-                                    </label>
+
+                                    </div>
                                 ))}
                             </div>
                         );
@@ -120,7 +191,7 @@ const HistoryEdit = ({ evaluation, setEvaluation }: Props) => {
                     return null;
                 })}
             </div>
-
+            <button className={styles.btnEnviar} onClick={handleSubmit}>{loading ? <PulseLoader size={10} color="white" /> : "Enviar"}</button>
         </div>
     )
 }
