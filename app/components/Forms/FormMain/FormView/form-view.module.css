@@ -4,6 +4,7 @@
     color: white;
     margin: 3rem 9rem;
     padding: 1rem;
+    color: var(--text-color);
 }
 
 .questionType {

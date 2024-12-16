@@ -11,7 +11,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    background-color: #53535365;
+    background-color: var(--evaluation-card-color);
     border-radius: 10px;
     width: 30%;
     font-size: 1.05rem;

@@ -37,7 +37,7 @@
 }
 
 .evaluationCard {
-    background-color: #48484874;
+    background-color: var(--evaluation-card-color);
     padding: 1rem 0;
     padding-left: 1rem;
     padding-right: 2rem;

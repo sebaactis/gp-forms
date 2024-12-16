@@ -19,7 +19,7 @@ const SideBarItem = ({ title, items }) => {
                         <SidebarMenuItem key={item.title}>
                             <SidebarMenuButton className={styles.itemButton} asChild>
                                 <Link href={item.url}>
-                                    <item.icon style={{ color: "#0de6b4", width: "1.3rem", height: "1.3rem" }} />
+                                    <item.icon style={{ color: "var(--icon-color)", width: "1.3rem", height: "1.3rem" }} />
                                     <span className={styles.itemTitle}>{item.title}</span>
                                 </Link>
                             </SidebarMenuButton>

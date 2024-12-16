@@ -34,7 +34,7 @@
 }
 
 .filterSelect {
-    background-color: #484848b1;
+    background-color: var(--table-bg-color);
     padding: 0.3rem 0.9rem;
     border-radius: 5px;
     margin-right: 1rem;
@@ -46,7 +46,7 @@
 }
 
 .filterInput {
-    background-color: #484848b1;
+    background-color: var(--table-bg-color);
     padding: 0.165rem 0.9rem;
     border-radius: 5px;
 }

@@ -45,13 +45,13 @@
 }
 
 .periodInput {
-    background-color: #303030b4;
+    background-color: var(--table-bg-color);
     border-radius: 5px;
     padding: 0.2rem 0.5rem;
 }
 
 .dateLimitInput {
-    background-color: #303030b4;
+    background-color: var(--table-bg-color);
     border-radius: 5px;
     padding: 0.2rem 1rem;
 }

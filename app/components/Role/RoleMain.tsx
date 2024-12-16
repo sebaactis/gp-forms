@@ -103,7 +103,7 @@ const RoleMain = () => {
 
                 <section>
                     <div className={styles.selectTitleContainer}>
-                        <User2Icon size={22} color='#00fff2' />
+                        <User2Icon size={22} color='var(--icon-color)' />
                         <p className={styles.selectTitle}>Usuarios</p>
                     </div>
 
@@ -122,7 +122,7 @@ const RoleMain = () => {
 
                 <section>
                     <div className={styles.selectTitleContainer}>
-                        <Shield size={22} color='#00fff2' />
+                        <Shield size={22} color='var(--icon-color)' />
                         <p className={styles.selectTitle}>Roles</p>
                     </div>
 

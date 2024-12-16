@@ -3,19 +3,25 @@
 @tailwind utilities;
 
 :root {
-  --background-color: #8a8a8a22;
+  --background-color: #28282822;
   --text-color: #000000;
-  --table-bg-color: #00000025;
+  --table-bg-color: #6262621f;
   --form-builder-bg-color: #008c6b;
   --sidebar-item-color: #bbbbbb72;
+  --evaluation-card-color: #00000008;
+  --input-bg-color: #ffffff75;
+  --icon-color: #009472;
 }
 
 .dark {
   --background-color: #0e0e0e23;
   --text-color: #ffffff;
-  --table-bg-color: #3a3a3a96;
+  --table-bg-color: #3a3a3a99;
   --form-builder-bg-color: #008c6b;
   --sidebar-item-color: #0000005b;
+  --evaluation-card-color: #48484874;
+  --input-bg-color: #00000056;
+  --icon-color: #0de6b4;
 }
 
 body {
