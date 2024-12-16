@@ -25,8 +25,23 @@ export const FormBuilder = () => {
 
 
     const createForm = async () => {
-        if (name === "") return;
-        if (questions.length === 0) return;
+        if (!name) {
+            toast({
+                title: 'El nombre del formulario no puede estar vacio!',
+                className: 'bg-red-800',
+                duration: 3000
+            })
+            return;
+        }
+
+        if (questions.length === 0) {
+            toast({
+                title: 'No puedes crear un formulario sin preguntas!',
+                className: 'bg-red-800',
+                duration: 3000
+            })
+            return;
+        }
 
         const form = {
             name,
@@ -78,7 +93,7 @@ export const FormBuilder = () => {
                 <h3 className={styles.subTitle}>Nombre del formulario</h3>
                 <input
                     type="text"
-                    placeholder="Ingresa la pregunta aqui..."
+                    placeholder="Ingresa el nombre del formulario aqui..."
                     onChange={(e) => setName(e.target.value)}
                     className={styles.inputCreate}
                 />

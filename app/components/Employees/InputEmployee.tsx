@@ -1,18 +1,14 @@
-import React from 'react'
-
-const InputEmployee = ({ label, name, onChange, value, styles }) => {
+const InputEmployee = ({ label, register, error, styles }) => {
     return (
         <div className={styles.inputDetails}>
             <label className={styles.inputLabel}>{label}</label>
             <input
                 className={styles.input}
-                type="text"
-                name={name}
-                value={value || ""}
-                onChange={(e) => onChange(e.target.name, e.target.value)}
+                {...register}
             />
+            {error && <p className={styles.error}>{error}</p>} {/* Mensaje de error */}
         </div>
     );
 };
 
-export default InputEmployee
+export default InputEmployee;

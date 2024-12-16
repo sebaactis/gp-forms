@@ -35,7 +35,11 @@ const RoleMain = () => {
     const handleSubmit = async () => {
 
         if (!userRole.userId || !userRole.role) {
-            alert("Por favor, selecciona un usuario y un rol.");
+            toast({
+                title: 'Debes seleccionar un rol y un usuario!',
+                className: 'bg-red-800',
+                duration: 3000
+            })
             return;
         }
 

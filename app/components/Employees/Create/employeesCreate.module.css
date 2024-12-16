@@ -44,7 +44,6 @@
     margin-top: 1.5rem;
     color: white;
     font-weight: bold;
-    width: 10%;
     transition: all 0.2s ease;
 }
 
@@ -56,4 +55,19 @@
     border-radius: 5px;
     padding: 0.5rem 1rem;
     width: 25rem;
+}
+
+.supervisorContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.error {
+    text-align: center;
+    margin: 0.3rem 0;
+    color: #ff0000;
+    font-weight: bold;
+    font-size: 0.9rem;
+    font-style: italic;
 }

@@ -43,10 +43,18 @@
     margin-top: 1.5rem;
     color: white;
     font-weight: bold;
-    width: 10%;
     transition: all 0.2s ease;
 }
 
 .btnEnviar:hover {
     background-color: #0adeadad;
+}
+
+.error {
+    text-align: center;
+    margin: 0.3rem 0;
+    color: #ff0000;
+    font-weight: bold;
+    font-size: 0.9rem;
+    font-style: italic;
 }

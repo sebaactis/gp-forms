@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useToast } from "./use-toast";
 
 export interface FormQuestionType {
     id: number;
@@ -8,6 +9,7 @@ export interface FormQuestionType {
 }
 
 export const useQuestions = () => {
+    const { toast } = useToast();
 
     const [questions, setQuestions] = useState<FormQuestionType>([])
     const [labelQuestion, setLabelQuestion] = useState<string>("")
@@ -17,6 +19,16 @@ export const useQuestions = () => {
     const [radioQuantity, setRadioQuantity] = useState<number>(0);
 
     const addQuestion = () => {
+
+        if (!typeQuestion || !labelQuestion) {
+            toast({
+                title: "La pregunta debe tener un tipo y un titulo",
+                className: "bg-red-800",
+                duration: 3000
+            })
+            return;
+        }
+
         setQuestions([...questions, { id: questions.length + 1, type: typeQuestion, label: labelQuestion, options: [] }])
     }
 
@@ -28,12 +40,30 @@ export const useQuestions = () => {
     const updateQuestionOptions = (id: number, optionValue?: string, type: string) => {
 
         if (type === "checkbox") {
+            if (!optionValue) {
+                toast({
+                    title: "La opcion debe tener un titulo",
+                    className: "bg-red-800",
+                    duration: 3000
+                })
+                return;
+            }
             setQuestions(
                 questions.map((q) => q.id === id ? { ...q, options: [...q.options, { id: q.options.length + 1, label: optionValue }] } : q)
             )
         }
 
         if (type === "radio") {
+
+            if (!radioQuantity) {
+                toast({
+                    title: "Debes seleccionar una cantidad de items",
+                    className: "bg-red-800",
+                    duration: 3000
+                })
+                return;
+            }
+
             setQuestions(
                 questions.map((q) => q.id === id ? {
                     ...q, options: [...Array.from({ length: radioQuantity }, (_, index) => ({

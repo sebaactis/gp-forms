@@ -112,11 +112,10 @@
 
 .btnEnviar {
     background-color: #009180;
-    width: 10%;
+    width: 7%;
     margin: auto;
-    padding: 0.3rem 0;
+    padding: 0.5rem 0;
     border-radius: 5px;
-    font-weight: bold;
     transition: all 0.2s ease;
 }
 

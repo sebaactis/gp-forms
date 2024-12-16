@@ -1,6 +1,6 @@
 "use client"
 
-import { Settings, UserPen, BookOpenText, UsersRoundIcon, History, LockKeyholeIcon } from "lucide-react"
+import { UserPen, BookOpenText, UsersRoundIcon, History, LockKeyholeIcon } from "lucide-react"
 import {
     Sidebar,
     SidebarContent,
@@ -52,35 +52,27 @@ const items = [
     },
 ]
 
-const settingItems = [
-    {
-        title: "Ajustes",
-        url: "/settings",
-        icon: Settings
-    }
-]
-
 export function AppSidebar() {
 
     return (
         <Sidebar >
             <SidebarHeader className={styles.sidebar}>
                 <Link href="/home" className={styles.image}>
-                    <Image  src={logo} alt="gp logo" />
+                    <Image src={logo} alt="gp logo" />
                 </Link>
             </SidebarHeader>
 
-            <Separator className="bg-slate-300 dark:bg-slate-600"/>
+            <Separator className="bg-slate-300 dark:bg-slate-600" />
 
             <SidebarContent className={styles.sidebar}>
                 <SideBarItem title="Tus evaluaciones" items={items} />
                 <SideBarItem title="RRHH" items={itemsRRHH} />
-                <SideBarItem title="Ajustes" items={settingItems} />
+                <SidebarFooter className={styles.sidebar}>
+                    <ModeToggle />
+                </SidebarFooter>
             </SidebarContent>
 
-            <SidebarFooter className={styles.sidebar}>
-                <ModeToggle />
-            </SidebarFooter>
+
         </Sidebar>
     )
 }

@@ -49,7 +49,11 @@ const AssignmentsCompletedForm = () => {
         const { employeeId, period, endDate } = completedData;
 
         if (!employeeId || !period || !endDate) {
-            alert("Algun dato esta sin completar");
+            toast({
+                title: 'El empleado, el periodo o la fecha de finalizacion estan vacios',
+                className: 'bg-red-800',
+                duration: 3000
+            })
             return;
         }
 
@@ -78,8 +82,7 @@ const AssignmentsCompletedForm = () => {
                 className: 'bg-green-800',
                 duration: 3000
             })
-        } catch (error) {
-            console.log(error)
+        } catch {
             toast({
                 title: 'Error al crear la evaluacion',
                 className: 'bg-red-800',
@@ -137,7 +140,7 @@ const AssignmentsCompletedForm = () => {
                     type="date" />
             </article>
 
-            <Button className={styles.sendBtn} onClick={createEvaluation}>{loading ? <PulseLoader size={10} color="white" /> : "Enviar"} </Button>
+            <Button className={styles.sendBtn} onClick={createEvaluation} disabled={!completedData.employeeId || !completedData.endDate || !completedData.period}>{loading ? <PulseLoader size={10} color="white" /> : "Enviar"} </Button>
         </div>
     )
 }

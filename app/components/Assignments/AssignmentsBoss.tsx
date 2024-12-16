@@ -25,37 +25,18 @@ const AssignmentsBoss = () => {
         selectedEmployee: null
     });
 
-    const fetchData = async () => {
-        try {
-            const [bossesResponse, employeesResponse] = await Promise.all([
-                fetch('/api/users'),
-                fetch('/api/employees')
-            ]);
-
-            if (!bossesResponse.ok || !employeesResponse.ok) {
-                throw new Error("Error trayendo datos");
-            }
-
-            const bossesData = await bossesResponse.json();
-            const employeesData = await employeesResponse.json();
-
-            setData(prevState => ({
-                ...prevState,
-                bosses: bossesData,
-                employees: employeesData
-            }));
-
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
     const assignRelation = async () => {
-        
+
         const { selectedBoss, selectedEmployee } = data;
 
         if (!selectedBoss || !selectedEmployee) {
-            alert("Selecciona un jefe y un empleado");
+
+            toast({
+                title: 'Debes seleccionar un jefe y un empleado',
+                className: 'bg-red-800',
+                duration: 3000
+            })
+
             return;
         }
 
@@ -95,8 +76,40 @@ const AssignmentsBoss = () => {
 
 
     useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [bossesResponse, employeesResponse] = await Promise.all([
+                    fetch('/api/users'),
+                    fetch('/api/employees')
+                ]);
+
+                if (!bossesResponse.ok || !employeesResponse.ok) {
+                    toast({
+                        title: 'Error al intentar traer los datos!',
+                        className: 'bg-red-800',
+                        duration: 3000
+                    })
+                }
+
+                const bossesData = await bossesResponse.json();
+                const employeesData = await employeesResponse.json();
+
+                setData(prevState => ({
+                    ...prevState,
+                    bosses: bossesData,
+                    employees: employeesData
+                }));
+
+            } catch {
+                toast({
+                    title: 'Error inesperado!',
+                    className: 'bg-red-800',
+                    duration: 3000
+                })
+            }
+        };
         fetchData();
-    }, [])
+    }, [toast])
 
     return (
         <div className={styles.container}>
@@ -144,7 +157,7 @@ const AssignmentsBoss = () => {
                 </select>
             </article>
 
-            <Button className={styles.sendBtn} onClick={assignRelation}>{loading ? <PulseLoader size={10} color="white" /> : "Enviar"}</Button>
+            <Button className={styles.sendBtn} onClick={assignRelation} disabled={!data.selectedBoss || !data.selectedEmployee}>{loading ? <PulseLoader size={10} color="white" /> : "Enviar"}</Button>
         </div>
     )
 }

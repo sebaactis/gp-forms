@@ -18,37 +18,16 @@ const AssignmentsForms = () => {
         selectedEmployee: null
     });
 
-    const fetchDataForm = async () => {
-        try {
-            const [formsResponse, employeesResponse] = await Promise.all([
-                fetch('/api/forms'),
-                fetch('/api/employees')
-            ]);
-
-            if (!formsResponse.ok || !employeesResponse.ok) {
-                throw new Error("Error trayendo datos");
-            }
-
-            const formsData = await formsResponse.json();
-            const employeesData = await employeesResponse.json();
-
-            setFormAssignData(prevState => ({
-                ...prevState,
-                forms: formsData,
-                employees: employeesData
-            }));
-
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
     const assignRelationForm = async () => {
-        
+
         const { selectedForm, selectedEmployee } = formAssignData;
 
         if (!selectedForm || !selectedEmployee) {
-            alert("Selecciona un jefe y un empleado");
+            toast({
+                title: 'El formulario o el empleado estan vacios',
+                className: 'bg-red-800',
+                duration: 3000
+            })
             return;
         }
 
@@ -89,8 +68,36 @@ const AssignmentsForms = () => {
 
 
     useEffect(() => {
+        const fetchDataForm = async () => {
+            try {
+                const [formsResponse, employeesResponse] = await Promise.all([
+                    fetch('/api/forms'),
+                    fetch('/api/employees')
+                ]);
+
+                if (!formsResponse.ok || !employeesResponse.ok) {
+                    throw new Error("Error trayendo datos");
+                }
+
+                const formsData = await formsResponse.json();
+                const employeesData = await employeesResponse.json();
+
+                setFormAssignData(prevState => ({
+                    ...prevState,
+                    forms: formsData,
+                    employees: employeesData
+                }));
+
+            } catch {
+                toast({
+                    title: 'Error trayendo los datos correspondientes',
+                    className: 'bg-red-800',
+                    duration: 3000
+                })
+            }
+        };
         fetchDataForm();
-    }, [])
+    }, [toast])
 
     return (
         <div className={styles.container}>
@@ -140,7 +147,7 @@ const AssignmentsForms = () => {
                 </select>
             </article>
 
-            <Button className={styles.sendBtn} onClick={assignRelationForm}>{loading ? <PulseLoader size={10} color="white" /> : "Enviar"} </Button>
+            <Button className={styles.sendBtn} onClick={assignRelationForm} disabled={!formAssignData.selectedForm || !formAssignData.selectedEmployee}>{loading ? <PulseLoader size={10} color="white" /> : "Enviar"} </Button>
         </div>)
 }
 
