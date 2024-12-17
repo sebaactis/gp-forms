@@ -73,7 +73,7 @@ const EmployeesTable = ({ tableData, styles, setEmpleados }: Props) => {
                         );
                     })}
             </TableHeader>
-
+            
             <TableBody className={styles.tableBody}>
                 {tableData.getRowModel().rows.map((row) => (
                     <TableRow key={row.id}>

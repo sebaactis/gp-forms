@@ -53,6 +53,8 @@ const RoleMain = () => {
                 body: JSON.stringify(userRole),
             });
 
+            console.log(response);
+
             if (!response.ok) {
                 throw new Error("Error al enviar la informacion")
             }

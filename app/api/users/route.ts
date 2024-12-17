@@ -20,5 +20,8 @@ export async function PUT(request: Request) {
         }
     })
 
-    return NextResponse.json(user)
+    return NextResponse.json({
+        message: "User updated successfully",
+        status: 200
+    })
 }

@@ -29,7 +29,10 @@ export const useQuestions = () => {
             return;
         }
 
+        setLabelQuestion("")
+        setTypeQuestion("")
         setQuestions([...questions, { id: questions.length + 1, type: typeQuestion, label: labelQuestion, options: [] }])
+        
     }
 
     const removeQuestion = (id: number) => {
