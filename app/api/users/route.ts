@@ -13,7 +13,7 @@ export async function PUT(request: Request) {
     const body = await request.json();
     const { userId, role } = body;
 
-    const user = await db.user.update({
+    await db.user.update({
         where: { id: userId },
         data: {
             role
