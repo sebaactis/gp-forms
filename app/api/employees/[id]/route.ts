@@ -1,7 +1,7 @@
 import { db } from "@/data/prisma";
 import { NextResponse } from "next/server";
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
 
   const { id } = params;
 
@@ -28,7 +28,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
   return NextResponse.json(employee)
 }
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
 
     const { id } = params;
@@ -55,7 +55,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
 
 }
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
 
     const { id } = params;
