@@ -61,10 +61,17 @@ export async function PUT(req: Request) {
             employee: updatedEmployee,
         });
     } catch (error) {
-        console.error("Error al asignar jefe al empleado:", error);
-        return NextResponse.json(
-            { error: "Error asignando el jefe al empleado", details: error.message },
-            { status: 500 }
-        );
+        if(error instanceof Error) {
+            return NextResponse.json(
+                { error: "Error asignando el jefe al empleado", details: error.message },
+                { status: 500 }
+            );
+        } else {
+            return NextResponse.json(
+                { error: "Error desconocido", details: ""},
+                { status: 500 }
+            );
+        }
+        
     }
 }

@@ -11,7 +11,7 @@ import { LucideEye } from 'lucide-react';
 const Page = () => {
     const { id } = useParams();
 
-    const [evaluation, setEvaluation] = useState<CompletedFormWithRelations>();
+    const [evaluation, setEvaluation] = useState<CompletedFormWithRelations | undefined>();
     const [loading, setLoading] = useState(false);
 
 

@@ -13,7 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import PulseLoader from "react-spinners/PulseLoader";
 
 interface Props {
-    existingForm: FormWithRelations
+    existingForm: FormWithRelations | null
 }
 
 export const FormEditor = ({ existingForm }: Props) => {

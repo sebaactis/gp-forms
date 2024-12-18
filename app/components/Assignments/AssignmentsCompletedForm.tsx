@@ -10,7 +10,7 @@ import PulseLoader from 'react-spinners/PulseLoader';
 
 const AssignmentsCompletedForm = () => {
     const { toast } = useToast()
-    const [employees, setEmployees] = useState<EmployeeWithRelations>([]);
+    const [employees, setEmployees] = useState<EmployeeWithRelations[] | []>([]);
     const [loading, setLoading] = useState(false);
 
     const [completedData, setCompletedData] = useState({

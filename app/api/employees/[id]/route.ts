@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
 
-  const { id } = params;
+  const { id } = await params;
 
   const employee = await db.employee.findFirst({
     where: { id },
@@ -31,7 +31,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
 
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
     const { legajo, email, nombre, apellido, gerencia, puesto, seniority } = body;
 
@@ -58,7 +58,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
 
-    const { id } = params;
+    const { id } = await params;
     const empleado = await db.employee.delete({
       where: { id },
     })

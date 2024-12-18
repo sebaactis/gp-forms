@@ -10,8 +10,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 interface Props {
-    evaluation: CompletedFormWithRelations
-    setEvaluation: React.Dispatch<React.SetStateAction<CompletedFormWithRelations>>;
+    evaluation: CompletedFormWithRelations | undefined
+    setEvaluation: React.Dispatch<React.SetStateAction<CompletedFormWithRelations | undefined>>;
 }
 
 const HistoryEdit = ({ evaluation, setEvaluation }: Props) => {

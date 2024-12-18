@@ -1,9 +1,9 @@
 import { db } from "@/data/prisma";
-import { FormStatus } from "@prisma/client";
+import { FormStatus, Option } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
-    const { id } = params;
+    const { id } = await params;
 
     try {
         const form = await db.form.findUnique({
@@ -29,7 +29,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 }
 
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
     const { name, questions } = body;
 
@@ -54,7 +54,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
                     type: question.type,
                     formId: id,
                     options: {
-                        create: question.options.map((option) => ({
+                        create: question.options.map((option: Option) => ({
                             label: option.label
                         })),
                     },
@@ -70,7 +70,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 }
 
 export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
-    const { id } = params;
+    const { id } = await params;
 
     try {
 

@@ -11,9 +11,9 @@ import ClockLoader from 'react-spinners/ClockLoader';
 const Edit = () => {
 
     const { id } = useParams();
-    const [form, setForm] = useState<FormWithRelations>(null);
+    const [form, setForm] = useState<FormWithRelations | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string>(null);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchForm = async () => {
@@ -28,7 +28,11 @@ const Edit = () => {
                 setForm(data);
 
             } catch (error) {
-                setError(error.message);
+                if (error instanceof Error) {
+                    setError(error.message);
+                } else {
+                    setError("Ocurrió un error desconocido");
+                }
             } finally {
                 setIsLoading(false);
             }

@@ -11,7 +11,7 @@ const AssignmentsForms = () => {
     const { toast } = useToast()
     const [loading, setLoading] = useState(false);
 
-    const [formAssignData, setFormAssignData] = useState<dataState>({
+    const [formAssignData, setFormAssignData] = useState({
         forms: [],
         employees: [],
         selectedForm: null,

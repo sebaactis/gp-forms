@@ -10,8 +10,8 @@ import PulseLoader from 'react-spinners/PulseLoader';
 type dataState = {
     bosses: User[];
     employees: Employee[];
-    selectedBoss: string;
-    selectedEmployee: string;
+    selectedBoss: string | null;
+    selectedEmployee: string | null;
 }
 
 const AssignmentsBoss = () => {

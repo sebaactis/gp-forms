@@ -4,7 +4,7 @@ import { BadgeInfo, FileQuestion } from "lucide-react"
 import { Separator } from '@/components/ui/separator';
 
 interface Props {
-    evaluation: CompletedFormWithRelations
+    evaluation: CompletedFormWithRelations | undefined
 }
 
 const HistoryView = ({ evaluation }: Props) => {

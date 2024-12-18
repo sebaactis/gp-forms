@@ -10,9 +10,9 @@ import ClockLoader from 'react-spinners/ClockLoader';
 
 const FormPage = () => {
     const { id } = useParams();
-    const [form, setForm] = useState<FormWithRelations>(null);
+    const [form, setForm] = useState<FormWithRelations | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string>(null);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchForm = async () => {
@@ -26,7 +26,12 @@ const FormPage = () => {
                 setForm(data);
 
             } catch (error) {
-                setError(error.message);
+                if(error instanceof Error) {
+                    setError(error.message);
+                } else {
+                    setError("Ocurrió un error desconocido");
+                }
+                
             } finally {
                 setIsLoading(false);
             }
@@ -52,12 +57,12 @@ const FormPage = () => {
     return (
         <div>
             <WelcomeBanner
-                title={`Preguntas formulario: ${form.name}`}
+                title={`Preguntas formulario: ${form?.name}`}
                 bagde="RRHH"
                 icon={LucideScanEye}
             />
 
-            {form.questions.map((question) => (
+            {form?.questions?.map((question) => (
                 <FormView
                     key={question.id}
                     question={question}

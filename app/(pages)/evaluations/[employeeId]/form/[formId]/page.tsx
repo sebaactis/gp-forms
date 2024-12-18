@@ -2,15 +2,15 @@
 
 import EvaluationComplete from '@/app/components/Evaluations/EvaluationComplete/EvaluationComplete'
 import WelcomeBanner from '@/app/components/Globals/Welcome/WelcomeBanner'
-import { Employee } from '@prisma/client'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { CheckSquareIcon } from "lucide-react"
 import ClockLoader from 'react-spinners/ClockLoader'
+import { EmployeeWithRelations } from '@/types'
 
 const Evaluation = () => {
 
-    const [empleado, setEmpleado] = useState<Employee>({});
+    const [empleado, setEmpleado] = useState<EmployeeWithRelations>({} as EmployeeWithRelations);
     const [loading, setLoading] = useState<boolean>(false);
 
     const { employeeId, formId } = useParams()

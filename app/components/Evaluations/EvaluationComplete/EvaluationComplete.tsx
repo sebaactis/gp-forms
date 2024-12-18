@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation'
 import PulseLoader from 'react-spinners/PulseLoader'
 interface Props {
     empleado: EmployeeWithRelations;
-    formId: string;
+    formId: string | string[] | undefined;
 }
 const EvaluationComplete = ({ empleado, formId }: Props) => {
     const { toast } = useToast();

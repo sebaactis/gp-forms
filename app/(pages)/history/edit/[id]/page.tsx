@@ -5,11 +5,12 @@ import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react';
 import { PenBoxIcon } from "lucide-react"
 import HistoryEdit from '@/app/components/History/Edit/HistoryEdit';
+import { CompletedFormWithRelations } from '@/types';
 
 const Page = () => {
 
     const { id } = useParams();
-    const [evaluation, setEvaluation] = useState<CompletedFormWithRelations>();
+    const [evaluation, setEvaluation] = useState<CompletedFormWithRelations | undefined>();
 
     useEffect(() => {
         const getEvaluation = async () => {

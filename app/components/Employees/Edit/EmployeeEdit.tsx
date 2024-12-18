@@ -14,6 +14,8 @@ import { useRouter } from "next/navigation";
 import ClockLoader from "react-spinners/ClockLoader";
 import PulseLoader from "react-spinners/PulseLoader";
 
+type keys = "nombre" | "apellido" | "email" | "gerencia" | "puesto" | "seniority" | "legajo"
+
 const schema = yup.object().shape({
     legajo: yup.string().required("El número de legajo es obligatorio"),
     email: yup
@@ -54,7 +56,9 @@ const EmployeeEdit = ({ id }) => {
 
                 const data = await response.json();
 
-                Object.keys(data).forEach((key) => setValue(key, data[key]));
+                Object.keys(data).forEach((key) => {
+                    setValue(key as keys, data[key]);
+                  });
             } catch {
                 toast({
                     title: "Error al obtener el empleado a editar",

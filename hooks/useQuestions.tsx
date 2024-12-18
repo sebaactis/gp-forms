@@ -11,7 +11,7 @@ export interface FormQuestionType {
 export const useQuestions = () => {
     const { toast } = useToast();
 
-    const [questions, setQuestions] = useState<FormQuestionType>([])
+    const [questions, setQuestions] = useState<FormQuestionType[]>([])
     const [labelQuestion, setLabelQuestion] = useState<string>("")
     const [typeQuestion, setTypeQuestion] = useState<string>("text")
     const [optionLabel, setOptionLabel] = useState<string>("")
