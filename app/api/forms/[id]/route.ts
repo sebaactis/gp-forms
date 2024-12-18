@@ -1,4 +1,5 @@
 import { db } from "@/data/prisma";
+import { FormStatus } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
@@ -72,6 +73,15 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
     const { id } = params;
 
     try {
+
+        await db.completedForm.deleteMany({
+            where: {
+                formId: id,
+                status: {
+                    in: [FormStatus.PENDIENTE, FormStatus.EN_PROGRESO]
+                }
+            },
+        });
 
         const deletedForm = await db.form.delete({
             where: { id },

@@ -30,7 +30,7 @@ export const useQuestions = () => {
         }
 
         setLabelQuestion("")
-        setTypeQuestion("")
+        setTypeQuestion("text")
         setQuestions([...questions, { id: questions.length + 1, type: typeQuestion, label: labelQuestion, options: [] }])
         
     }

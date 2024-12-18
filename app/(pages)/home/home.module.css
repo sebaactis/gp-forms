@@ -5,7 +5,7 @@
 
 .infoContainer {
     display: grid;
-    grid-template-columns: 80% auto;
+    grid-template-columns: auto;
     justify-items: center;
     width: 100%;
     padding: 0rem 2rem;

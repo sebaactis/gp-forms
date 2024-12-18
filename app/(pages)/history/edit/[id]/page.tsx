@@ -33,7 +33,7 @@ const Page = () => {
         <div>
             <WelcomeBanner
                 title='Editar evaluación'
-                bagde='Sebastian Actis'
+                bagde='Supervisor X'
                 icon={PenBoxIcon}
             />
 

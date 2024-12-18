@@ -11,57 +11,47 @@ interface Props {
     formId: string;
 }
 const EvaluationComplete = ({ empleado, formId }: Props) => {
-
     const { toast } = useToast();
     const router = useRouter();
     const [loading, setLoading] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
 
     const [form, setForm] = useState({
         newResponses: [],
-        status: FormStatus.PENDIENTE
+        status: FormStatus.PENDIENTE,
     });
 
     const handleAnswers = (questionId, questionText, questionType, newAnswer, isCheckbox = false) => {
-        let updatedResponses;
+        setForm((prevForm) => {
+            let updatedResponses;
 
-        const answerCheck = form.newResponses.find(
-            (response) => response.questionId === questionId
-        );
+            const answerCheck = prevForm.newResponses.find(
+                (response) => response.questionId === questionId
+            );
 
-        if (answerCheck) {
+            if (answerCheck) {
+                if (isCheckbox) {
+                    const existingAnswers = answerCheck.answer ? answerCheck.answer.split(", ") : [];
 
-            if (isCheckbox) {
-                const existingAnswers = answerCheck.answer ? answerCheck.answer.split(', ') : [];
+                    const updatedAnswers = existingAnswers.includes(newAnswer)
+                        ? existingAnswers.filter((ans) => ans !== newAnswer)
+                        : [...existingAnswers, newAnswer];
 
-                const updatedAnswers = existingAnswers.includes(newAnswer)
-                    ? existingAnswers.filter((ans) => ans !== newAnswer)
-                    : [...existingAnswers, newAnswer];
-
-                updatedResponses = {
-                    ...form,
-                    newResponses: form.newResponses.map((response) =>
+                    updatedResponses = prevForm.newResponses.map((response) =>
                         response.questionId === questionId
-                            ? { ...response, answer: updatedAnswers.join(', ') }
+                            ? { ...response, answer: updatedAnswers.join(", ") }
                             : response
-                    ),
-                    status: FormStatus.EN_PROGRESO,
-                };
-            } else {
-                updatedResponses = {
-                    ...form,
-                    newResponses: form.newResponses.map((response) =>
+                    );
+                } else {
+                    updatedResponses = prevForm.newResponses.map((response) =>
                         response.questionId === questionId
                             ? { ...response, answer: newAnswer }
                             : response
-                    ),
-                    status: FormStatus.EN_PROGRESO,
-                };
-            }
-        } else {
-            updatedResponses = {
-                ...form,
-                newResponses: [
-                    ...form.newResponses,
+                    );
+                }
+            } else {
+                updatedResponses = [
+                    ...prevForm.newResponses,
                     {
                         questionId: questionId,
                         questionText,
@@ -69,24 +59,59 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
                         completedFormId: formId,
                         answer: newAnswer,
                     },
-                ],
+                ];
+            }
+
+            return {
+                ...prevForm,
+                newResponses: updatedResponses,
                 status: FormStatus.EN_PROGRESO,
             };
-        }
-
-        setForm(updatedResponses);
+        });
     };
 
-    const handleSubmit = async () => {
+    const getAnswerForQuestion = (questionId) => {
+        const answerObj = form.newResponses.find((response) => response.questionId === questionId);
+        return answerObj ? answerObj.answer : "";
+    };
 
+    useEffect(() => {
+        const fetchResponses = async () => {
+            try {
+                const response = await fetch(`/api/employees-forms/${formId}`);
+
+                if (!response.ok) {
+                    throw new Error("Error al obtener las respuestas del formulario");
+                }
+
+                const data = await response.json();
+
+                setForm({
+                    newResponses: data.responses || [],
+                    status: data.status || FormStatus.PENDIENTE,
+                });
+
+                setIsLoaded(true);
+            } catch (error) {
+                console.error("Error al obtener las respuestas:", error);
+            }
+        };
+
+        fetchResponses();
+    }, [formId]);
+
+    const handleSubmit = async () => {
         setLoading(true);
 
-        const isCompleted = empleado.form?.questions.length === form.newResponses.length
-            && form.newResponses.every(response => response.answer && response.answer.trim() !== "");
+        const isCompleted =
+            empleado.form?.questions.length === form.newResponses.length &&
+            form.newResponses.every(
+                (response) => response.answer && response.answer.trim() !== ""
+            );
 
         const updatedForm = {
             ...form,
-            status: isCompleted ? FormStatus.COMPLETADO : FormStatus.EN_PROGRESO
+            status: isCompleted ? FormStatus.COMPLETADO : FormStatus.EN_PROGRESO,
         };
 
         try {
@@ -103,69 +128,49 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
             }
 
             toast({
-                title: "Evaluacion enviada con éxito!",
+                title: "Evaluación enviada con éxito!",
                 duration: 2000,
-                className: 'bg-green-600'
-            })
+                className: "bg-green-600",
+            });
 
             await response.json();
             setForm(updatedForm);
 
-            router.push('/evaluations')
-
+            router.push("/evaluations");
         } catch {
             toast({
-                title: "Error al enviar la evaluacion!",
+                title: "Error al enviar la evaluación!",
                 duration: 2000,
-                className: 'bg-red-300'
-            })
+                className: "bg-red-300",
+            });
         }
-
     };
-
-    const getAnswerForQuestion = (questionId) => {
-        const answerObj = form.newResponses.find((response) => response.questionId === questionId);
-        return answerObj ? answerObj.answer : '';
-    };
-
-    useEffect(() => {
-        const fetchResponses = async () => {
-            try {
-                const response = await fetch(`/api/employees-forms/${formId}`);
-
-                if (!response.ok) {
-                    throw new Error("Error al obtener las respuestas del formulario");
-                }
-
-                const data = await response.json();
-
-                setForm({
-                    newResponses: data.responses || [],
-                    status: data.status || FormStatus.PENDIENTE
-                });
-            } catch (error) {
-                console.error("Error al obtener las respuestas:", error);
-            }
-        };
-
-        fetchResponses();
-    }, [formId]);
 
     return (
         <div className={styles.container}>
             {empleado.form?.questions.map((question, index) => (
                 <div className={styles.question} key={question.id}>
-                    <p className={styles.questionLabel}> <span className={styles.questionLabelIndex}>{index + 1}.</span> {question.label}</p>
+                    <p className={styles.questionLabel}>
+                        <span className={styles.questionLabelIndex}>{index + 1}.</span>{" "}
+                        {question.label}
+                    </p>
 
-                    {question.type === 'text' &&
-
+                    {question.type === "text" && (
                         <input
                             className={styles.textInput}
                             type="text"
-                            value={getAnswerForQuestion(question.id)}
-                            onChange={(e) => handleAnswers(question.id, question.label, question.type, e.target.value)}
+                            value={isLoaded ? getAnswerForQuestion(question.id) : ""}
+                            onChange={(e) =>
+                                handleAnswers(
+                                    question.id,
+                                    question.label,
+                                    question.type,
+                                    e.target.value
+                                )
+                            }
+                            disabled={!isLoaded} // Bloquear input hasta que los datos estén listos
                         />
-                    }
+                    )}
 
                     {question.type === "checkbox" && (
                         <ul className={styles.checkboxContainer}>
@@ -175,8 +180,22 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
                                         <input
                                             type="checkbox"
                                             className={styles.checkboxSquare}
-                                            checked={getAnswerForQuestion(question.id).split(', ').includes(option.label)}
-                                            onChange={() => handleAnswers(question.id, question.label, question.type, option.label, true)}
+                                            checked={
+                                                isLoaded &&
+                                                getAnswerForQuestion(question.id)
+                                                    .split(", ")
+                                                    .includes(option.label)
+                                            }
+                                            onChange={() =>
+                                                handleAnswers(
+                                                    question.id,
+                                                    question.label,
+                                                    question.type,
+                                                    option.label,
+                                                    true
+                                                )
+                                            }
+                                            disabled={!isLoaded}
                                         />
                                         {option.label}
                                     </label>
@@ -194,8 +213,19 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
                                             className={styles.radioItem}
                                             type="radio"
                                             name={`question_${question.id}`}
-                                            checked={getAnswerForQuestion(question.id) === option.label}
-                                            onChange={() => handleAnswers(question.id, question.label, question.type, option.label)}
+                                            checked={
+                                                isLoaded &&
+                                                getAnswerForQuestion(question.id) === option.label
+                                            }
+                                            onChange={() =>
+                                                handleAnswers(
+                                                    question.id,
+                                                    question.label,
+                                                    question.type,
+                                                    option.label
+                                                )
+                                            }
+                                            disabled={!isLoaded}
                                         />
                                         {option.label}
                                     </label>
@@ -203,24 +233,24 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
                             ))}
                         </ul>
                     )}
-
                 </div>
             ))}
 
             <Button className={styles.btnEnviar} onClick={handleSubmit}>
                 {loading ? (
                     <PulseLoader size={10} color="white" />
+                ) : empleado.form?.questions.length === form.newResponses.length &&
+                    form.newResponses.every(
+                        (response) => response.answer && response.answer.trim() !== ""
+                    ) ? (
+                    "Enviar"
                 ) : (
-                    empleado.form?.questions.length === form.newResponses.length &&
-                        form.newResponses.every(
-                            response => response.answer && response.answer.trim() !== ""
-                        )
-                        ? "Enviar"
-                        : "Guardar Cambios"
+                    "Guardar Cambios"
                 )}
             </Button>
         </div>
-    )
-}
+    );
+};
 
-export default EvaluationComplete
+export default EvaluationComplete;
+

@@ -5,9 +5,11 @@ interface Props {
     setLabelQuestion: React.Dispatch<React.SetStateAction<string>>;
     setTypeQuestion: React.Dispatch<React.SetStateAction<string>>;
     addQuestion: () => void;
+    typeQuestion: string;
+    labelQuestion: string;
 }
 
-export const FormAddQuestion = ({ styles, setLabelQuestion, setTypeQuestion, addQuestion }: Props) => {
+export const FormAddQuestion = ({ styles, setLabelQuestion, setTypeQuestion, addQuestion, typeQuestion, labelQuestion }: Props) => {
 
     return (
         <div className={styles.createContainer}>
@@ -17,12 +19,14 @@ export const FormAddQuestion = ({ styles, setLabelQuestion, setTypeQuestion, add
                 placeholder="Ingresa la pregunta aqui..."
                 onChange={(e) => setLabelQuestion(e.target.value)}
                 className={styles.inputCreate}
+                value={labelQuestion}
             />
             <div className={styles.createTypeContainer}>
                 <h3 className={styles.createTypeLabel}>Tipo de pregunta:</h3>
                 <select
                     onChange={(e) => setTypeQuestion(e.target.value)}
                     className={styles.selectType}
+                    value={typeQuestion}
                 >
                     <option value="text">Texto</option>
                     <option value="radio">Rango</option>

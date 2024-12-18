@@ -4,6 +4,7 @@ import { Trash2, Eye, Pencil } from "lucide-react"
 import Link from 'next/link';
 import DialogWrapper from '../../Globals/Modal/DialogWrapper';
 import { Question } from '@prisma/client';
+import { FileWarningIcon } from "lucide-react"
 
 interface Props {
     id: string;
@@ -43,6 +44,12 @@ const FormCard = ({ id, title, questions, onDelete }: Props) => {
                     description="Estás seguro de eliminar este formulario?"
                     onConfirm={() => onDelete(id)}
                 >
+                    <div className={styles.warningContainer}>
+                        <FileWarningIcon size={30} color='red'/>
+                        <p className={styles.warningDelete}>
+                            Si eliminas el formulario, las evaluaciones pendientes de realizar seran eliminadas
+                        </p>
+                    </div>
 
                 </DialogWrapper>
             </div>

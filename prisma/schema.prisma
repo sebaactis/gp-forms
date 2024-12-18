@@ -104,8 +104,8 @@ model Response {
 
   questionId   Int?
   question     Question? @relation(fields: [questionId], references: [id], onDelete: SetNull)
-  questionText String?
-  questionType String?
+  questionText String
+  questionType String
 
   optionsJson String?
 
@@ -114,7 +114,7 @@ model Response {
 
   answer String
 
-  @@unique([completedFormId, questionId])
+  @@unique([completedFormId, questionText])
 }
 
 enum QuestionType {

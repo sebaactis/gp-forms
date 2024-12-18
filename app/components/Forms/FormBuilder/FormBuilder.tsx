@@ -21,7 +21,7 @@ export const FormBuilder = () => {
 
     const { questions, typeQuestion, optionLabel, name, setLabelQuestion,
         setTypeQuestion, setOptionLabel, setName, setRadioQuantity,
-        addQuestion, removeQuestion, updateQuestionOptions, removeQuestionOptions, } = useQuestions();
+        addQuestion, removeQuestion, updateQuestionOptions, removeQuestionOptions, labelQuestion } = useQuestions();
 
 
     const createForm = async () => {
@@ -104,6 +104,7 @@ export const FormBuilder = () => {
                     setTypeQuestion={setTypeQuestion}
                     addQuestion={addQuestion}
                     typeQuestion={typeQuestion}
+                    labelQuestion={labelQuestion}
                 />
                 <Separator />
                 <div className={styles.questionsContainer}>

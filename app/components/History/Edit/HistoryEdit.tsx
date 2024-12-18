@@ -22,12 +22,13 @@ const HistoryEdit = ({ evaluation, setEvaluation }: Props) => {
 
     const prepareNewResponses = (responses) => {
         return responses.map((response) => ({
-            questionId: response.questionId,
-            questionText: response.questionText,
-            questionType: response.questionType,
-            answer: response.answer
+          questionId: response.questionId || null, // Puede ser null si la pregunta fue eliminada
+          questionText: response.questionText,    // Texto de la pregunta
+          questionType: response.questionType,    // Tipo de la pregunta
+          optionsJson: response.optionsJson || null, // Opciones en JSON si corresponde
+          answer: response.answer,                // Respuesta del usuario
         }));
-    };
+      };
 
     const handleSubmit = async () => {
         const newResponses = prepareNewResponses(evaluation.responses);

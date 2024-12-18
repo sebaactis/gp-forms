@@ -7,7 +7,7 @@ export default function Hitory() {
         <div>
             <WelcomeBanner 
                 title="Historial"
-                bagde="Sebastian Actis"
+                bagde="Supervisor X"
                 icon={TimerResetIcon}
             />
 

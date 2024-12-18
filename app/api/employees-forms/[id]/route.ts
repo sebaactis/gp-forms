@@ -23,8 +23,6 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   const body = await request.json();
   const { status, newResponses } = body;
 
-  console.log(status, newResponses);
-
   if (!newResponses || !Array.isArray(newResponses)) {
     return NextResponse.json(
       { message: 'Las respuestas no son válidas.' },
@@ -34,57 +32,60 @@ export async function PUT(request: Request, { params }: { params: { id: string }
 
   try {
     await db.$transaction(async (prisma) => {
-      // Obtener todas las respuestas existentes para el formulario
+      // Obtener respuestas existentes
       const existingResponses = await prisma.response.findMany({
         where: { completedFormId: id },
       });
 
       const existingResponsesMap = existingResponses.reduce((map, response) => {
-        map[response.questionId] = response;
+        map[response.questionText] = response;
         return map;
       }, {});
 
-      // Procesar las respuestas nuevas o actualizadas
+      // Procesar respuestas nuevas
       for (const response of newResponses) {
         const { questionId, questionText, questionType, answer } = response;
 
-        if (!questionId || !questionText || !questionType) {
-          throw new Error(`Datos incompletos para la pregunta con ID ${questionId}`);
+        if (!questionText || !questionType) {
+          throw new Error(`Datos incompletos para la respuesta.`);
         }
 
-        // Obtener las opciones de la pregunta original
-        const question = await prisma.question.findUnique({
-          where: { id: questionId },
-          include: { options: true },
-        });
+        let optionsJson = null;
 
-        if (!question) {
-          throw new Error(`La pregunta con ID ${questionId} no existe`);
+        if (questionId) {
+          const question = await prisma.question.findUnique({
+            where: { id: questionId },
+            include: { options: true },
+          });
+
+          optionsJson = question
+            ? JSON.stringify(question.options.map((option) => ({
+              id: option.id,
+              label: option.label,
+            })))
+            : null;
         }
 
-        const optionsJson = JSON.stringify(question.options.map((option) => ({
-          id: option.id,
-          label: option.label,
-        })));
-
-        const existingResponse = existingResponsesMap[questionId];
+        const existingResponse = existingResponsesMap[questionText];
 
         if (existingResponse) {
-          // Actualizar la respuesta existente
+          // Actualizar respuesta existente
           await prisma.response.update({
             where: { id: existingResponse.id },
             data: {
               answer,
-              optionsJson
+              optionsJson: optionsJson ?? existingResponse.optionsJson,
+              questionText,
+              questionType,
             },
           });
         } else {
-          // Crear una nueva respuesta
+          // Crear nueva respuesta
           await prisma.response.create({
             data: {
               id: randomUUID(),
               completedFormId: id,
-              questionId,
+              questionId: questionId || null,
               questionText,
               questionType,
               optionsJson,
@@ -94,7 +95,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
         }
       }
 
-      // Actualizar el formulario
+      // Actualizar estado del formulario
       await prisma.completedForm.update({
         where: { id },
         data: {
@@ -104,7 +105,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
       });
     });
 
-    return NextResponse.json({ message: 'Formulario actualizado/finalizado con éxito' }, { status: 200 });
+    return NextResponse.json({ message: 'Formulario actualizado con éxito' }, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
@@ -113,6 +114,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     );
   }
 }
+
 
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {
 

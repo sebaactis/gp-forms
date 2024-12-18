@@ -74,6 +74,7 @@ const FormMain = () => {
             ) : error ? (
                 <p>Error: {error}</p>
             ) : (
+                forms.length === 0 ? <div className={styles.formsEmpty}>No tienes formularios actualmente 😕</div> :
                 <div className={styles.formMainContainer}>
                     {forms.map((form) => (
                         <FormCard
