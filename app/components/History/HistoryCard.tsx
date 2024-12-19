@@ -44,7 +44,7 @@ const HistoryCard = ({ evaluation, styles, setEvaluations }: Props) => {
     return (
         <div className={styles?.evaluationCard}>
             <p><span className='font-bold'>Evaluado:</span> {evaluation.employee?.nombre} {evaluation.employee?.apellido}</p>
-            <p><span className='font-bold'>Completado el:</span> {new Date(evaluation.completedAt).toLocaleDateString()}</p>
+            <p><span className='font-bold'>Completado el:</span> {evaluation?.completedAt ? new Date(evaluation.completedAt).toLocaleDateString() : 'No completada'}</p>
             <p><span className='font-bold'>Formulario:</span> {evaluation.formTitle}</p>
             <div className={styles.btnContainer}>
 
@@ -64,7 +64,7 @@ const HistoryCard = ({ evaluation, styles, setEvaluations }: Props) => {
                     description="Estás seguro de eliminar esta evaluacion?"
                     onConfirm={() => handleDelete(evaluation.id)}
                 >
-
+                    {""}
                 </DialogWrapper>
             </div>
         </div>

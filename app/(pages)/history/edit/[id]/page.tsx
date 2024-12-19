@@ -10,7 +10,7 @@ import { CompletedFormWithRelations } from '@/types';
 const Page = () => {
 
     const { id } = useParams();
-    const [evaluation, setEvaluation] = useState<CompletedFormWithRelations | undefined>();
+    const [evaluation, setEvaluation] = useState<CompletedFormWithRelations | null>(null);
 
     useEffect(() => {
         const getEvaluation = async () => {

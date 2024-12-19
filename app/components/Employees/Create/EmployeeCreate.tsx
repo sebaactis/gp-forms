@@ -11,7 +11,6 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-// Esquema de validación con Yup
 const schema = yup.object().shape({
   legajo: yup.string().required("El número de legajo es obligatorio"),
   email: yup
@@ -26,11 +25,17 @@ const schema = yup.object().shape({
   userId: yup.string().required("Debe seleccionar un supervisor"),
 });
 
+interface Boss {
+  id: string;
+  nombre: string;
+  apellido: string;
+}
+
 const EmployeeCreate = () => {
   const { toast } = useToast();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [bosses, setBosses] = useState([]);
+  const [bosses, setBosses] = useState<Boss[]>([]);
 
   const {
     register,

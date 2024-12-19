@@ -1,16 +1,23 @@
-import { CompletedForm, Employee, Form, Question } from "@prisma/client";
+import { CompletedForm, Employee, Form, Question, Option, Response } from "@prisma/client";
 
 export interface CompletedFormWithRelations extends CompletedForm {
     employee: Employee | null;
     form: Form | null;
+    responses: Response[];
 }
 
-export interface EmployeeWithRelations extends Employee {
-    completedForm: CompletedFormWithRelations | null;
-    form: Form | null;
-    
+export interface QuestionsWithRelations extends Question {
+    options: Option[]
 }
 
 export interface FormWithRelations extends Form {
-    questions: Question[] | null
+    questions: QuestionsWithRelations[] | null
 }
+
+
+export interface EmployeeWithRelations extends Employee {
+    CompletedForm: CompletedFormWithRelations | null;
+    form: FormWithRelations | null;
+}
+
+

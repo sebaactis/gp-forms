@@ -10,8 +10,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 interface Props {
-    evaluation: CompletedFormWithRelations | undefined
-    setEvaluation: React.Dispatch<React.SetStateAction<CompletedFormWithRelations | undefined>>;
+    evaluation: CompletedFormWithRelations | null
+    setEvaluation: React.Dispatch<React.SetStateAction<CompletedFormWithRelations | null>>;
 }
 
 const HistoryEdit = ({ evaluation, setEvaluation }: Props) => {
@@ -22,16 +22,16 @@ const HistoryEdit = ({ evaluation, setEvaluation }: Props) => {
 
     const prepareNewResponses = (responses) => {
         return responses.map((response) => ({
-          questionId: response.questionId || null, // Puede ser null si la pregunta fue eliminada
-          questionText: response.questionText,    // Texto de la pregunta
-          questionType: response.questionType,    // Tipo de la pregunta
-          optionsJson: response.optionsJson || null, // Opciones en JSON si corresponde
-          answer: response.answer,                // Respuesta del usuario
+            questionId: response.questionId || null,
+            questionText: response.questionText,
+            questionType: response.questionType,
+            optionsJson: response.optionsJson || null,
+            answer: response.answer,
         }));
-      };
+    };
 
     const handleSubmit = async () => {
-        const newResponses = prepareNewResponses(evaluation.responses);
+        const newResponses = prepareNewResponses(evaluation?.responses);
 
         const payload = {
             status: "COMPLETADO",
@@ -41,7 +41,7 @@ const HistoryEdit = ({ evaluation, setEvaluation }: Props) => {
         setLoading(true);
 
         try {
-            const response = await fetch(`/api/employees-forms/${evaluation.id}`, {
+            const response = await fetch(`/api/employees-forms/${evaluation?.id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -77,36 +77,41 @@ const HistoryEdit = ({ evaluation, setEvaluation }: Props) => {
     };
 
     const handleChange = (id, value, type, isChecked = false) => {
-        setEvaluation((prev) => ({
-            ...prev,
-            responses: prev.responses.map((response) => {
-                if (response.id !== id) return response;
+        setEvaluation((prev) => {
+            if (!prev) {
+                return null;
+            }
 
-                switch (type) {
-                    case "text":
-                        return { ...response, answer: value };
+            return {
+                ...prev,
+                responses: prev.responses.map((response) => {
+                    if (response.id !== id) return response;
 
-                    case "checkbox": {
-                        const currentAnswers = response.answer ? response.answer.split(', ') : [];
+                    switch (type) {
+                        case "text":
+                            return { ...response, answer: value };
 
-                        const updatedAnswers = isChecked
-                            ? [...currentAnswers, value]
-                            : currentAnswers.filter((item) => item !== value);
+                        case "checkbox": {
+                            const currentAnswers = response.answer ? response.answer.split(', ') : [];
+                            const updatedAnswers = isChecked
+                                ? [...currentAnswers, value]
+                                : currentAnswers.filter((item) => item !== value);
 
-                        return {
-                            ...response,
-                            answer: updatedAnswers.join(', '),
-                        };
+                            return {
+                                ...response,
+                                answer: updatedAnswers.join(', '),
+                            };
+                        }
+
+                        case "radio":
+                            return { ...response, answer: value };
+
+                        default:
+                            return response;
                     }
-
-                    case "radio":
-                        return { ...response, answer: value };
-
-                    default:
-                        return response;
-                }
-            }),
-        }));
+                }),
+            };
+        });
     };
 
     return (
@@ -117,7 +122,7 @@ const HistoryEdit = ({ evaluation, setEvaluation }: Props) => {
                 <h3>
                     <span className={styles.titleInfo}>Evaluacion de: </span>
                     {evaluation?.employee?.nombre} {evaluation?.employee?.apellido}</h3>
-                <p><span className={styles.titleInfo}>Completada el dia:</span>  {new Date(evaluation?.completedAt).toLocaleDateString()}</p>
+                <p><span className={styles.titleInfo}>Completada el dia:</span>  {new Date(evaluation?.completedAt ?? new Date()).toLocaleDateString()}</p>
                 <p><span className={styles.titleInfo}>Formulario:</span>  {evaluation?.formTitle}</p>
                 <p><span className={styles.titleInfo}>Cantidad de preguntas respondidas:</span>  {evaluation?.responses.length}</p>
             </div>
@@ -143,7 +148,7 @@ const HistoryEdit = ({ evaluation, setEvaluation }: Props) => {
                     }
 
                     if (response.questionType === "checkbox") {
-                        const options = JSON.parse(response.optionsJson);
+                        const options = JSON.parse(response.optionsJson || '[]');
                         return (
                             <div className={styles.inputCheckboxContainer} key={response.id}>
                                 <CheckCircle />
@@ -165,7 +170,7 @@ const HistoryEdit = ({ evaluation, setEvaluation }: Props) => {
                     }
 
                     if (response.questionType === "radio") {
-                        const options = JSON.parse(response.optionsJson);
+                        const options = JSON.parse(response.optionsJson || '[]');
                         return (
                             <div className={styles.inputRadioContainer} key={response.id}>
                                 <MousePointer2 />

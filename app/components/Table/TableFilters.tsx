@@ -6,7 +6,7 @@ export const TableFilters = ({ headers, styles }) => {
     const [selectedHeader, setSelectedHeader] = useState<string | null>(null)
     const [filterValue, setFilterValue] = useState<string>("")
 
-    const handleFilterChange = (headerId: string, value: string) => {
+    const handleFilterChange = (headerId: string | null, value: string) => {
         const header = headers.find(header => header.id === headerId)
         
         if (header) {

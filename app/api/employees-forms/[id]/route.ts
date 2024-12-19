@@ -64,7 +64,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
           throw new Error(`Datos incompletos para la respuesta.`);
         }
 
-        let optionsJson = null;
+        let optionsJson: string | null = "";
 
         if (questionId) {
           const question = await db.question.findUnique({

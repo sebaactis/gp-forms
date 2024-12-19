@@ -12,7 +12,7 @@ const EvaluationCard = ({ evaluation, styles }: EvaluationsProps) => {
     return (
         <div className={styles.cardContainer}>
             <div className={styles.nameContainer}>
-                <p className={styles.name}>{evaluation.employee.nombre} {evaluation.employee.apellido} -</p>
+                <p className={styles.name}>{evaluation.employee?.nombre} {evaluation.employee?.apellido} -</p>
 
                 <p className={styles.legacy}>Legajo {evaluation.employee?.legajo}</p>
             </div>
@@ -28,14 +28,14 @@ const EvaluationCard = ({ evaluation, styles }: EvaluationsProps) => {
                     <span className={styles.formNameTitle}>
                         Gerencia:
                     </span>
-                    {evaluation.employee.gerencia}
+                    {evaluation.employee?.gerencia}
                 </p>
 
                 <p className={styles.formName}>
                     <span className={styles.formNameTitle}>
                         Puesto:
                     </span>
-                    {evaluation.employee.puesto}
+                    {evaluation.employee?.puesto}
                 </p>
 
                 <p className={styles.formName}>
@@ -59,7 +59,7 @@ const EvaluationCard = ({ evaluation, styles }: EvaluationsProps) => {
                     {new Date(evaluation.endDate).toLocaleDateString("es-ES")}
                 </p>
             </div>
-            <Link className={styles.btnCompleteLink} href={`evaluations/${evaluation.employee.id}/form/${evaluation.id}`}>
+            <Link className={styles.btnCompleteLink} href={`evaluations/${evaluation.employee?.id}/form/${evaluation.id}`}>
                 <Button className={styles.btnComplete}>Completar</Button>
             </Link>
 

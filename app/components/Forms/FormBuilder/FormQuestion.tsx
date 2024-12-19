@@ -2,12 +2,14 @@ import { Button } from "@/components/ui/button"
 import React from "react"
 import { ArrowRightSquareIcon, Trash2 } from "lucide-react"
 import { FormQuestionType } from "@/hooks/useQuestions"
+import { Option } from "@prisma/client";
 
 interface Props {
     question: FormQuestionType;
     styles: Record<string, string>;
     setOptionLabel: React.Dispatch<React.SetStateAction<string>>;
-    updateQuestionOptions: (id: number, optionValue?: string, type: string) => void;
+    updateQuestionOptions: (id: number, optionValue?: string | null, type?: string) => void;
+    removeQuestion: (questionId: number) => void;
     removeQuestionOptions: (questionId: number, optionId: number) => void;
     optionLabel: string;
     setRadioQuantity: React.Dispatch<React.SetStateAction<number>>;
@@ -35,7 +37,7 @@ export const FormQuestion = ({ question, styles, setOptionLabel, updateQuestionO
                             </Button>
                         </div>
                         <ul className={styles.checkboxItem}>
-                            {question.options.map((option) => (
+                            {question.options && question.options.map((option: Option) => (
                                 <li key={option.id}>
                                     <label className={styles.labelContainer}>
                                         <input className={styles.checkboxLabelItem} type="checkbox" value={option.label} disabled />
@@ -53,7 +55,7 @@ export const FormQuestion = ({ question, styles, setOptionLabel, updateQuestionO
                         <>
                             <label>
                                 Cantidad de opciones
-                                <input className={styles.radioInput} type="text" onChange={(e) => setRadioQuantity(e.target.value)} />
+                                <input className={styles.radioInput} type="text" onChange={(e) => setRadioQuantity(Number(e.target.value))} />
                             </label>
                             <Button className={styles.addOptionBtn} onClick={() => updateQuestionOptions(question.id, null, question.type)}>
                                 Confirmar

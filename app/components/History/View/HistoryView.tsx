@@ -17,7 +17,7 @@ const HistoryView = ({ evaluation }: Props) => {
                 <h3>
                     <span className={styles.titleInfo}>Evaluacion de: </span>
                     {evaluation?.employee?.nombre} {evaluation?.employee?.apellido}</h3>
-                <p><span className={styles.titleInfo}>Completada el dia:</span>  {new Date(evaluation?.completedAt).toLocaleDateString()}</p>
+                <p><span className={styles.titleInfo}>Completada el dia:</span>  {evaluation?.completedAt ? new Date(evaluation.completedAt).toLocaleDateString() : 'No completada'}</p>
                 <p><span className={styles.titleInfo}>Formulario:</span>  {evaluation?.formTitle}</p>
                 <p><span className={styles.titleInfo}>Cantidad de preguntas respondidas:</span>  {evaluation?.responses.length}</p>
             </div>
@@ -36,7 +36,7 @@ const HistoryView = ({ evaluation }: Props) => {
                 ))}
             </div>
 
-            
+
 
         </div>
     )

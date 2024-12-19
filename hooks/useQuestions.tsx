@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useToast } from "./use-toast";
+import { Option } from "@prisma/client";
 
 export interface FormQuestionType {
     id: number;
     type: string;
     label: string;
-    options: Array<string>;
+    options: Option[];
 }
 
 export const useQuestions = () => {
@@ -32,7 +33,7 @@ export const useQuestions = () => {
         setLabelQuestion("")
         setTypeQuestion("text")
         setQuestions([...questions, { id: questions.length + 1, type: typeQuestion, label: labelQuestion, options: [] }])
-        
+
     }
 
     const removeQuestion = (id: number) => {
@@ -40,7 +41,7 @@ export const useQuestions = () => {
         setQuestions(newQuestions);
     }
 
-    const updateQuestionOptions = (id: number, optionValue?: string, type: string) => {
+    const updateQuestionOptions = (id: number, optionValue?: string | null, type?: string) => {
 
         if (type === "checkbox") {
             if (!optionValue) {
@@ -52,7 +53,17 @@ export const useQuestions = () => {
                 return;
             }
             setQuestions(
-                questions.map((q) => q.id === id ? { ...q, options: [...q.options, { id: q.options.length + 1, label: optionValue }] } : q)
+                questions.map((q) =>
+                    q.id === id
+                        ? {
+                            ...q,
+                            options: [
+                                ...q.options,
+                                { id: q.options.length + 1, label: optionValue, questionId: q.id }
+                            ]
+                        }
+                        : q
+                )
             )
         }
 
@@ -68,12 +79,19 @@ export const useQuestions = () => {
             }
 
             setQuestions(
-                questions.map((q) => q.id === id ? {
-                    ...q, options: [...Array.from({ length: radioQuantity }, (_, index) => ({
-                        id: q.options.length + index + 1,
-                        label: (index + 1).toString()
-                    }))],
-                } : q
+                questions.map((q) =>
+                    q.id === id
+                        ? {
+                            ...q,
+                            options: [
+                                ...Array.from({ length: radioQuantity }, (_, index) => ({
+                                    id: index + 1,
+                                    label: `${index + 1}`,
+                                    questionId: q.id,
+                                }))
+                            ]
+                        }
+                        : q
                 )
             );
         }

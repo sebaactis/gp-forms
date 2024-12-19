@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import styles from './evaluation-complete.module.css'
 import { useEffect, useState } from 'react'
-import { FormStatus } from '@prisma/client'
+import { FormStatus, Response } from '@prisma/client'
 import { EmployeeWithRelations } from '@/types'
 import { useToast } from '@/hooks/use-toast'
 import { useRouter } from 'next/navigation'
@@ -10,13 +10,18 @@ interface Props {
     empleado: EmployeeWithRelations;
     formId: string | string[] | undefined;
 }
+
+interface FormState {
+    newResponses: Response[];
+    status: FormStatus;
+}
 const EvaluationComplete = ({ empleado, formId }: Props) => {
     const { toast } = useToast();
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
 
-    const [form, setForm] = useState({
+    const [form, setForm] = useState<FormState>({
         newResponses: [],
         status: FormStatus.PENDIENTE,
     });
@@ -26,7 +31,7 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
             let updatedResponses;
 
             const answerCheck = prevForm.newResponses.find(
-                (response) => response.questionId === questionId
+                (response: Response) => response.questionId === questionId
             );
 
             if (answerCheck) {
@@ -104,7 +109,7 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
         setLoading(true);
 
         const isCompleted =
-            empleado.form?.questions.length === form.newResponses.length &&
+            empleado.form?.questions?.length === form.newResponses.length &&
             form.newResponses.every(
                 (response) => response.answer && response.answer.trim() !== ""
             );
@@ -148,7 +153,7 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
 
     return (
         <div className={styles.container}>
-            {empleado.form?.questions.map((question, index) => (
+            {empleado.form?.questions?.map((question, index) => (
                 <div className={styles.question} key={question.id}>
                     <p className={styles.questionLabel}>
                         <span className={styles.questionLabelIndex}>{index + 1}.</span>{" "}
@@ -239,7 +244,7 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
             <Button className={styles.btnEnviar} onClick={handleSubmit}>
                 {loading ? (
                     <PulseLoader size={10} color="white" />
-                ) : empleado.form?.questions.length === form.newResponses.length &&
+                ) : empleado.form?.questions?.length === form.newResponses.length &&
                     form.newResponses.every(
                         (response) => response.answer && response.answer.trim() !== ""
                     ) ? (

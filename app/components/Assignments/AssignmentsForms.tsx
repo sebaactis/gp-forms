@@ -6,16 +6,24 @@ import styles from './assignments.module.css'
 import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import PulseLoader from 'react-spinners/PulseLoader';
+import { Employee, Form } from '@prisma/client';
+
+interface formDataState {
+    forms: Form[];
+    employees: Employee[];
+    selectedForm: string | null;
+    selectedEmployee: string | null;
+}
 
 const AssignmentsForms = () => {
     const { toast } = useToast()
     const [loading, setLoading] = useState(false);
 
-    const [formAssignData, setFormAssignData] = useState({
+    const [formAssignData, setFormAssignData] = useState<formDataState>({
         forms: [],
         employees: [],
         selectedForm: null,
-        selectedEmployee: null
+        selectedEmployee: null,
     });
 
     const assignRelationForm = async () => {

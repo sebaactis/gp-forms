@@ -3,7 +3,7 @@ import styles from './welcome.module.css'
 
 interface Props {
     title: string;
-    icon: ComponentType;
+    icon: ComponentType<{ className?: string }>;
     bagde: string;
 }
 

@@ -1,14 +1,15 @@
 import { Button } from '@/components/ui/button'
 import { Table, TableHead, TableHeader, TableRow, TableBody, TableCell } from '@/components/ui/table'
 import { EmployeeWithRelations } from '@/types'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { PencilIcon, Trash2 } from "lucide-react"
 import Link from 'next/link'
 import { useToast } from '@/hooks/use-toast'
 import DialogWrapper from '../Globals/Modal/DialogWrapper'
+import { Table as TableType } from "@tanstack/react-table";
 
 interface Props {
-    tableData: EmployeeWithRelations[]
+    tableData: TableType<EmployeeWithRelations>;
     styles: Record<string, string>
     setEmpleados: React.Dispatch<React.SetStateAction<EmployeeWithRelations[]>>
 }
@@ -59,7 +60,9 @@ const EmployeesTable = ({ tableData, styles, setEmpleados }: Props) => {
                                         className={styles.tableHeaderItem}
                                         onClick={header.column.getToggleSortingHandler()}
                                     >
-                                        {header.column.columnDef.header}
+                                        {typeof header.column.columnDef.header === "function"
+                                            ? header.column.columnDef.header(header.getContext())
+                                            : header.column.columnDef.header}
                                         {header.column.getIsSorted() === "asc" ? " 🔼" : header.column.getIsSorted() === "desc" ? " 🔽" : ""}
                                     </TableHead>
                                 ))}
@@ -73,12 +76,12 @@ const EmployeesTable = ({ tableData, styles, setEmpleados }: Props) => {
                         );
                     })}
             </TableHeader>
-            
+
             <TableBody className={styles.tableBody}>
                 {tableData.getRowModel().rows.map((row) => (
                     <TableRow key={row.id}>
                         {row.getVisibleCells().map(cell => (
-                            <TableCell key={cell.id} className={styles.tableBodyItem}>{cell.renderValue()}</TableCell>
+                            <TableCell key={cell.id} className={styles.tableBodyItem}>{cell.renderValue() as ReactNode}</TableCell>
                         ))}
                         <TableCell>
                             <div className={styles.btnContainer}>
@@ -96,7 +99,7 @@ const EmployeesTable = ({ tableData, styles, setEmpleados }: Props) => {
                                     description="Estás seguro de eliminar este empleado?"
                                     onConfirm={() => handleDelete(row.original.id)}
                                 >
-
+                                    {""}
                                 </DialogWrapper>
                             </div>
                         </TableCell>

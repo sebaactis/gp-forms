@@ -14,7 +14,7 @@ const FormMain = () => {
     const { toast } = useToast();
     const [forms, setForms] = useState<FormWithRelations[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string>(null);
+    const [error, setError] = useState<string | null>(null);
 
     const fetchForms = async () => {
         try {
@@ -25,7 +25,12 @@ const FormMain = () => {
             const data = await response.json();
             setForms(data);
         } catch (error) {
-            setError(error.message);
+            if (error instanceof Error) {
+                setError(error.message);
+            } else {
+                setError("Error desconocido")
+            }
+
         } finally {
             setIsLoading(false);
         }
@@ -75,17 +80,17 @@ const FormMain = () => {
                 <p>Error: {error}</p>
             ) : (
                 forms.length === 0 ? <div className={styles.formsEmpty}>No tienes formularios actualmente 😕</div> :
-                <div className={styles.formMainContainer}>
-                    {forms.map((form) => (
-                        <FormCard
-                            key={form.id}
-                            id={form.id}
-                            title={form.name}
-                            questions={form.questions}
-                            onDelete={deleteForm}
-                        />
-                    ))}
-                </div>
+                    <div className={styles.formMainContainer}>
+                        {forms.map((form) => (
+                            <FormCard
+                                key={form.id}
+                                id={form.id}
+                                title={form.name}
+                                questions={form.questions}
+                                onDelete={deleteForm}
+                            />
+                        ))}
+                    </div>
             )}
         </>
     );

@@ -1,9 +1,9 @@
-import { Question } from '@prisma/client'
 import styles from './form-view.module.css'
 import { ArrowRightSquareIcon } from "lucide-react"
+import { QuestionsWithRelations } from '@/types'
 
 interface Props {
-    question: Question
+    question: QuestionsWithRelations
 }
 
 const FormView = ({ question }: Props) => {

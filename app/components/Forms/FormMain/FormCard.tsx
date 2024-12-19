@@ -3,19 +3,19 @@ import styles from "./form-main.module.css"
 import { Trash2, Eye, Pencil } from "lucide-react"
 import Link from 'next/link';
 import DialogWrapper from '../../Globals/Modal/DialogWrapper';
-import { Question } from '@prisma/client';
 import { FileWarningIcon } from "lucide-react"
+import { QuestionsWithRelations } from '@/types';
 
 interface Props {
     id: string;
     title: string;
-    questions: Question[];
+    questions: QuestionsWithRelations[] | null;
     onDelete: (id: string) => void;
 }
 
 const FormCard = ({ id, title, questions, onDelete }: Props) => {
 
-    const quantity = questions.length;
+    const quantity = questions?.length;
 
 
     return (

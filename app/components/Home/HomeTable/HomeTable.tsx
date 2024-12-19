@@ -6,10 +6,10 @@ import { getCoreRowModel, useReactTable, getPaginationRowModel, getSortedRowMode
 import { TableComponent } from "./TableComponent"
 import PaginationComponent from "../../Table/PaginationComponent"
 import { TableFilters } from "../../Table/TableFilters"
-import { Employee } from "@prisma/client"
+import { EmployeeWithRelations } from "@/types"
 
 export default function HomeTable() {
-    const [empleados, setEmpleados] = useState<Employee[]>([]);
+    const [empleados, setEmpleados] = useState<EmployeeWithRelations[]>([]);
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
         pageSize: 10
@@ -17,7 +17,7 @@ export default function HomeTable() {
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
-    const columns: ColumnDef[] = [
+    const columns: ColumnDef<EmployeeWithRelations>[] = [
         { header: "Nro Legajo", accessorKey: "legajo", },
         { header: "Correo", accessorKey: "email" },
         { header: "Nombre", accessorKey: "nombre" },
@@ -25,12 +25,20 @@ export default function HomeTable() {
         { header: "Gerencia", accessorKey: "gerencia" },
         { header: "Puesto", accessorKey: "puesto" },
         { header: "Seniority", accessorKey: "seniority" },
-        { header: "Estado", accessorFn: (row) => row.CompletedForm[0]?.status || "No asignado", },
         {
-            header: "Fecha Limite", accessorFn: (row) => {
-                const endDate = row.CompletedForm[0]?.endDate;
+            header: "Estado",
+            accessorFn: (row) => {
+                return row.CompletedForm
+                    ? row.CompletedForm[0]?.status || "No asignado"
+                    : "No asignado";
+            }
+        },
+        {
+            header: "Fecha Limite",
+            accessorFn: (row) => {
+                const endDate = row.CompletedForm ? row.CompletedForm[0]?.endDate : null;
                 return endDate ? new Date(endDate).toLocaleDateString("es-ES") : "No asignado";
-            },
+            }
         }
     ]
 

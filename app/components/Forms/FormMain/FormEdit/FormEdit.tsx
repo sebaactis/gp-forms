@@ -21,13 +21,14 @@ export const FormEditor = ({ existingForm }: Props) => {
     const { id } = useParams();
     const router = useRouter()
     const { toast } = useToast()
-    const [loading, setLoading] = useState();
+    const [loading, setLoading] = useState<boolean>(false);
 
     const {
         questions,
         typeQuestion,
         optionLabel,
         name,
+        labelQuestion,
         setQuestions,
         setLabelQuestion,
         setTypeQuestion,
@@ -88,7 +89,7 @@ export const FormEditor = ({ existingForm }: Props) => {
     useEffect(() => {
         if (existingForm) {
             setName(existingForm.name);
-            setQuestions(existingForm.questions);
+            setQuestions(existingForm.questions || []);
         }
     }, [existingForm, setName, setQuestions]);
 
@@ -111,6 +112,7 @@ export const FormEditor = ({ existingForm }: Props) => {
                     setTypeQuestion={setTypeQuestion}
                     addQuestion={addQuestion}
                     typeQuestion={typeQuestion}
+                    labelQuestion={labelQuestion}
                 />
                 <Separator />
                 <div className={styles.questionsContainer}>
