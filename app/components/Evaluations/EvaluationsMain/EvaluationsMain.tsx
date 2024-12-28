@@ -8,7 +8,7 @@ const EvaluationsMain = () => {
         <div>
             <WelcomeBanner
                 title="Evaluaciones"
-                bagde="Supervisor X"
+                bagde="Testing User"
                 icon={LucideTextSelection}
             />
 

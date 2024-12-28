@@ -52,7 +52,7 @@ const Evaluation = () => {
         <div>
             <WelcomeBanner
                 title={`Evaluacion de ${empleado.nombre} ${empleado.apellido}`}
-                bagde="Supervisor X"
+                bagde="Testing User"
                 icon={CheckSquareIcon}
             />
             <EvaluationComplete empleado={empleado} formId={formId} />

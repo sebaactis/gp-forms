@@ -19,15 +19,20 @@
 
 .nameContainer {
     display: flex;
-    gap: 0.3rem;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
-    background-color: rgb(0, 112, 112);
+    background-color: #007070;
     width: 100%;
-    padding: 0.5rem 0;
     font-weight: bold;
+    padding: 0.5rem 0;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
+    gap: 0.6rem
+}
+
+.nameEmployeeContainer {
+    display: flex;
+    gap: 0.3rem;
 }
 
 .infoContainer {
@@ -66,6 +71,20 @@
     margin-top: 7rem;
     font-size: 1.2rem;
     font-weight: bold;
+}
+
+.iconTrash {
+    right: 0;
+    margin-right: 1rem;
+    background-color: #007070;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.iconTrash:hover {
+    background-color: transparent;
+    color: #ff4ce1a5;
+    
 }
 
 @media (width < 1367px) {

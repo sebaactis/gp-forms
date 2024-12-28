@@ -8,7 +8,7 @@ export default function Home() {
         <section className={styles.mainContainer}>
             <WelcomeBanner
                 title="Inicio"
-                bagde="Supervisor X"
+                bagde="Testing User"
                 icon={MenuSquare}
             />
 

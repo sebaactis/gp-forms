@@ -50,7 +50,7 @@ const Page = () => {
         <div>
             <WelcomeBanner
                 title="Ver evaluacion"
-                bagde='Supervisor X'
+                bagde="Testing User"
                 icon={LucideEye}
             />
             <HistoryView evaluation={evaluation} />

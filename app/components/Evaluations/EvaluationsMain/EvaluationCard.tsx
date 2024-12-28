@@ -1,20 +1,38 @@
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { CompletedFormWithRelations } from "@/types"
+import { Trash2 } from "lucide-react"
 import Link from "next/link"
+import DialogWrapper from "../../Globals/Modal/DialogWrapper"
 
 interface EvaluationsProps {
     evaluation: CompletedFormWithRelations
     styles: Record<string, string>
+    handleDelete: () => void
 }
-const EvaluationCard = ({ evaluation, styles }: EvaluationsProps) => {
+const EvaluationCard = ({ evaluation, styles, handleDelete }: EvaluationsProps) => {
+
+
 
     return (
         <div className={styles.cardContainer}>
             <div className={styles.nameContainer}>
-                <p className={styles.name}>{evaluation.employee?.nombre} {evaluation.employee?.apellido} -</p>
+                <div className={styles.nameEmployeeContainer}>
+                    <p className={styles.name}>{evaluation.employee?.nombre} {evaluation.employee?.apellido} -</p>
+                    <p className={styles.legacy}>Legajo {evaluation.employee?.legajo}</p>
+                </div>
+                <DialogWrapper
+                    triggerButton={
+                        <button className={styles.iconTrash}>
+                            <Trash2 size={21} />
+                        </button>}
+                    title="Eliminar evaluación"
+                    description="Estás seguro de eliminar esta evaluación?"
+                    onConfirm={() => handleDelete(evaluation.id)}
 
-                <p className={styles.legacy}>Legajo {evaluation.employee?.legajo}</p>
+                >
+                    {null}
+                </DialogWrapper>
             </div>
             <div className={styles.infoContainer}>
                 <p className={styles.formName}>

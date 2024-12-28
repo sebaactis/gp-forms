@@ -5,9 +5,11 @@ import EvaluationCard from "./EvaluationCard";
 import styles from './evaluations.module.css'
 import { CompletedFormWithRelations } from "@/types";
 import ClockLoader from "react-spinners/ClockLoader";
+import { useToast } from "@/hooks/use-toast";
 
 const Evaluations = () => {
 
+    const { toast } = useToast();
     const [evaluations, setEvaluations] = useState<CompletedFormWithRelations[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -30,9 +32,37 @@ const Evaluations = () => {
 
     }
 
+    const handleDelete = async (id) => {
+        try {
+            const response = await fetch(`/api/employees-forms/${id}`, {
+                method: "DELETE",
+            });
+
+            if (!response.ok) {
+                throw new Error("Error al eliminar la evaluación");
+            }
+
+            setEvaluations(prevState => prevState.filter(e => e.id !== id))
+
+            toast({
+                title: 'Evaluación eliminada correctamente!',
+                className: 'bg-green-800',
+                duration: 3000
+            })
+
+        } catch {
+            toast({
+                title: 'Error al intentar eliminar la evaluación!',
+                className: 'bg-red-800',
+                duration: 3000
+            })
+        }
+    }
+
     useEffect(() => {
         getEvaluations();
     }, [])
+
 
 
     if (isLoading) {
@@ -45,12 +75,12 @@ const Evaluations = () => {
         )
     }
 
-    if(evaluations.length <= 0) return <p className={styles.noEvaluations}>No tienes evaluaciones para completar actualmente 😉</p>
+    if (evaluations.length <= 0) return <p className={styles.noEvaluations}>No tienes evaluaciones para completar actualmente 😉</p>
 
     return (
         <div className={styles.container}>
             {evaluations.map(evaluation => (
-                <EvaluationCard key={evaluation.id} evaluation={evaluation} styles={styles} />
+                <EvaluationCard key={evaluation.id} evaluation={evaluation} styles={styles} handleDelete={handleDelete} />
             ))}
         </div>
     )
