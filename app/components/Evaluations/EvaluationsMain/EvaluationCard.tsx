@@ -8,7 +8,7 @@ import DialogWrapper from "../../Globals/Modal/DialogWrapper"
 interface EvaluationsProps {
     evaluation: CompletedFormWithRelations
     styles: Record<string, string>
-    handleDelete: () => void
+    handleDelete: (id: string) => void
 }
 const EvaluationCard = ({ evaluation, styles, handleDelete }: EvaluationsProps) => {
 
