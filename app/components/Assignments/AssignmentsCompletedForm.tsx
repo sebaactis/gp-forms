@@ -12,29 +12,13 @@ const AssignmentsCompletedForm = () => {
     const { toast } = useToast()
     const [employees, setEmployees] = useState<EmployeeWithRelations[] | []>([]);
     const [loading, setLoading] = useState(false);
+    const [fetchLoading, setFetchLoading] = useState(false);
 
     const [completedData, setCompletedData] = useState({
         employeeId: "",
         period: "",
         endDate: ""
     })
-
-    const fetchData = async () => {
-        try {
-            const response = await fetch('/api/employees')
-
-            if (!response.ok) {
-                throw new Error("Error trayendo datos");
-            }
-
-            const data = await response.json()
-
-            setEmployees(data);
-
-        } catch (error) {
-            console.error(error);
-        }
-    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -93,7 +77,28 @@ const AssignmentsCompletedForm = () => {
         }
     }
 
-    useEffect(() => { fetchData() }, [])
+    useEffect(() => {
+        const fetchData = async () => {
+            setFetchLoading(true);
+            try {
+                const response = await fetch('/api/employees')
+
+                if (!response.ok) {
+                    throw new Error("Error trayendo datos");
+                }
+
+                const data = await response.json()
+
+                setEmployees(data);
+
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setFetchLoading(false);
+            }
+        }
+        fetchData()
+    }, [])
 
     return (
         <div className={styles.container}>
@@ -109,12 +114,18 @@ const AssignmentsCompletedForm = () => {
                     className={styles.selectItem}
                     defaultValue=""
                 >
-                    <option value="" disabled>
-                        Selecciona un empleado
-                    </option>
-                    {employees.map((employee) => (
-                        <option key={employee.id} value={employee.id}> {employee.nombre} {employee.apellido}</option>
-                    ))}
+                    {fetchLoading ? (<option>Cargando opciones...</option>)
+                        : (
+                            <>
+                                <option value="" disabled>
+                                    Selecciona un empleado
+                                </option>
+                                {employees.map((employee) => (
+                                    <option key={employee.id} value={employee.id}> {employee.nombre} {employee.apellido}</option>
+                                ))}
+                            </>
+                        )
+                    }
                 </select>
             </article>
 

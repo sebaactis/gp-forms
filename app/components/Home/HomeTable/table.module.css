@@ -23,6 +23,7 @@
     color: var(--text-color)
 }
 
+
 .tableBodyItem {
     color: white;
     height: 2.7rem;
@@ -107,6 +108,7 @@
     position: absolute;
     right: 10px;
 }
+
 
 @media (width < 1367px) {
     .tableHeaderItem {

@@ -7,8 +7,11 @@ import { TableComponent } from "./TableComponent"
 import PaginationComponent from "../../Table/PaginationComponent"
 import { TableFilters } from "../../Table/TableFilters"
 import { EmployeeWithRelations } from "@/types"
+import { useToast } from "@/hooks/use-toast"
+import SyncLoader from "react-spinners/SyncLoader"
 
 export default function HomeTable() {
+    const { toast } = useToast();
     const [empleados, setEmpleados] = useState<EmployeeWithRelations[]>([]);
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
@@ -16,6 +19,7 @@ export default function HomeTable() {
     })
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+    const [loading, setLoading] = useState<boolean>(false);
 
     const columns: ColumnDef<EmployeeWithRelations>[] = [
         { header: "Nro Legajo", accessorKey: "legajo", },
@@ -25,21 +29,6 @@ export default function HomeTable() {
         { header: "Gerencia", accessorKey: "gerencia" },
         { header: "Puesto", accessorKey: "puesto" },
         { header: "Seniority", accessorKey: "seniority" },
-        {
-            header: "Estado",
-            accessorFn: (row) => {
-                return row.CompletedForm
-                    ? row.CompletedForm[0]?.status || "No asignado"
-                    : "No asignado";
-            }
-        },
-        {
-            header: "Fecha Limite",
-            accessorFn: (row) => {
-                const endDate = row.CompletedForm ? row.CompletedForm[0]?.endDate : null;
-                return endDate ? new Date(endDate).toLocaleDateString("es-ES") : "No asignado";
-            }
-        }
     ]
 
     const table = useReactTable({
@@ -60,21 +49,38 @@ export default function HomeTable() {
     })
     const headers = table.getHeaderGroups().flatMap((headerGroup) => headerGroup.headers);
 
-    const getEmployees = async () => {
-        const response = await fetch('/api/employees')
 
-        if (!response.ok) {
-            throw new Error("Error al traer los empleados")
+    useEffect(() => {
+        const getEmployees = async () => {
+            setLoading(true);
+            try {
+                const response = await fetch('/api/employees')
+
+                if (!response.ok) {
+                    throw new Error("Error al traer los empleados")
+                }
+
+                const data = await response.json();
+                setEmpleados(data)
+            } catch {
+                toast({
+                    title: 'Error al traer los empleados',
+                    className: 'bg-red-800',
+                    duration: 3000
+                })
+            } finally {
+                setLoading(false)
+            }
         }
-
-        const data = await response.json();
-        setEmpleados(data)
-    }
-
-    useEffect(() => { getEmployees() }, [])
+        getEmployees();
+    }, [toast])
 
     return (
         <section className={styles.tableSection}>
+            {loading &&
+                <div className="justify-self-center mb-10">
+                    <SyncLoader size={15} margin={4} color="white" />
+                </div>}
             <TableComponent tableData={table} styles={styles} />
             <TableFilters headers={headers} styles={styles} />
             <PaginationComponent tableData={table} styles={styles} />

@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { CompletedFormWithRelations } from "@/types"
-import { Trash2 } from "lucide-react"
 import Link from "next/link"
 import DialogWrapper from "../../Globals/Modal/DialogWrapper"
 
@@ -18,13 +17,12 @@ const EvaluationCard = ({ evaluation, styles, handleDelete }: EvaluationsProps) 
         <div className={styles.cardContainer}>
             <div className={styles.nameContainer}>
                 <div className={styles.nameEmployeeContainer}>
-                    <p className={styles.name}>{evaluation.employee?.nombre} {evaluation.employee?.apellido} -</p>
-                    <p className={styles.legacy}>Legajo {evaluation.employee?.legajo}</p>
+                    <p className={styles.name}>{evaluation.employee?.nombre} {evaluation.employee?.apellido} - Legajo {evaluation.employee?.legajo}</p>
                 </div>
                 <DialogWrapper
                     triggerButton={
                         <button className={styles.iconTrash}>
-                            <Trash2 size={21} />
+                            x
                         </button>}
                     title="Eliminar evaluación"
                     description="Estás seguro de eliminar esta evaluación?"

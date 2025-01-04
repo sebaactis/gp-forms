@@ -18,6 +18,7 @@ interface formDataState {
 const AssignmentsForms = () => {
     const { toast } = useToast()
     const [loading, setLoading] = useState(false);
+    const [fetchLoading, setFetchLoading] = useState(false);
 
     const [formAssignData, setFormAssignData] = useState<formDataState>({
         forms: [],
@@ -77,6 +78,7 @@ const AssignmentsForms = () => {
 
     useEffect(() => {
         const fetchDataForm = async () => {
+            setFetchLoading(true);
             try {
                 const [formsResponse, employeesResponse] = await Promise.all([
                     fetch('/api/forms'),
@@ -102,6 +104,8 @@ const AssignmentsForms = () => {
                     className: 'bg-red-800',
                     duration: 3000
                 })
+            } finally {
+                setFetchLoading(false)
             }
         };
         fetchDataForm();
@@ -123,14 +127,18 @@ const AssignmentsForms = () => {
                     className={styles.selectItem}
                     defaultValue=""
                 >
-                    <option value="" disabled>
-                        Selecciona un empleado
-                    </option>
-                    {formAssignData.employees.map((employee) => (
-                        <option key={employee.id} value={employee.id}> {employee.nombre} {employee.apellido}</option>
-                    ))}
-
-
+                    {fetchLoading ? (
+                        <option> Cargando opciones... </option>
+                    ) : (
+                        <>
+                            <option value="" disabled>
+                                Selecciona un empleado
+                            </option>
+                            {formAssignData.employees.map((employee) => (
+                                <option key={employee.id} value={employee.id}> {employee.nombre} {employee.apellido}</option>
+                            ))}
+                        </>
+                    )}
                 </select>
             </article>
 
@@ -146,12 +154,17 @@ const AssignmentsForms = () => {
                     className={styles.selectItem}
                     defaultValue=""
                 >
-                    <option value="" disabled selected>
-                        Selecciona un formulario
-                    </option>
-                    {formAssignData.forms.map((form) => (
-                        <option key={form.id} value={form.id}> {form.name}</option>
-                    ))}
+                    {fetchLoading ? (<option> Cargando opciones... </option>)
+                        : (
+                            <>
+                                <option value="" disabled selected>
+                                    Selecciona un formulario
+                                </option>
+                                {formAssignData.forms.map((form) => (
+                                    <option key={form.id} value={form.id}> {form.name}</option>
+                                ))}
+                            </>
+                        )}
                 </select>
             </article>
 

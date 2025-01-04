@@ -10,9 +10,12 @@ import PaginationComponent from "../Table/PaginationComponent";
 import Link from "next/link";
 import { UserPlus2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import SyncLoader from "react-spinners/SyncLoader";
+import { useToast } from "@/hooks/use-toast";
 
 const EmployeesMain = () => {
 
+    const { toast } = useToast();
     const [empleados, setEmpleados] = useState<EmployeeWithRelations[]>([]);
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
@@ -20,6 +23,7 @@ const EmployeesMain = () => {
     })
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+    const [loading, setLoading] = useState(false);
 
     const columns: ColumnDef<EmployeeWithRelations>[] = [
         { header: "ID", accessorKey: "id" },
@@ -51,27 +55,45 @@ const EmployeesMain = () => {
 
     const headers = table.getHeaderGroups().flatMap((headerGroup) => headerGroup.headers);
 
-    const getEmployees = async () => {
-        const response = await fetch('/api/employees')
 
-        if (!response.ok) {
-            throw new Error("Error al traer los empleados")
+
+    useEffect(() => {
+        const getEmployees = async () => {
+            setLoading(true);
+            try {
+                const response = await fetch('/api/employees')
+
+                if (!response.ok) {
+                    throw new Error("Error al traer los empleados")
+                }
+
+                const data = await response.json();
+                setEmpleados(data)
+            } catch {
+                toast({
+                    title: 'Error al traer los empleados',
+                    className: 'bg-red-800',
+                    duration: 3000
+                })
+            } finally {
+                setLoading(false);
+            }
+
         }
-
-        const data = await response.json();
-        setEmpleados(data)
-    }
-
-    useEffect(() => { getEmployees() }, [])
+        getEmployees()
+    }, [toast])
 
     return (
         <div className={styles.container}>
             <Button className={styles.addIcon}>
                 <Link className={styles.linkIcon} href="/employees/create">
-                <UserPlus2 color="white"size={20}/> Agregar GPeer 
+                    <UserPlus2 color="white" size={20} /> Agregar GPeer
                 </Link>
             </Button>
-
+            {loading &&
+                <div className="justify-self-center mb-10">
+                    <SyncLoader size={15} margin={4} color="white" />
+                </div>}
             <TableFilters headers={headers} styles={styles} />
             <EmployeesTable tableData={table} styles={styles} setEmpleados={setEmpleados} />
             <PaginationComponent tableData={table} styles={styles} />

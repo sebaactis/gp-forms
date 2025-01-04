@@ -17,6 +17,7 @@ type dataState = {
 const AssignmentsBoss = () => {
     const { toast } = useToast();
     const [loading, setLoading] = useState(false);
+    const [fetchLoading, setFetchLoading] = useState(false);
 
     const [data, setData] = useState<dataState>({
         bosses: [],
@@ -77,6 +78,7 @@ const AssignmentsBoss = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            setFetchLoading(true)
             try {
                 const [bossesResponse, employeesResponse] = await Promise.all([
                     fetch('/api/users'),
@@ -106,6 +108,8 @@ const AssignmentsBoss = () => {
                     className: 'bg-red-800',
                     duration: 3000
                 })
+            } finally {
+                setFetchLoading(false);
             }
         };
         fetchData();
@@ -127,12 +131,23 @@ const AssignmentsBoss = () => {
                     className={styles.selectItem}
                     defaultValue=""
                 >
-                    <option value="" disabled>
-                        Selecciona un jefe
-                    </option>
-                    {data.bosses.map((bosses) => (
-                        <option key={bosses.id} value={bosses.id}> {bosses.nombre} {bosses.apellido}</option>
-                    ))}
+                    {fetchLoading ? (
+                        <option disabled>
+                            Cargando opciones...
+                        </option>
+                    ) : (
+                        <>
+                            <option value="" disabled>
+                                Selecciona un jefe
+                            </option>
+                            {data.bosses.map((boss) => (
+                                <option key={boss.id} value={boss.id}>
+                                    {boss.nombre} {boss.apellido}
+                                </option>
+                            ))}
+                        </>
+                    )}
+
                 </select>
             </article>
 
@@ -148,12 +163,23 @@ const AssignmentsBoss = () => {
                     className={styles.selectItem}
                     defaultValue=""
                 >
-                    <option value="" disabled>
-                        Selecciona un empleado
-                    </option>
-                    {data.employees.map((employee) => (
-                        <option key={employee.id} value={employee.id}> {employee.nombre} {employee.apellido}</option>
-                    ))}
+                    {fetchLoading ? (
+                        <option disabled>
+                            Cargando opciones...
+                        </option>
+                    ) :
+                        (
+                            <>
+                                <option value="" disabled>
+                                    Selecciona un empleado
+                                </option>
+                                {data.employees.map((employee) => (
+                                    <option key={employee.id} value={employee.id}> {employee.nombre} {employee.apellido}</option>
+                                ))}
+                            </>
+                        )
+                    }
+
                 </select>
             </article>
 
