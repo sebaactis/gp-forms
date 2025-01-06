@@ -55,8 +55,6 @@ const EmployeesMain = () => {
 
     const headers = table.getHeaderGroups().flatMap((headerGroup) => headerGroup.headers);
 
-
-
     useEffect(() => {
         const getEmployees = async () => {
             setLoading(true);

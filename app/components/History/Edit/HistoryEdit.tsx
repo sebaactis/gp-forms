@@ -23,10 +23,10 @@ const HistoryEdit = ({ evaluation, setEvaluation }: Props) => {
     const prepareNewResponses = (responses) => {
         return responses.map((response) => ({
             questionId: response.questionId || null,
-            questionText: response.questionText,
-            questionType: response.questionType,
-            optionsJson: response.optionsJson || null,
-            answer: response.answer,
+            questionText: response.questionText || "",
+            questionType: response.questionType || "",
+            optionsJson: response.optionsJson || JSON.stringify([]),
+            answer: response.answer || "",
         }));
     };
 

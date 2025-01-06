@@ -46,7 +46,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 
   try {
     await db.$transaction(async (db) => {
-      // Obtener respuestas existentes
+
       const existingResponses = await db.response.findMany({
         where: { completedFormId: id },
       });
@@ -56,7 +56,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
         return map;
       }, {});
 
-      // Procesar respuestas nuevas
+
       for (const response of newResponses) {
         const { questionId, questionText, questionType, answer } = response;
 
@@ -64,7 +64,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
           throw new Error(`Datos incompletos para la respuesta.`);
         }
 
-        let optionsJson: string | null = "";
+        let optionsJson: string | null = response.optionsJson || null;
 
         if (questionId) {
           const question = await db.question.findUnique({
@@ -77,13 +77,13 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
               id: option.id,
               label: option.label,
             })))
-            : null;
+            : optionsJson;
         }
 
         const existingResponse = existingResponsesMap[questionText];
 
         if (existingResponse) {
-          // Actualizar respuesta existente
+
           await db.response.update({
             where: { id: existingResponse.id },
             data: {
@@ -94,7 +94,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
             },
           });
         } else {
-          // Crear nueva respuesta
+
           await db.response.create({
             data: {
               id: randomUUID(),
@@ -109,7 +109,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
         }
       }
 
-      // Actualizar estado del formulario
+
       await db.completedForm.update({
         where: { id },
         data: {
