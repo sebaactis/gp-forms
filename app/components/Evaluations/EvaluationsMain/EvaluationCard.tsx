@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils"
 import { CompletedFormWithRelations } from "@/types"
 import Link from "next/link"
 import DialogWrapper from "../../Globals/Modal/DialogWrapper"
+import { Trash2 } from "lucide-react"
 
 interface EvaluationsProps {
     evaluation: CompletedFormWithRelations
@@ -19,18 +20,7 @@ const EvaluationCard = ({ evaluation, styles, handleDelete }: EvaluationsProps) 
                 <div className={styles.nameEmployeeContainer}>
                     <p className={styles.name}>{evaluation.employee?.nombre} {evaluation.employee?.apellido} - Legajo {evaluation.employee?.legajo}</p>
                 </div>
-                <DialogWrapper
-                    triggerButton={
-                        <button className={styles.iconTrash}>
-                            x
-                        </button>}
-                    title="Eliminar evaluación"
-                    description="Estás seguro de eliminar esta evaluación?"
-                    onConfirm={() => handleDelete(evaluation.id)}
 
-                >
-                    {null}
-                </DialogWrapper>
             </div>
             <div className={styles.infoContainer}>
                 <p className={styles.formName}>
@@ -75,9 +65,22 @@ const EvaluationCard = ({ evaluation, styles, handleDelete }: EvaluationsProps) 
                     {new Date(evaluation.endDate).toLocaleDateString("es-ES")}
                 </p>
             </div>
-            <Link className={styles.btnCompleteLink} href={`evaluations/${evaluation.employee?.id}/form/${evaluation.id}`}>
-                <Button className={styles.btnComplete}>Completar</Button>
-            </Link>
+            <div className={styles.btnContainer}>
+                <Link className={styles.btnCompleteLink} href={`evaluations/${evaluation.employee?.id}/form/${evaluation.id}`}>
+                    <Button className={styles.btnComplete}>Completar</Button>
+                </Link>
+                <DialogWrapper
+                    triggerButton={
+                        <Button className={styles.btnDelete}><Trash2 /></Button>}
+                    title="Eliminar evaluación"
+                    description="Estás seguro de eliminar esta evaluación?"
+                    onConfirm={() => handleDelete(evaluation.id)}
+
+                >
+                    {null}
+                </DialogWrapper>
+            </div>
+
 
         </div>
     )

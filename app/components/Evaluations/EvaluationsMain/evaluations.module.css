@@ -56,10 +56,19 @@
 .btnComplete {
     background-color: #ff3fdf71;
     color: white;
-    width: 100%;
-    margin-bottom: 0.5rem;
     padding: 0 2rem;
     transition: all 0.2s ease;
+}
+
+.btnDelete {
+    background-color: #ff3f3f71;
+    color: white;
+    transition: all 0.2s ease;
+    border-radius: 15%;
+}
+
+.btnDelete:hover {
+    background-color: #ff191960;
 }
 
 .btnComplete:hover {
@@ -85,7 +94,14 @@
 .iconTrash:hover {
     background-color: transparent;
     color: red;
-    
+}
+
+.btnContainer {
+    display: flex;
+    gap: 0.2rem;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
 }
 
 @media (width < 1367px) {
@@ -98,5 +114,8 @@
         font-size: 1rem;
     }
 
+    .nameEmployeeContainer {
+        justify-content: space-around;
+    }
 
 }

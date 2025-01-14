@@ -5,8 +5,8 @@ import { NextRequest, NextResponse } from "next/server";
 type ResponseType = {
   id: string;
   questionId: number | null;
-  questionText: string;
-  questionType: string;
+  questionText: string | null;
+  questionType: string | null;
   optionsJson: string | null;
   completedFormId: string;
   answer: string;
@@ -52,7 +52,11 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       });
 
       const existingResponsesMap = existingResponses.reduce<Record<string, ResponseType>>((map, response) => {
-        map[response.questionText] = response;
+        if (response.questionText != null) {
+          map[response.questionText] = response;
+        } else {
+          console.warn('response.questionText es nulo o indefinido:', response);
+        }
         return map;
       }, {});
 

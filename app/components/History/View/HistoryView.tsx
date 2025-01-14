@@ -29,7 +29,7 @@ const HistoryView = ({ evaluation }: Props) => {
                 {evaluation?.responses.map((response) => (
                     <div className={styles.responsesInfo} key={response.id}>
                         <FileQuestion size={25} color='#00cea8' />
-                        <p><span className={styles.titleResponse}>Tipo de pregunta:</span> {response.questionType.toUpperCase()}</p>
+                        <p><span className={styles.titleResponse}>Tipo de pregunta:</span> {response.questionType?.toUpperCase()}</p>
                         <p><span className={styles.titleResponse}>Pregunta:</span> {response.questionText}</p>
                         <p><span className={styles.titleResponse}>Respuesta:</span> {response.answer}</p>
                     </div>
