@@ -20,7 +20,13 @@ const FormView = ({ question }: Props) => {
                         {questionTypes[question.type]}
                     </span>
                 </p>
-                <textarea className={styles.questionLabel}>{question.label}</textarea>
+                <textarea
+                    className={styles.questionLabel}
+                    disabled
+                    rows={question.label.split("\n").length || 1}
+                >
+                    {question.label}
+                </textarea>
 
                 {question.type === "checkbox" && (
                     <ul className={styles.checkboxContainer}>

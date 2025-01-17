@@ -124,6 +124,7 @@
     border-radius: 10px;
     font-style: italic;
     width: 95%;
+    height: 15rem;
     max-height: 30rem;
 }
 
@@ -253,5 +254,9 @@
 
     .createBtn {
         width: 25%;
+    }
+
+    .mainContainer {
+        margin: 2rem 0rem;
     }
 }

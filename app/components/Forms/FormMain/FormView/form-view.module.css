@@ -37,6 +37,7 @@
     border-radius: 10px;
     font-style: italic;
     width: 95%;
+    min-height: 15rem;
     max-height: 30rem;
 }
 
