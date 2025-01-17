@@ -13,16 +13,15 @@ export const FormAddQuestion = ({ styles, setLabelQuestion, setTypeQuestion, add
 
     return (
         <div className={styles.createContainer}>
-            <h3 className={styles.subTitle}>Agregar pregunta</h3>
-            <input
-                type="text"
-                placeholder="Ingresa la pregunta aqui..."
+            <h3 className={styles.subTitle}>Agregar pregunta o descripción</h3>
+            <textarea
+                placeholder="Ingresa la pregunta o descripción aqui..."
                 onChange={(e) => setLabelQuestion(e.target.value)}
-                className={styles.inputCreate}
+                className={styles.textAreaCreate}
                 value={labelQuestion}
             />
             <div className={styles.createTypeContainer}>
-                <h3 className={styles.createTypeLabel}>Tipo de pregunta:</h3>
+                <h3 className={styles.createTypeLabel}>Tipo de item:</h3>
                 <select
                     onChange={(e) => setTypeQuestion(e.target.value)}
                     className={styles.selectType}
@@ -31,6 +30,7 @@ export const FormAddQuestion = ({ styles, setLabelQuestion, setTypeQuestion, add
                     <option value="text">Texto</option>
                     <option value="radio">Rango</option>
                     <option value="checkbox">Checkbox</option>
+                    <option value="description">Descripcion</option>
                 </select>
                 <Button className={styles.createBtn} onClick={addQuestion}> Agregar pregunta </Button>
             </div>

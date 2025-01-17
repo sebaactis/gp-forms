@@ -15,13 +15,15 @@ import PulseLoader from "react-spinners/PulseLoader";
 
 export const FormBuilder = () => {
 
+
+
     const router = useRouter()
     const { toast } = useToast()
     const [loading, setLoading] = useState(false)
 
     const { questions, typeQuestion, optionLabel, name, setLabelQuestion,
         setTypeQuestion, setOptionLabel, setName, setRadioQuantity,
-        addQuestion, removeQuestion, updateQuestionOptions, removeQuestionOptions, labelQuestion } = useQuestions();
+        addQuestion, removeQuestion, updateQuestionOptions, removeQuestionOptions, labelQuestion, updateQuestionLabel, radioQuantity } = useQuestions();
 
 
     const createForm = async () => {
@@ -119,6 +121,8 @@ export const FormBuilder = () => {
                             removeQuestion={removeQuestion}
                             optionLabel={optionLabel}
                             setRadioQuantity={setRadioQuantity}
+                            updateQuestionLabel={updateQuestionLabel}
+                            radioQuantity={radioQuantity}
                         />
                     ))}
                 </div>

@@ -27,11 +27,12 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    // Parsear el cuerpo de la solicitud
+
     const body = await request.json();
     const { name, questions } = body;
 
-    // Crear el formulario junto con sus preguntas y opciones
+    console.log(questions)
+
     const createForm = await db.form.create({
       data: {
         name,

@@ -3,6 +3,7 @@ import React from "react"
 import { ArrowRightSquareIcon, Trash2 } from "lucide-react"
 import { FormQuestionType } from "@/hooks/useQuestions"
 import { Option } from "@prisma/client";
+import { questionTypes } from "@/types";
 
 interface Props {
     question: FormQuestionType;
@@ -13,20 +14,33 @@ interface Props {
     removeQuestionOptions: (questionId: number, optionId: number) => void;
     optionLabel: string;
     setRadioQuantity: React.Dispatch<React.SetStateAction<number>>;
+    updateQuestionLabel: (id: number, newLabel: string) => void;
+    radioQuantity: number;
 }
 
-export const FormQuestion = ({ question, styles, setOptionLabel, updateQuestionOptions, removeQuestionOptions, removeQuestion, optionLabel, setRadioQuantity }: Props) => {
+
+export const FormQuestion = ({ question, styles, setOptionLabel, updateQuestionOptions, removeQuestionOptions, removeQuestion, optionLabel, setRadioQuantity, updateQuestionLabel, radioQuantity }: Props) => {
     return (
         <React.Fragment key={question.id}>
             <div className={styles.questionContainer}>
                 <p className={styles.questionType}>
-                    <span className={styles.questionTypeId}><ArrowRightSquareIcon size={25}/></span>
-                    Tipo:
+                    <span className={styles.questionTypeId}><ArrowRightSquareIcon size={25} /></span>
+                    Tipo de item:
                     <span className={styles.questionTypeSpan}>
-                        {question.type}
+                        {questionTypes[question.type]}
                     </span>
                 </p>
-                <p className={styles.questionLabel}>{question.label}</p>
+                <textarea value={question.label} className={styles.questionLabel} onChange={(e) => updateQuestionLabel(question.id, e.target.value)}>
+                    <span className={styles.questionLabelConsign}>Consigna:
+                    </span>
+                    {question.label}
+                </textarea>
+
+                {question.type === "description" &&
+                    <div className={styles.descriptionContainer}>
+
+                    </div>
+                }
 
                 {question.type === "checkbox" &&
                     <div className={styles.checkboxContainer}>
@@ -55,7 +69,7 @@ export const FormQuestion = ({ question, styles, setOptionLabel, updateQuestionO
                         <>
                             <label>
                                 Cantidad de opciones
-                                <input className={styles.radioInput} type="text" onChange={(e) => setRadioQuantity(Number(e.target.value))} />
+                                <input className={styles.radioInput} value={radioQuantity || question.options.length}  type="text" onChange={(e) => setRadioQuantity(Number(e.target.value))} />
                             </label>
                             <Button className={styles.addOptionBtn} onClick={() => updateQuestionOptions(question.id, null, question.type)}>
                                 Confirmar

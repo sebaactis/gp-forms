@@ -15,7 +15,7 @@ interface Props {
 
 const FormCard = ({ id, title, questions, onDelete }: Props) => {
 
-    const quantity = questions?.length;
+    const quantity = questions?.filter(question => question.type !== "description").length;
 
 
     return (

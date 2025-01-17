@@ -9,6 +9,8 @@ interface Props {
 
 const HistoryView = ({ evaluation }: Props) => {
 
+    console.log(evaluation)
+
     return (
         <div className={styles.evaluationContainer}>
 

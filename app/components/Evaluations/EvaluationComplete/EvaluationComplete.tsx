@@ -1,11 +1,12 @@
-import { Button } from '@/components/ui/button'
-import styles from './evaluation-complete.module.css'
-import { useEffect, useState } from 'react'
-import { FormStatus, Response } from '@prisma/client'
-import { EmployeeWithRelations } from '@/types'
-import { useToast } from '@/hooks/use-toast'
-import { useRouter } from 'next/navigation'
-import PulseLoader from 'react-spinners/PulseLoader'
+import { Button } from '@/components/ui/button';
+import styles from './evaluation-complete.module.css';
+import { useEffect, useState } from 'react';
+import { FormStatus, Response } from '@prisma/client';
+import { EmployeeWithRelations } from '@/types';
+import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
+import PulseLoader from 'react-spinners/PulseLoader';
+
 interface Props {
     empleado: EmployeeWithRelations;
     formId: string | string[] | undefined;
@@ -15,6 +16,12 @@ interface FormState {
     newResponses: Response[];
     status: FormStatus;
 }
+
+type QuestionAccumulator = {
+    elements: JSX.Element[];
+    counter: number;
+};
+
 const EvaluationComplete = ({ empleado, formId }: Props) => {
     const { toast } = useToast();
     const router = useRouter();
@@ -26,7 +33,10 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
         status: FormStatus.PENDIENTE,
     });
 
+    console.log(form);
+
     const handleAnswers = (questionId, questionText, questionType, newAnswer, isCheckbox = false) => {
+
         setForm((prevForm) => {
             let updatedResponses;
 
@@ -37,7 +47,6 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
             if (answerCheck) {
                 if (isCheckbox) {
                     const existingAnswers = answerCheck.answer ? answerCheck.answer.split(", ") : [];
-
                     const updatedAnswers = existingAnswers.includes(newAnswer)
                         ? existingAnswers.filter((ans) => ans !== newAnswer)
                         : [...existingAnswers, newAnswer];
@@ -105,17 +114,35 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
         fetchResponses();
     }, [formId]);
 
+
     const handleSubmit = async () => {
         setLoading(true);
 
+        const orderedResponses = empleado.form?.questions?.map((question) => {
+            const existingResponse = form.newResponses.find(
+                (response) => response.questionId === question.id
+            );
+
+            return (
+                existingResponse || {
+                    questionId: question.id,
+                    questionText: question.label,
+                    questionType: question.type,
+                    completedFormId: formId,
+                    answer: question.type === "description" ? "completed" : "",
+                }
+            );
+        }) || [];
+
         const isCompleted =
-            empleado.form?.questions?.length === form.newResponses.length &&
-            form.newResponses.every(
+            empleado.form?.questions?.length === orderedResponses.length &&
+            orderedResponses.every(
                 (response) => response.answer && response.answer.trim() !== ""
             );
 
         const updatedForm = {
             ...form,
+            newResponses: orderedResponses,
             status: isCompleted ? FormStatus.COMPLETADO : FormStatus.EN_PROGRESO,
         };
 
@@ -133,120 +160,146 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
             }
 
             toast({
-                title: "Evaluación enviada con éxito!",
+                title: "Formulario enviado correctamente",
                 duration: 2000,
                 className: "bg-green-600",
             });
 
-            await response.json();
-            setForm(updatedForm);
-
             router.push("/evaluations");
-        } catch {
+        } catch (error) {
+            console.error("Error al enviar la evaluación:", error);
             toast({
-                title: "Error al enviar la evaluación!",
+                title: "Error al enviar la evaluación",
+                description: "Por favor, intenta nuevamente.",
                 duration: 2000,
                 className: "bg-red-300",
             });
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <div className={styles.container}>
-            {empleado.form?.questions?.map((question, index) => (
-                <div className={styles.question} key={question.id}>
-                    <p className={styles.questionLabel}>
-                        <span className={styles.questionLabelIndex}>{index + 1}.</span>{" "}
-                        {question.label}
-                    </p>
+            {empleado.form?.questions?.reduce<QuestionAccumulator>(
+                (acc, question) => {
+                    const questionIndex = acc.counter;
 
-                    {question.type === "text" && (
-                        <input
-                            className={styles.textInput}
-                            type="text"
-                            value={isLoaded ? getAnswerForQuestion(question.id) : ""}
-                            onChange={(e) =>
-                                handleAnswers(
-                                    question.id,
-                                    question.label,
-                                    question.type,
-                                    e.target.value
-                                )
-                            }
-                            disabled={!isLoaded} // Bloquear input hasta que los datos estén listos
-                        />
-                    )}
+                    acc.elements.push(
+                        <div className={styles.question} key={question.id}>
+                            {question.type === "description" ? (
+                                <p className={styles.questionLabel}>
+                                    <span className={styles.questionLabelIndex}></span>{" "}
+                                    {question.label}
+                                </p>
+                            ) : (
+                                <p className={styles.questionLabel}>
+                                    <span className={styles.questionLabelIndex}>
+                                        {questionIndex}.
+                                    </span>{" "}
+                                    {question.label}
+                                </p>
+                            )}
 
-                    {question.type === "checkbox" && (
-                        <ul className={styles.checkboxContainer}>
-                            {question.options.map((option) => (
-                                <li key={option.id}>
-                                    <label className={styles.labelCheckbox}>
-                                        <input
-                                            type="checkbox"
-                                            className={styles.checkboxSquare}
-                                            checked={
-                                                isLoaded &&
-                                                getAnswerForQuestion(question.id)
-                                                    .split(", ")
-                                                    .includes(option.label)
-                                            }
-                                            onChange={() =>
-                                                handleAnswers(
-                                                    question.id,
-                                                    question.label,
-                                                    question.type,
-                                                    option.label,
-                                                    true
-                                                )
-                                            }
-                                            disabled={!isLoaded}
-                                        />
-                                        {option.label}
-                                    </label>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
+                            {question.type === "text" && (
+                                <input
+                                    className={styles.textInput}
+                                    type="text"
+                                    value={isLoaded ? getAnswerForQuestion(question.id) : ""}
+                                    onChange={(e) =>
+                                        handleAnswers(
+                                            question.id,
+                                            question.label,
+                                            question.type,
+                                            e.target.value
+                                        )
+                                    }
+                                    disabled={!isLoaded}
+                                />
+                            )}
 
-                    {question.type === "radio" && (
-                        <ul className={styles.radioContainer}>
-                            {question.options.map((option) => (
-                                <li key={option.id}>
-                                    <label className={styles.labelRadio}>
-                                        <input
-                                            className={styles.radioItem}
-                                            type="radio"
-                                            name={`question_${question.id}`}
-                                            checked={
-                                                isLoaded &&
-                                                getAnswerForQuestion(question.id) === option.label
-                                            }
-                                            onChange={() =>
-                                                handleAnswers(
-                                                    question.id,
-                                                    question.label,
-                                                    question.type,
-                                                    option.label
-                                                )
-                                            }
-                                            disabled={!isLoaded}
-                                        />
-                                        {option.label}
-                                    </label>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
-                </div>
-            ))}
+                            {question.type === "checkbox" && (
+                                <ul className={styles.checkboxContainer}>
+                                    {question.options.map((option) => (
+                                        <li key={option.id}>
+                                            <label className={styles.labelCheckbox}>
+                                                <input
+                                                    type="checkbox"
+                                                    className={styles.checkboxSquare}
+                                                    checked={
+                                                        isLoaded &&
+                                                        getAnswerForQuestion(question.id)
+                                                            .split(", ")
+                                                            .includes(option.label)
+                                                    }
+                                                    onChange={() =>
+                                                        handleAnswers(
+                                                            question.id,
+                                                            question.label,
+                                                            question.type,
+                                                            option.label,
+                                                            true
+                                                        )
+                                                    }
+                                                    disabled={!isLoaded}
+                                                />
+                                                {option.label}
+                                            </label>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
 
-            <Button className={styles.btnEnviar} onClick={handleSubmit}>
+                            {question.type === "radio" && (
+                                <ul className={styles.radioContainer}>
+                                    {question.options.map((option) => (
+                                        <li key={option.id}>
+                                            <label className={styles.labelRadio}>
+                                                <input
+                                                    className={styles.radioItem}
+                                                    type="radio"
+                                                    name={`question_${question.id}`}
+                                                    checked={
+                                                        isLoaded &&
+                                                        getAnswerForQuestion(question.id) === option.label
+                                                    }
+                                                    onChange={() =>
+                                                        handleAnswers(
+                                                            question.id,
+                                                            question.label,
+                                                            question.type,
+                                                            option.label
+                                                        )
+                                                    }
+                                                    disabled={!isLoaded}
+                                                />
+                                                {option.label}
+                                            </label>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </div>
+                    );
+
+                    if (question.type !== "description") {
+                        acc.counter++;
+                    }
+
+                    return acc;
+                },
+                { elements: [], counter: 1 }
+            ).elements}
+
+            <Button className={styles.btnEnviar} onClick={handleSubmit} disabled={!isLoaded || loading}>
                 {loading ? (
                     <PulseLoader size={10} color="white" />
-                ) : empleado.form?.questions?.length === form.newResponses.length &&
-                    form.newResponses.every(
-                        (response) => response.answer && response.answer.trim() !== ""
+                ) : empleado.form?.questions
+                    ?.filter((q) => q.type !== "description")
+                    .every((q) =>
+                        form.newResponses.some(
+                            (response) => response.questionId === q.id && response.answer.trim() !== ""
+                        )
                     ) ? (
                     "Enviar"
                 ) : (
@@ -258,4 +311,3 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
 };
 
 export default EvaluationComplete;
-

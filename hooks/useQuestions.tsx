@@ -41,6 +41,24 @@ export const useQuestions = () => {
         setQuestions(newQuestions);
     }
 
+    const updateQuestionLabel = (id: number, newLabel: string) => {
+
+        if (!newLabel) {
+            toast({
+                title: "La pregunta debe tener una consigna",
+                className: "bg-red-800",
+                duration: 3000
+            })
+            return;
+        }
+
+        setQuestions(
+            questions.map((q) =>
+                q.id === id ? { ...q, label: newLabel } : q
+            )
+        );
+    };
+
     const updateQuestionOptions = (id: number, optionValue?: string | null, type?: string) => {
 
         if (type === "checkbox") {
@@ -115,6 +133,7 @@ export const useQuestions = () => {
         setQuestions,
         setLabelQuestion,
         setTypeQuestion,
+        updateQuestionLabel,
         setOptionLabel,
         setName,
         setRadioQuantity,

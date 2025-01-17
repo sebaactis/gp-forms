@@ -28,6 +28,14 @@
     color: white;
 }
 
+.textAreaCreate {
+    background-color: #7d7d7d33;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    color: white;
+    min-height: 10rem;
+}
+
 .inputCreate::placeholder {
     color: rgba(255, 255, 255, 0.684);
 }
@@ -52,6 +60,13 @@
     background-color: #7d7d7d33;
     color: var(--text-color);
     font-weight: bold;
+}
+
+.selectType option {
+    background-color: #00000073;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
 }
 
 .createBtn {
@@ -96,6 +111,7 @@
     font-size: 1.1rem;
     font-style: italic;
     margin-left: 0.3rem;
+    font-weight: 700;
 }
 
 .questionLabel {
@@ -107,6 +123,12 @@
     font-size: 1.1rem;
     border-radius: 10px;
     font-style: italic;
+    width: 95%;
+    max-height: 30rem;
+}
+
+.questionLabelConsign {
+    font-weight: 700;
 }
 
 .checkboxContainer {
@@ -129,7 +151,7 @@
     justify-content: center;
     align-items: center;
     margin-top: 0.5rem;
-    
+
 }
 
 .checkboxItem {
@@ -201,12 +223,11 @@
 }
 
 .radioLabelItem {
-    margin-right: 10px; /* Espaciado entre el círculo y la etiqueta */
+    margin-right: 10px;
 }
 
-/* Estilo para la lista de opciones */
 .radioItem {
-    list-style: none; /* Elimina los puntos por defecto */
+    list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
@@ -214,7 +235,6 @@
     margin: 1.5rem 1rem;
 }
 
-/* Los radio buttons por defecto deberían estar visibles si no se les da display: none */
 .radioLabelItem {
     width: 16px;
     height: 16px;

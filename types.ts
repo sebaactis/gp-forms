@@ -20,4 +20,11 @@ export interface EmployeeWithRelations extends Employee {
     form: FormWithRelations | null;
 }
 
+export enum questionTypes {
+    text = "Texto",
+    radio = "Radio",
+    checkbox = "Checkbox",
+    description = "Descripción"
+}
+
 

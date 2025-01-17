@@ -17,12 +17,14 @@
 .questionTypeId {
     font-weight: bold;
     margin-right: 0.3rem;
+    
 }
 
 .questionTypeSpan {
     font-size: 1.1rem;
     font-style: italic;
     margin-left: 0.3rem;
+    font-weight: 700;
 }
 
 .questionLabel {
@@ -34,6 +36,8 @@
     font-size: 1.1rem;
     border-radius: 10px;
     font-style: italic;
+    width: 95%;
+    max-height: 30rem;
 }
 
 .checkboxContainer {

@@ -121,6 +121,7 @@ enum QuestionType {
   text
   radio
   checkbox
+  description
 }
 
 enum FormStatus {
