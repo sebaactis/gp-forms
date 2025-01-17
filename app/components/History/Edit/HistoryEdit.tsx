@@ -1,6 +1,6 @@
 "use client"
 
-import { BadgeInfo, CheckCircle, MousePointer2, TextCursorInputIcon } from "lucide-react"
+import { BadgeInfo, CheckCircle, MousePointer2, TextCursorInputIcon, TextSelectIcon } from "lucide-react"
 import styles from "./historyEdit.module.css"
 import { Separator } from "@/components/ui/separator"
 import { CompletedFormWithRelations } from "@/types";
@@ -131,14 +131,28 @@ const HistoryEdit = ({ evaluation, setEvaluation }: Props) => {
 
             <div className={styles.responseContainer}>
                 {evaluation?.responses.map((response) => {
+
+                    if (response.questionType === "description") {
+                        return (
+                            <div className={styles.inputTextContainer} key={response.id}>
+                                <TextSelectIcon />
+                                <textarea
+                                    value={response.questionText}
+                                    rows={response.questionText.split("\n").length || 1}
+                                    className={`bg-transparent my-2`}
+                                    disabled
+                                />
+                            </div>
+                        );
+                    }
+
                     if (response.questionType === "text") {
                         return (
                             <div className={styles.inputTextContainer} key={response.id}>
                                 <TextCursorInputIcon />
                                 <p className={styles.inputTextLabel}>{response.questionText}</p>
-                                <input
+                                <textarea
                                     className={styles.inputText}
-                                    type="text"
                                     key={response.id}
                                     value={response.answer}
                                     onChange={(e) => handleChange(response.id, e.target.value, "text")}

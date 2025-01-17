@@ -129,6 +129,8 @@
 
 .questionLabelConsign {
     font-weight: 700;
+    margin-top: 1rem;
+    font-size: 1.1rem;
 }
 
 .checkboxContainer {

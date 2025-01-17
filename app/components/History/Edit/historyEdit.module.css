@@ -47,6 +47,7 @@
     border-radius: 2px;
     padding: 0.4rem 0.2rem;
     background-color: var(--input-bg-color);
+    height: 13rem;
 }
 
 .inputRadioContainer {

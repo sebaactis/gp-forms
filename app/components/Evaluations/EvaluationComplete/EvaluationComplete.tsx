@@ -6,6 +6,7 @@ import { EmployeeWithRelations } from '@/types';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import PulseLoader from 'react-spinners/PulseLoader';
+import { TextSelect } from "lucide-react"
 
 interface Props {
     empleado: EmployeeWithRelations;
@@ -32,8 +33,6 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
         newResponses: [],
         status: FormStatus.PENDIENTE,
     });
-
-    console.log(form);
 
     const handleAnswers = (questionId, questionText, questionType, newAnswer, isCheckbox = false) => {
 
@@ -186,25 +185,36 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
                     const questionIndex = acc.counter;
 
                     acc.elements.push(
-                        <div className={styles.question} key={question.id}>
+                        <div className={question.type === "description" ? styles.questionDescription : styles.question} key={question.id}>
                             {question.type === "description" ? (
-                                <p className={styles.questionLabel}>
-                                    <span className={styles.questionLabelIndex}></span>{" "}
-                                    {question.label}
-                                </p>
+                                <div>
+                                    <TextSelect className='h-7 w-7 mb-4' />
+                                    <textarea
+                                        value={question.label}
+                                        className={styles.questionLabel}
+                                        rows={question.label.split("\n").length || 1}
+                                        disabled
+                                    />
+                                </div>
+
                             ) : (
-                                <p className={styles.questionLabel}>
+                                <div>
                                     <span className={styles.questionLabelIndex}>
                                         {questionIndex}.
                                     </span>{" "}
-                                    {question.label}
-                                </p>
+                                    <textarea
+                                        value={question.label}
+                                        className={styles.questionLabel}
+                                        disabled
+                                        rows={question.label.split("\n").length || 1}
+                                    />
+                                </div>
+
                             )}
 
                             {question.type === "text" && (
-                                <input
+                                <textarea
                                     className={styles.textInput}
-                                    type="text"
                                     value={isLoaded ? getAnswerForQuestion(question.id) : ""}
                                     onChange={(e) =>
                                         handleAnswers(

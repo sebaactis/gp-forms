@@ -1,4 +1,4 @@
-import { CompletedFormWithRelations } from '@/types';
+import { CompletedFormWithRelations, questionTypes } from '@/types';
 import styles from './historyView.module.css'
 import { BadgeInfo, FileQuestion } from "lucide-react"
 import { Separator } from '@/components/ui/separator';
@@ -8,8 +8,6 @@ interface Props {
 }
 
 const HistoryView = ({ evaluation }: Props) => {
-
-    console.log(evaluation)
 
     return (
         <div className={styles.evaluationContainer}>
@@ -31,9 +29,28 @@ const HistoryView = ({ evaluation }: Props) => {
                 {evaluation?.responses.map((response) => (
                     <div className={styles.responsesInfo} key={response.id}>
                         <FileQuestion size={25} color='#00cea8' />
-                        <p><span className={styles.titleResponse}>Tipo de pregunta:</span> {response.questionType?.toUpperCase()}</p>
-                        <p><span className={styles.titleResponse}>Pregunta:</span> {response.questionText}</p>
-                        <p><span className={styles.titleResponse}>Respuesta:</span> {response.answer}</p>
+                        <p>
+                            <span className={styles.titleResponse}>Tipo de item:
+                            </span>
+                            {questionTypes[response.questionType]}
+                        </p>
+                        <p className='flex flex-col'>
+                            <span className={styles.titleResponse}>
+                                Pregunta o consigna:
+                            </span>
+                            <textarea
+                                value={response.questionText}
+                                disabled
+                                rows={response.questionText.split("\n").length || 1}
+                                className={`bg-transparent ${response.questionType === "description" && "ml-4"}`}
+                            />
+                        </p>
+                        {response.questionType !== "description"
+                            && <p>
+                                <span className={styles.titleResponse}>
+                                    Respuesta:
+                                </span> {response.answer}
+                            </p>}
                     </div>
                 ))}
             </div>

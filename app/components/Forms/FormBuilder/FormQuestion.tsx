@@ -30,11 +30,18 @@ export const FormQuestion = ({ question, styles, setOptionLabel, updateQuestionO
                         {questionTypes[question.type]}
                     </span>
                 </p>
-                <textarea value={question.label} className={styles.questionLabel} onChange={(e) => updateQuestionLabel(question.id, e.target.value)}>
-                    <span className={styles.questionLabelConsign}>Consigna:
-                    </span>
-                    {question.label}
-                </textarea>
+
+                <div>
+                    <p className={styles.questionLabelConsign}>
+                        Consigna:
+                    </p>
+                    <textarea value={question.label}
+                        className={styles.questionLabel}
+                        onChange={(e) => updateQuestionLabel(question.id, e.target.value)}
+                        rows={question.label.split("\n").length || 1}
+                    >
+                    </textarea>
+                </div>
 
                 {question.type === "description" &&
                     <div className={styles.descriptionContainer}>
@@ -69,7 +76,7 @@ export const FormQuestion = ({ question, styles, setOptionLabel, updateQuestionO
                         <>
                             <label>
                                 Cantidad de opciones
-                                <input className={styles.radioInput} value={radioQuantity || question.options.length}  type="text" onChange={(e) => setRadioQuantity(Number(e.target.value))} />
+                                <input className={styles.radioInput} value={radioQuantity || question.options.length} type="text" onChange={(e) => setRadioQuantity(Number(e.target.value))} />
                             </label>
                             <Button className={styles.addOptionBtn} onClick={() => updateQuestionOptions(question.id, null, question.type)}>
                                 Confirmar
