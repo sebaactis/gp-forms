@@ -5,6 +5,7 @@ import DialogWrapper from '../Globals/Modal/DialogWrapper';
 import { useToast } from '@/hooks/use-toast';
 import { FaFilePdf } from "react-icons/fa6";
 import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
+import { exportToExcel, exportToPDF } from '@/lib/utils';
 
 interface Props {
     evaluation: CompletedFormWithRelations;
@@ -51,8 +52,8 @@ const HistoryCard = ({ evaluation, styles, setEvaluations }: Props) => {
             <div className={styles.btnContainer}>
 
                 <div className='flex gap-2'>
-                    <button className={styles.exportIcon}><FaFilePdf size={20} /></button>
-                    <button className={styles.exportIcon}><PiMicrosoftExcelLogoFill size={23} /></button>
+                    <button className={styles.exportIcon} onClick={() => exportToPDF(evaluation)}><FaFilePdf size={20} /></button>
+                    <button className={styles.exportIcon} onClick={() => exportToExcel(evaluation)}><PiMicrosoftExcelLogoFill size={23} /></button>
                 </div>
 
                 <div className='flex gap-2'>
