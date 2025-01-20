@@ -1,7 +1,10 @@
 import { CompletedFormWithRelations, questionTypes } from '@/types';
 import styles from './historyView.module.css'
-import { BadgeInfo, FileQuestion } from "lucide-react"
+import { BadgeInfo, FileQuestion, } from "lucide-react"
 import { Separator } from '@/components/ui/separator';
+import { exportToExcel, exportToPDF } from '@/lib/utils';
+import { FaFilePdf } from "react-icons/fa6";
+import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
 
 interface Props {
     evaluation: CompletedFormWithRelations | undefined
@@ -20,6 +23,10 @@ const HistoryView = ({ evaluation }: Props) => {
                 <p><span className={styles.titleInfo}>Completada el dia:</span>  {evaluation?.completedAt ? new Date(evaluation.completedAt).toLocaleDateString() : 'No completada'}</p>
                 <p><span className={styles.titleInfo}>Formulario:</span>  {evaluation?.formTitle}</p>
                 <p><span className={styles.titleInfo}>Cantidad de preguntas respondidas:</span>  {evaluation?.responses.length}</p>
+                <div className={styles.exportBtnContainer}>
+                    <button className={styles.exportBtnPDF} onClick={() => exportToPDF(evaluation)}><FaFilePdf size={20} /> Exportar a PDF  </button>
+                    <button className={styles.exportBtnExcel} onClick={() => exportToExcel(evaluation)}> <PiMicrosoftExcelLogoFill size={20}/> Exportar a Excel</button>
+                </div>
             </div>
 
             <Separator />
@@ -54,9 +61,6 @@ const HistoryView = ({ evaluation }: Props) => {
                     </div>
                 ))}
             </div>
-
-
-
         </div>
     )
 }

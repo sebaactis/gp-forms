@@ -32,6 +32,7 @@
     border-radius: 5px;
 }
 
+
 .sendBtn {
     width: 10%;
     background-color: #00ab83;
@@ -50,8 +51,35 @@
     padding: 0.2rem 0.5rem;
 }
 
+.periodInput:disabled {
+    background-color: #3a3a3a2f;
+}
+
 .dateLimitInput {
     background-color: var(--table-bg-color);
     border-radius: 5px;
     padding: 0.2rem 1rem;
+}
+
+
+.dateLimitInput:disabled {
+    background-color: #3a3a3a2f;
+}
+
+.formAssigned {
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-left: 0.3rem;
+}
+
+.formAssignedName {
+    font-weight: 800;
+    color: #00ffc3;
+}
+
+.formNotAssigned {
+    color: red;
+    font-weight: 700;
+    font-style: italic;
+    margin-left: 0.3rem;
 }

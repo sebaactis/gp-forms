@@ -10,7 +10,6 @@ export default function Employees() {
                 bagde="RRHH"
                 icon={UserCog2}
             />
-
             <EmployeesMain />
         </div>
     )

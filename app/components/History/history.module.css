@@ -38,9 +38,9 @@
 
 .evaluationCard {
     background-color: var(--evaluation-card-color);
-    padding: 1rem 0;
+    padding: 1rem;
     padding-left: 1rem;
-    padding-right: 2rem;
+    padding-right: 1rem;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -48,12 +48,12 @@
     box-shadow: 2px 2px 33px 0px rgba(56,56,56,0.75);
     -webkit-box-shadow: 2px 2px 33px 0px rgba(56,56,56,0.75);
     -moz-box-shadow: 2px 2px 33px 0px rgba(56,56,56,0.75);
-    border-top: 5px solid #00ffc392;
 }
 
 .btnContainer {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 0.7rem;
 }
 
@@ -64,4 +64,47 @@
 .iconBtn:hover {
     transform: scale(1.1);
     color: #00c7c7;
+}
+
+.viewIconBtn {
+    color:#00a6ff;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+    padding: 0.2rem;
+}
+
+.viewIconBtn:hover {
+    background-color: #00a6ff5f;
+}
+
+.editIconBtn {
+    color:#00c32e;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+    padding: 0.2rem;
+}
+
+.editIconBtn:hover {
+    background-color: #00ff085f;
+}
+
+.deleteIconBtn {
+    color:#d30000;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+    padding: 0.2rem;
+}
+
+.deleteIconBtn:hover {
+    background-color: #d3000055;
+}
+
+.exportIcon {
+    transition: all 0.3s ease;
+    border-radius: 50%;
+    padding: 0.2rem;
+}
+
+.exportIcon:hover {
+    background-color: #ffffff5f;
 }

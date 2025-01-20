@@ -6,10 +6,11 @@ import styles from './assignments.module.css'
 import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import PulseLoader from 'react-spinners/PulseLoader';
-import { Employee, Form } from '@prisma/client';
+import { Employee } from '@prisma/client';
+import { FormWithRelations } from '@/types';
 
 interface formDataState {
-    forms: Form[];
+    forms: FormWithRelations[];
     employees: Employee[];
     selectedForm: string | null;
     selectedEmployee: string | null;
@@ -140,6 +141,23 @@ const AssignmentsForms = () => {
                         </>
                     )}
                 </select>
+
+                {formAssignData.selectedEmployee && (
+                    (() => {
+                        const formWithEmployee = formAssignData.forms.find(form =>
+                            form.employees?.some(employee => employee.id === formAssignData.selectedEmployee)
+                        );
+
+                        return formWithEmployee ? (
+                            <p className={styles.formAssigned}>
+                                El empleado tiene asignado actualmente el formulario: <span className={styles.formAssignedName}>{formWithEmployee.name}</span>
+                            </p>
+                        ) : (
+                            <p className={styles.formAssigned}>El empleado no tiene asignado ningún formulario.</p>
+                        );
+                    })()
+                )}
+                
             </article>
 
             <article className={styles.selectContainer}>

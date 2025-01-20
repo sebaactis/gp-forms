@@ -127,6 +127,12 @@ const AssignmentsCompletedForm = () => {
                         )
                     }
                 </select>
+
+                {completedData.employeeId && !employees.find(employee => employee.id === completedData.employeeId)?.formId
+                    &&
+                    <p className={styles.formNotAssigned}>
+                        El empleado no tiene asignado ningun formulario. Debes asignar uno para poder crear una evaluación
+                    </p>}
             </article>
 
             <article className={styles.selectContainer}>
@@ -137,7 +143,9 @@ const AssignmentsCompletedForm = () => {
                     value={completedData.period}
                     onChange={handleChange}
                     className={styles.periodInput}
-                    type="text" />
+                    type="text"
+                    disabled={completedData.employeeId && !employees.find(employee => employee.id === completedData.employeeId)?.formId ? true : false}
+                />
             </article>
 
             <article className={styles.selectContainer}>
@@ -148,7 +156,9 @@ const AssignmentsCompletedForm = () => {
                     value={completedData.endDate}
                     onChange={handleChange}
                     className={styles.dateLimitInput}
-                    type="date" />
+                    type="date"
+                    disabled={completedData.employeeId && !employees.find(employee => employee.id === completedData.employeeId)?.formId ? true : false}
+                />
             </article>
 
             <Button className={styles.sendBtn} onClick={createEvaluation} disabled={!completedData.employeeId || !completedData.endDate || !completedData.period}>{loading ? <PulseLoader size={10} color="white" /> : "Enviar"} </Button>

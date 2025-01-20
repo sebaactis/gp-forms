@@ -3,6 +3,8 @@ import { EyeIcon, PencilIcon, Trash2 } from "lucide-react"
 import Link from 'next/link';
 import DialogWrapper from '../Globals/Modal/DialogWrapper';
 import { useToast } from '@/hooks/use-toast';
+import { FaFilePdf } from "react-icons/fa6";
+import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
 
 interface Props {
     evaluation: CompletedFormWithRelations;
@@ -48,24 +50,31 @@ const HistoryCard = ({ evaluation, styles, setEvaluations }: Props) => {
             <p><span className='font-bold'>Formulario:</span> {evaluation.formTitle}</p>
             <div className={styles.btnContainer}>
 
-                <Link href={`/history/${evaluation.id}`}>
-                    <button className={styles.iconBtn}>
-                        <EyeIcon />
-                    </button>
-                </Link>
+                <div className='flex gap-2'>
+                    <button className={styles.exportIcon}><FaFilePdf size={20} /></button>
+                    <button className={styles.exportIcon}><PiMicrosoftExcelLogoFill size={23} /></button>
+                </div>
 
-                <Link href={`/history/edit/${evaluation.id}`}>
-                    <button className={styles.iconBtn}><PencilIcon /></button>
-                </Link>
+                <div className='flex gap-2'>
+                    <Link href={`/history/${evaluation.id}`}>
+                        <button className={styles.viewIconBtn}>
+                            <EyeIcon />
+                        </button>
+                    </Link>
 
-                <DialogWrapper
-                    triggerButton={<button className={styles.iconBtn}><Trash2 /></button>}
-                    title="Eliminar evaluacion"
-                    description="Estás seguro de eliminar esta evaluacion?"
-                    onConfirm={() => handleDelete(evaluation.id)}
-                >
-                    {""}
-                </DialogWrapper>
+                    <Link href={`/history/edit/${evaluation.id}`}>
+                        <button className={styles.editIconBtn}><PencilIcon /></button>
+                    </Link>
+
+                    <DialogWrapper
+                        triggerButton={<button className={styles.deleteIconBtn}><Trash2 /></button>}
+                        title="Eliminar evaluacion"
+                        description="Estás seguro de eliminar esta evaluacion?"
+                        onConfirm={() => handleDelete(evaluation.id)}
+                    >
+                        {""}
+                    </DialogWrapper>
+                </div>
             </div>
         </div>
     )

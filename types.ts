@@ -12,6 +12,7 @@ export interface QuestionsWithRelations extends Question {
 
 export interface FormWithRelations extends Form {
     questions: QuestionsWithRelations[] | null
+    employees: Employee[] | null
 }
 
 
