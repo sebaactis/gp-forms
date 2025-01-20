@@ -117,3 +117,15 @@
     font-size: 0.8rem;
     font-style: italic;
 }
+
+@media (width < 1367px) {
+
+    .formMainContainer {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .card {
+        width: 100%;
+    }
+    
+}
