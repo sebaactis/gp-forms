@@ -5,6 +5,9 @@ export async function GET() {
     const employees = await db.employee.findMany({
         include: {
             CompletedForm: true
+        },
+        orderBy: {
+            nombre: "asc"
         }
     })
 
@@ -28,8 +31,6 @@ export async function POST(request: Request) {
                 userId
             }
         })
-
-        console.log(empleado);
 
         return NextResponse.json(empleado)
     } catch (err) {
@@ -61,17 +62,17 @@ export async function PUT(req: Request) {
             employee: updatedEmployee,
         });
     } catch (error) {
-        if(error instanceof Error) {
+        if (error instanceof Error) {
             return NextResponse.json(
                 { error: "Error asignando el jefe al empleado", details: error.message },
                 { status: 500 }
             );
         } else {
             return NextResponse.json(
-                { error: "Error desconocido", details: ""},
+                { error: "Error desconocido", details: "" },
                 { status: 500 }
             );
         }
-        
+
     }
 }
