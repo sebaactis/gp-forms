@@ -1,211 +1,249 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import jsPDF from "jspdf";
 import { CompletedFormWithRelations, questionTypes } from "@/types";
-import * as XLSX from 'xlsx';
-
-
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import ExcelJS from 'exceljs';
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
 }
 
-export const exportToPDF = (evaluation: CompletedFormWithRelations | undefined) => {
 
+export const exportToPDF = async (evaluation: CompletedFormWithRelations | undefined) => {
     if (!evaluation) return;
 
-    const doc = new jsPDF();
-    const pageHeight = doc.internal.pageSize.height; // Altura de la página en unidades de `jspdf`
-    const marginTop = 10;
-    const lineHeight = 10; // Espacio entre líneas
-    let yOffset = marginTop;
+    const pdfDoc = await PDFDocument.create();
+    let page = pdfDoc.addPage([900.28, 900.89]);
+    const { width, height } = page.getSize();
 
-    // Calcular altura del bloque de información general
-    const infoBlockHeight = lineHeight * 4; // Altura total (4 líneas incluyendo separación)
+    const marginTop = 35;
+    const lineHeight = 18;
+    const padding = 10;
+    const marginHorizontal = 30;
+    let yOffset = height - marginTop;
 
-    // Dibujar rectángulo de fondo
-    doc.setFillColor(230, 230, 250); // Color de fondo (lavanda)
-    doc.rect(10, yOffset, 190, infoBlockHeight * 1.1, "F"); // (x, y, ancho, alto, modo "F" para rellenar)
+    const fontHelvetica = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const fontHelveticaBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
-    // Título de la evaluación
-    doc.setFont("Helvetica", "bold");
-    doc.setFontSize(16);
-    doc.text(`Evaluación de: ${evaluation.employee?.nombre} ${evaluation.employee?.apellido}`, 15, yOffset + lineHeight);
-    yOffset += lineHeight;
+    const infoBlockHeight = lineHeight * 5;
+    page.drawRectangle({
+        x: 0,
+        y: yOffset - infoBlockHeight,
+        width: width,
+        height: infoBlockHeight * 1.5,
+        color: rgb(0, 0.549, 0.419),
+    });
 
-    // Información general
-    doc.setFont("Helvetica", "normal");
-    doc.setFontSize(12);
-    doc.text(`Completada el día: ${evaluation.completedAt ? new Date(evaluation.completedAt).toLocaleDateString() : 'No completada'}`, 15, yOffset + lineHeight);
-    yOffset += lineHeight;
-    doc.text(`Formulario: ${evaluation.formTitle}`, 15, yOffset + lineHeight);
-    yOffset += lineHeight;
-    doc.text(`Cantidad de preguntas respondidas: ${evaluation.responses.length}`, 15, yOffset + lineHeight);
-    yOffset += lineHeight * 2; // Separación adicional
+    page.drawText(`Evaluación de: ${evaluation.employee?.nombre} ${evaluation.employee?.apellido}`, {
+        x: marginHorizontal + 10,
+        y: yOffset,
+        size: 14,
+        font: fontHelveticaBold,
+        color: rgb(1, 1, 1),
+    });
+    yOffset -= lineHeight;
 
-    // Continuar con las preguntas
-    evaluation.responses.forEach((response, index) => {
-        const isDescription = response.questionType === "description";
-        const questionTextLines = doc.splitTextToSize(response.questionText, 180); // Divide el texto para no pasarse del ancho
-        const answerLines = response.answer ? doc.splitTextToSize(response.answer, 180) : [];
-        const questionBlockHeight = questionTextLines.length * lineHeight + answerLines.length * lineHeight + lineHeight * 2;
+    page.drawText(`Completada el día: ${evaluation.completedAt ? new Date(evaluation.completedAt).toLocaleDateString() : 'No completada'}`, {
+        x: marginHorizontal + 10,
+        y: yOffset,
+        size: 12,
+        font: fontHelvetica,
+        color: rgb(1, 1, 1),
+    });
+    yOffset -= lineHeight;
+    page.drawText(`Formulario: ${evaluation.formTitle}`, {
+        x: marginHorizontal + 10,
+        y: yOffset,
+        size: 12,
+        font: fontHelvetica,
+        color: rgb(1, 1, 1),
+    });
+    yOffset -= lineHeight;
+    page.drawText(`Cantidad de preguntas respondidas: ${evaluation.responses.length}`, {
+        x: marginHorizontal + 10,
+        y: yOffset,
+        size: 12,
+        font: fontHelvetica,
+        color: rgb(1, 1, 1),
+    });
 
-        // Verificar si hay espacio suficiente en la página actual, si no, agregar una nueva página
-        if (yOffset + questionBlockHeight > pageHeight - marginTop) {
-            doc.addPage();
-            yOffset = marginTop;
+    yOffset -= lineHeight * 4;
+
+
+    let questionCounter = 1;
+
+    for (const response of evaluation.responses) {
+        const isDescription = response.questionType === 'description';
+        const questionTextLines = response.questionText.split('\n');
+        const answerLines = response.answer ? response.answer.split('\n') : [];
+
+        const textHeight =
+            lineHeight * (questionTextLines.length + (isDescription ? 0 : answerLines.length + 1));
+        const blockHeight = textHeight + padding * 2;
+
+        if (yOffset - blockHeight < marginTop) {
+            yOffset = height - marginTop;
+            page = pdfDoc.addPage([900.28, 900.89]);
         }
 
-        // Cambiar color para títulos de sección (TIPO, Pregunta, Respuesta)
-        doc.setTextColor(0, 102, 204); // Color azul para estos títulos
+        const backgroundColor = isDescription ? rgb(0.89, 0.89, 0.89) : rgb(0.9, 0.975, 0.975);
+        page.drawRectangle({
+            x: isDescription ? 0 : marginHorizontal,
+            y: yOffset - blockHeight,
+            width: isDescription ? width : width - marginHorizontal * 2,
+            height: blockHeight * 1.1,
+            color: backgroundColor,
+        });
 
-        // Si es descripción, no mostrar "Pregunta X" sino "Descripción"
-        if (isDescription) {
-            doc.setFont("Helvetica", "bold");
-            doc.text(`Descripción:`, 10, yOffset);
-            yOffset += lineHeight;
-        } else {
-            doc.setFont("Helvetica", "bold");
-            doc.text(`Pregunta ${index + 1}:`, 10, yOffset);
-            yOffset += lineHeight;
-
-            // Mostrar el tipo de la pregunta
-            doc.setFont("Helvetica", "normal");
-            doc.setTextColor(0, 0, 0); // Color azul para "TIPO"
-            doc.text(`- Tipo: ${questionTypes[response.questionType]}`, 10, yOffset);
-            yOffset += lineHeight;
-        }
-
-        // Mostrar la pregunta
-        doc.setFont("Helvetica", "normal");
-        doc.setTextColor(0, 0, 0); // Color negro para el contenido de la pregunta
-        doc.text(`- Consigna:`, 10, yOffset);
-        yOffset += lineHeight;
+        const label = isDescription ? 'Descripción:' : `Pregunta ${questionCounter}:`;
+        page.drawText(label, {
+            x: marginHorizontal + 10,
+            y: yOffset - padding,
+            size: 13,
+            font: fontHelveticaBold,
+            color: rgb(0, 0, 0),
+        });
+        yOffset -= lineHeight;
 
         questionTextLines.forEach((line) => {
-            doc.text(line, 15, yOffset); // Sangría para el texto de la pregunta
-            yOffset += lineHeight;
+            page.drawText(line, {
+                x: marginHorizontal + 20,
+                y: yOffset - padding,
+                size: 11,
+                font: fontHelvetica,
+                color: rgb(0, 0, 0),
+            });
+            yOffset -= lineHeight;
         });
 
-        // Si no es una descripción, mostrar la respuesta
-        if (!isDescription) {
-            doc.setFont("Helvetica", "bold");
-            doc.setTextColor(0, 102, 204); // Color azul para "RESPUESTA"
-            doc.text(`- Respuesta:`, 10, yOffset);
-            yOffset += lineHeight;
-            doc.setFont("Helvetica", "normal");
-            doc.setTextColor(0, 0, 0); // Color negro para las respuestas
-            answerLines.forEach((line) => {
-                doc.text(line, 15, yOffset); // Sangría para la respuesta
-                yOffset += lineHeight;
+        if (!isDescription && response.answer) {
+            page.drawText(`Respuesta:`, {
+                x: marginHorizontal + 10,
+                y: yOffset - padding,
+                size: 12,
+                font: fontHelveticaBold,
+                color: rgb(0, 0, 0),
             });
+            yOffset -= lineHeight;
+
+            answerLines.forEach((line) => {
+                page.drawText(line, {
+                    x: marginHorizontal + 20,
+                    y: yOffset - padding,
+                    size: 11,
+                    font: fontHelvetica,
+                    color: rgb(0, 0, 0),
+                });
+                yOffset -= lineHeight;
+            });
+
+            questionCounter++;
         }
 
-        yOffset += lineHeight; // Espaciado entre preguntas
-    });
+        yOffset -= lineHeight * 2;
+    }
 
-    doc.save("evaluacion_estilada.pdf");
+    const pdfBytes = await pdfDoc.save();
+    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'evaluacion_estilada.pdf';
+    link.click();
 };
 
-export const exportToExcel = (evaluation: CompletedFormWithRelations | undefined) => {
+export const exportToExcel = async (evaluation: CompletedFormWithRelations | undefined) => {
     if (!evaluation) return;
 
-    const wb = XLSX.utils.book_new(); // Crear un nuevo libro de trabajo
-    const ws_data: Array<Array<{ v: string; s?: object }>> = [];
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Evaluación');
 
-    // Estilo para los títulos
     const titleStyle = {
-        font: { bold: true, sz: 14, color: { rgb: "FFFFFF" } },
-        fill: { fgColor: { rgb: "4F81BD" } },
-        alignment: { horizontal: "center", vertical: "center" },
-        border: {
-            top: { style: "thin", color: { rgb: "000000" } },
-            bottom: { style: "thin", color: { rgb: "000000" } },
-            left: { style: "thin", color: { rgb: "000000" } },
-            right: { style: "thin", color: { rgb: "000000" } }
-        }
+        font: { bold: true, color: { argb: 'FFFFFFFF' }, size: 14 },
+        fill: { type: 'pattern' as const, pattern: 'solid' as const, fgColor: { argb: '0070C0' } },
+        alignment: { horizontal: 'center' as const },
     };
 
-    // Añadir la información general
-    ws_data.push([{ v: `Evaluación de: ${evaluation.employee?.nombre} ${evaluation.employee?.apellido}`, s: titleStyle }]);
-    ws_data.push([{ v: `Completada el día: ${evaluation.completedAt ? new Date(evaluation.completedAt).toLocaleDateString() : 'No completada'}`, s: titleStyle }]);
-    ws_data.push([{ v: `Formulario: ${evaluation.formTitle}`, s: titleStyle }]);
-    ws_data.push([{ v: `Cantidad de preguntas respondidas: ${evaluation.responses.length}`, s: titleStyle }]);
+    const descriptionStyle = {
+        font: { bold: true, italic: true, size: 12, color: { argb: '000000' } },
+        fill: { type: 'pattern' as const, pattern: 'solid' as const, fgColor: { argb: 'D9D9D9' } },
+        alignment: { horizontal: 'center' as const },
+    }
 
-    // Separación entre los datos generales y las preguntas
-    ws_data.push([]);
-
-    // Estilo para las preguntas
-    const questionStyle = {
-        font: { bold: true, sz: 12 },
-        fill: { fgColor: { rgb: "D9E1F2" } },
-        alignment: { horizontal: "left", vertical: "top" },
-        border: {
-            top: { style: "thin", color: { rgb: "000000" } },
-            bottom: { style: "thin", color: { rgb: "000000" } }
-        }
+    const sectionHeaderStyle = {
+        font: { bold: true, color: { argb: 'FFFFFFFF' }, size: 12 },
+        fill: { type: 'pattern' as const, pattern: 'solid' as const, fgColor: { argb: '008C6B' } },
+        alignment: { horizontal: 'center' as const },
     };
 
-    // Estilo para las respuestas
-    const answerStyle = {
-        font: { sz: 12 },
-        alignment: { horizontal: "left", vertical: "top" },
-        border: {
-            top: { style: "thin", color: { rgb: "000000" } },
-            bottom: { style: "thin", color: { rgb: "000000" } }
-        }
+    const normalTextStyle = {
+        font: { size: 11, color: { argb: '000000' } },
+        alignment: { horizontal: 'left' as const },
     };
 
-    // Añadir las respuestas de las preguntas
-    evaluation.responses.forEach((response, index) => {
-        const isDescription = response.questionType === "description";
+    worksheet.mergeCells('A1:D1');
+    const titleCell = worksheet.getCell('A1');
+    titleCell.value = 'INFORMACIÓN GENERAL';
+    titleCell.style = titleStyle;
 
-        // Título de la pregunta
-        ws_data.push([{ v: isDescription ? 'Descripción' : `Pregunta ${index + 1}:`, s: questionStyle }]);
+    worksheet.addRow([
+        `Evaluación de: ${evaluation.employee?.nombre} ${evaluation.employee?.apellido}`,
+    ]);
+    worksheet.addRow([
+        `Completada el día: ${evaluation.completedAt
+            ? new Date(evaluation.completedAt).toLocaleDateString()
+            : 'No completada'
+        }`,
+    ]);
+    worksheet.addRow([`Formulario: ${evaluation.formTitle}`]);
+    worksheet.addRow([
+        `Cantidad de preguntas respondidas: ${evaluation.responses.filter(
+            (response) => response.questionType !== 'description'
+        ).length}`,
+    ]);
+    worksheet.addRow([]);
 
-        // Añadir el tipo de la pregunta si no es descripción
-        if (!isDescription) {
-            ws_data.push([{ v: `TIPO: ${questionTypes[response.questionType]}`, s: answerStyle }]);
+    let questionCounter = 1;
+
+    evaluation.responses.forEach((response) => {
+        const isDescription = response.questionType === 'description';
+
+        const rowNumber = worksheet.lastRow ? worksheet.lastRow.number + 1 : 1;
+        worksheet.mergeCells(`A${rowNumber}:D${rowNumber}`);
+        const headerCell = worksheet.getCell(`A${rowNumber}`);
+        headerCell.value = isDescription ? 'Descripción' : `Pregunta ${questionCounter}:`;
+        headerCell.style = isDescription ? descriptionStyle : sectionHeaderStyle;
+
+        if (isDescription) {
+
+            const contentRow = worksheet.addRow([response.questionText]);
+            contentRow.eachCell((cell) => (cell.style = normalTextStyle));
+        } else {
+
+            worksheet.addRow([`Tipo: ${questionTypes[response.questionType]}`]).eachCell(
+                (cell) => (cell.style = normalTextStyle)
+            );
+            worksheet.addRow([`Pregunta: ${response.questionText}`]).eachCell(
+                (cell) => (cell.style = normalTextStyle)
+            );
+            worksheet.addRow([
+                `Respuesta: ${response.answer || 'Sin respuesta'}`,
+            ]).eachCell((cell) => (cell.style = normalTextStyle));
+
+            questionCounter++;
         }
 
-        // Añadir la pregunta
-        ws_data.push([{ v: `Pregunta: ${response.questionText}`, s: questionStyle }]);
-
-        // Si no es una descripción, añadir la respuesta
-        if (!isDescription && response.answer) {
-            ws_data.push([{ v: `Respuesta: ${response.answer}`, s: answerStyle }]);
-        }
-
-        ws_data.push([]); // Separación entre bloques de pregunta
+        worksheet.addRow([]);
     });
 
-    // Crear el worksheet a partir de los datos
-    const ws = XLSX.utils.aoa_to_sheet(ws_data);
-
-    // Aplicar los estilos directamente a cada celda
-    ws_data.forEach((row, rowIndex) => {
-        row.forEach((cell, colIndex) => {
-            const cellAddress = { r: rowIndex, c: colIndex };
-            const cellRef = XLSX.utils.encode_cell(cellAddress);
-            if (cell.s) {
-                ws[cellRef] = { ...ws[cellRef], s: cell.s };
-            }
-        });
+    worksheet.columns.forEach((column) => {
+        column.width = 40;
     });
 
-    // Ajustar el ancho de las columnas
-    const columnWidths = [
-        { wch: 50 }, // Columna 1
-        { wch: 60 }, // Columna 2
-        { wch: 60 }, // Columna 3
-        { wch: 50 }, // Columna 4
-    ];
-    ws['!cols'] = columnWidths;
-
-    // Añadir el worksheet al libro
-    XLSX.utils.book_append_sheet(wb, ws, 'Evaluación');
-
-    // Guardar el archivo Excel
-    XLSX.writeFile(wb, 'evaluacion_estilada.xlsx');
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'evaluacion_estilada.xlsx';
+    link.click();
 };
 
