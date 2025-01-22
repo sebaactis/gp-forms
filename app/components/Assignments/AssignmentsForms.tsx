@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import PulseLoader from 'react-spinners/PulseLoader';
 import { Employee } from '@prisma/client';
-import { FormWithRelations } from '@/types';
+import { EmployeeWithRelations, FormWithRelations } from '@/types';
 
 interface formDataState {
     forms: FormWithRelations[];
@@ -16,14 +16,20 @@ interface formDataState {
     selectedEmployee: string | null;
 }
 
-const AssignmentsForms = () => {
+interface Props {
+    employees: EmployeeWithRelations[];
+    fetchLoading: boolean;
+    setFetchLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    fetchData: () => void;
+}
+
+const AssignmentsForms = ({ employees, fetchLoading, setFetchLoading, fetchData }: Props) => {
     const { toast } = useToast()
     const [loading, setLoading] = useState(false);
-    const [fetchLoading, setFetchLoading] = useState(false);
 
     const [formAssignData, setFormAssignData] = useState<formDataState>({
         forms: [],
-        employees: [],
+        employees: employees,
         selectedForm: null,
         selectedEmployee: null,
     });
@@ -60,6 +66,8 @@ const AssignmentsForms = () => {
                 throw new Error("Error asignando el jefe al empleado");
             }
 
+            fetchData();
+
             toast({
                 title: 'Formulario asignado correctamente!',
                 className: 'bg-green-800',
@@ -81,22 +89,17 @@ const AssignmentsForms = () => {
         const fetchDataForm = async () => {
             setFetchLoading(true);
             try {
-                const [formsResponse, employeesResponse] = await Promise.all([
-                    fetch('/api/forms'),
-                    fetch('/api/employees')
-                ]);
+                const formsResponse = await fetch('/api/forms');
 
-                if (!formsResponse.ok || !employeesResponse.ok) {
+                if (!formsResponse.ok) {
                     throw new Error("Error trayendo datos");
                 }
 
                 const formsData = await formsResponse.json();
-                const employeesData = await employeesResponse.json();
 
                 setFormAssignData(prevState => ({
                     ...prevState,
                     forms: formsData,
-                    employees: employeesData
                 }));
 
             } catch {
@@ -110,7 +113,14 @@ const AssignmentsForms = () => {
             }
         };
         fetchDataForm();
-    }, [toast])
+    }, [toast, setFetchLoading])
+
+    useEffect(() => {
+        setFormAssignData((prevState) => ({
+            ...prevState,
+            employees,
+        }));
+    }, [employees]);
 
     return (
         <div className={styles.container}>
@@ -157,7 +167,7 @@ const AssignmentsForms = () => {
                         );
                     })()
                 )}
-                
+
             </article>
 
             <article className={styles.selectContainer}>

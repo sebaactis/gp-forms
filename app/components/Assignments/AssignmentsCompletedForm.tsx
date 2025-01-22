@@ -3,16 +3,19 @@
 import { ArrowBigRight } from 'lucide-react'
 import styles from './assignments.module.css'
 import { Button } from '@/components/ui/button'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useToast } from '@/hooks/use-toast'
 import { EmployeeWithRelations } from '@/types'
 import PulseLoader from 'react-spinners/PulseLoader';
 
-const AssignmentsCompletedForm = () => {
+interface Props {
+    employees: EmployeeWithRelations[];
+    fetchLoading: boolean;
+}
+
+const AssignmentsCompletedForm = ({ employees, fetchLoading }: Props) => {
     const { toast } = useToast()
-    const [employees, setEmployees] = useState<EmployeeWithRelations[] | []>([]);
     const [loading, setLoading] = useState(false);
-    const [fetchLoading, setFetchLoading] = useState(false);
 
     const [completedData, setCompletedData] = useState({
         employeeId: "",
@@ -76,29 +79,6 @@ const AssignmentsCompletedForm = () => {
             setLoading(false)
         }
     }
-
-    useEffect(() => {
-        const fetchData = async () => {
-            setFetchLoading(true);
-            try {
-                const response = await fetch('/api/employees')
-
-                if (!response.ok) {
-                    throw new Error("Error trayendo datos");
-                }
-
-                const data = await response.json()
-
-                setEmployees(data);
-
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setFetchLoading(false);
-            }
-        }
-        fetchData()
-    }, [])
 
     return (
         <div className={styles.container}>
