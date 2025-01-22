@@ -1,8 +1,9 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import { CompletedFormWithRelations, questionTypes } from "@/types";
-import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import { PDFDocument, rgb } from 'pdf-lib';
 import ExcelJS from 'exceljs';
+import fontkit from '@pdf-lib/fontkit';
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
@@ -13,6 +14,18 @@ export const exportToPDF = async (evaluation: CompletedFormWithRelations | undef
     if (!evaluation) return;
 
     const pdfDoc = await PDFDocument.create();
+    pdfDoc.registerFontkit(fontkit);
+
+    // Cargar las fuentes personalizadas desde la carpeta pública
+    const regularFontUrl = '/fonts/Roboto-Regular.ttf';
+    const boldFontUrl = '/fonts/Roboto-Bold.ttf';
+
+    const regularFontBytes = await fetch(regularFontUrl).then((res) => res.arrayBuffer());
+    const boldFontBytes = await fetch(boldFontUrl).then((res) => res.arrayBuffer());
+
+    const customFontRegular = await pdfDoc.embedFont(regularFontBytes);
+    const customFontBold = await pdfDoc.embedFont(boldFontBytes);
+
     let page = pdfDoc.addPage([900.28, 900.89]);
     const { width, height } = page.getSize();
 
@@ -21,9 +34,6 @@ export const exportToPDF = async (evaluation: CompletedFormWithRelations | undef
     const padding = 10;
     const marginHorizontal = 30;
     let yOffset = height - marginTop;
-
-    const fontHelvetica = await pdfDoc.embedFont(StandardFonts.Helvetica);
-    const fontHelveticaBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
     const infoBlockHeight = lineHeight * 5;
     page.drawRectangle({
@@ -38,7 +48,7 @@ export const exportToPDF = async (evaluation: CompletedFormWithRelations | undef
         x: marginHorizontal + 10,
         y: yOffset,
         size: 14,
-        font: fontHelveticaBold,
+        font: customFontBold,
         color: rgb(1, 1, 1),
     });
     yOffset -= lineHeight;
@@ -47,28 +57,28 @@ export const exportToPDF = async (evaluation: CompletedFormWithRelations | undef
         x: marginHorizontal + 10,
         y: yOffset,
         size: 12,
-        font: fontHelvetica,
+        font: customFontRegular,
         color: rgb(1, 1, 1),
     });
     yOffset -= lineHeight;
+
     page.drawText(`Formulario: ${evaluation.formTitle}`, {
         x: marginHorizontal + 10,
         y: yOffset,
         size: 12,
-        font: fontHelvetica,
+        font: customFontRegular,
         color: rgb(1, 1, 1),
     });
     yOffset -= lineHeight;
+
     page.drawText(`Cantidad de preguntas respondidas: ${evaluation.responses.length}`, {
         x: marginHorizontal + 10,
         y: yOffset,
         size: 12,
-        font: fontHelvetica,
+        font: customFontRegular,
         color: rgb(1, 1, 1),
     });
-
     yOffset -= lineHeight * 4;
-
 
     let questionCounter = 1;
 
@@ -100,7 +110,7 @@ export const exportToPDF = async (evaluation: CompletedFormWithRelations | undef
             x: marginHorizontal + 10,
             y: yOffset - padding,
             size: 13,
-            font: fontHelveticaBold,
+            font: customFontBold,
             color: rgb(0, 0, 0),
         });
         yOffset -= lineHeight;
@@ -110,7 +120,7 @@ export const exportToPDF = async (evaluation: CompletedFormWithRelations | undef
                 x: marginHorizontal + 20,
                 y: yOffset - padding,
                 size: 11,
-                font: fontHelvetica,
+                font: customFontRegular,
                 color: rgb(0, 0, 0),
             });
             yOffset -= lineHeight;
@@ -121,7 +131,7 @@ export const exportToPDF = async (evaluation: CompletedFormWithRelations | undef
                 x: marginHorizontal + 10,
                 y: yOffset - padding,
                 size: 12,
-                font: fontHelveticaBold,
+                font: customFontBold,
                 color: rgb(0, 0, 0),
             });
             yOffset -= lineHeight;
@@ -131,7 +141,7 @@ export const exportToPDF = async (evaluation: CompletedFormWithRelations | undef
                     x: marginHorizontal + 20,
                     y: yOffset - padding,
                     size: 11,
-                    font: fontHelvetica,
+                    font: customFontRegular,
                     color: rgb(0, 0, 0),
                 });
                 yOffset -= lineHeight;

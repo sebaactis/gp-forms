@@ -17,7 +17,14 @@ export const useQuestions = () => {
     const [typeQuestion, setTypeQuestion] = useState<string>("text")
     const [optionLabel, setOptionLabel] = useState<string>("")
     const [name, setName] = useState<string>("");
-    const [radioQuantity, setRadioQuantity] = useState<number>(0);
+    const [radioQuantities, setRadioQuantities] = useState<{ [key: number]: number }>({});
+
+    const handleRadioQuantityChange = (questionId, value) => {
+        setRadioQuantities((prev) => ({
+            ...prev,
+            [questionId]: Number(value),
+        }));
+    };
 
     const addQuestion = () => {
 
@@ -62,14 +69,15 @@ export const useQuestions = () => {
     const updateQuestionOptions = (id: number, optionValue?: string | null, type?: string) => {
 
         if (type === "checkbox") {
-            if (!optionValue) {
+            if (!optionValue || optionValue.trim() === "") {
                 toast({
-                    title: "La opcion debe tener un titulo",
+                    title: "La opción debe tener un título válido",
                     className: "bg-red-800",
-                    duration: 3000
-                })
+                    duration: 3000,
+                });
                 return;
             }
+
             setQuestions(
                 questions.map((q) =>
                     q.id === id
@@ -77,22 +85,39 @@ export const useQuestions = () => {
                             ...q,
                             options: [
                                 ...q.options,
-                                { id: q.options.length + 1, label: optionValue, questionId: q.id }
-                            ]
+                                {
+                                    id: q.options.length + 1,
+                                    label: optionValue.trim(),
+                                    questionId: q.id,
+                                },
+                            ],
                         }
                         : q
                 )
-            )
+            );
         }
 
         if (type === "radio") {
+            const quantity = radioQuantities[id];
+            
+            console.log(quantity)
 
-            if (!radioQuantity) {
+            if (!quantity || quantity <= 0) {
                 toast({
-                    title: "Debes seleccionar una cantidad de items",
+                    title: "Debes seleccionar una cantidad válida de items",
                     className: "bg-red-800",
-                    duration: 3000
-                })
+                    duration: 3000,
+                });
+                return;
+            }
+
+            const existingOptions = questions.find((q) => q.id === id)?.options || [];
+            if (existingOptions.length === quantity) {
+                toast({
+                    title: "La cantidad de opciones ya coincide con la seleccionada",
+                    className: "bg-yellow-600",
+                    duration: 3000,
+                });
                 return;
             }
 
@@ -102,18 +127,24 @@ export const useQuestions = () => {
                         ? {
                             ...q,
                             options: [
-                                ...Array.from({ length: radioQuantity }, (_, index) => ({
+                                ...Array.from({ length: quantity }, (_, index) => ({
                                     id: index + 1,
                                     label: `${index + 1}`,
                                     questionId: q.id,
-                                }))
-                            ]
+                                })),
+                            ],
                         }
                         : q
                 )
             );
+
+            toast({
+                title: `Se actualizaron las opciones para la pregunta ${id}`,
+                className: "bg-green-800",
+                duration: 3000,
+            });
         }
-    }
+    };
 
     const removeQuestionOptions = (questionId: number, optionId: number) => {
         setQuestions(
@@ -129,14 +160,14 @@ export const useQuestions = () => {
         typeQuestion,
         optionLabel,
         name,
-        radioQuantity,
+        radioQuantities,
         setQuestions,
         setLabelQuestion,
         setTypeQuestion,
         updateQuestionLabel,
         setOptionLabel,
         setName,
-        setRadioQuantity,
+        handleRadioQuantityChange,
         addQuestion,
         removeQuestion,
         updateQuestionOptions,

@@ -22,8 +22,8 @@ export const FormBuilder = () => {
     const [loading, setLoading] = useState(false)
 
     const { questions, typeQuestion, optionLabel, name, setLabelQuestion,
-        setTypeQuestion, setOptionLabel, setName, setRadioQuantity,
-        addQuestion, removeQuestion, updateQuestionOptions, removeQuestionOptions, labelQuestion, updateQuestionLabel, radioQuantity } = useQuestions();
+        setTypeQuestion, setOptionLabel, setName, handleRadioQuantityChange,
+        addQuestion, removeQuestion, updateQuestionOptions, removeQuestionOptions, labelQuestion, updateQuestionLabel, radioQuantities } = useQuestions();
 
 
     const createForm = async () => {
@@ -120,9 +120,9 @@ export const FormBuilder = () => {
                             removeQuestionOptions={removeQuestionOptions}
                             removeQuestion={removeQuestion}
                             optionLabel={optionLabel}
-                            setRadioQuantity={setRadioQuantity}
+                            handleRadioQuantityChange={handleRadioQuantityChange}
                             updateQuestionLabel={updateQuestionLabel}
-                            radioQuantity={radioQuantity}
+                            radioQuantities={radioQuantities}
                         />
                     ))}
                 </div>

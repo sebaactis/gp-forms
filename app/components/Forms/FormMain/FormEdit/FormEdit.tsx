@@ -29,14 +29,14 @@ export const FormEditor = ({ existingForm }: Props) => {
         optionLabel,
         name,
         labelQuestion,
-        radioQuantity,
+        radioQuantities,
         setQuestions,
         setLabelQuestion,
         updateQuestionLabel,
         setTypeQuestion,
         setOptionLabel,
         setName,
-        setRadioQuantity,
+        handleRadioQuantityChange,
         addQuestion,
         removeQuestion,
         updateQuestionOptions,
@@ -128,9 +128,9 @@ export const FormEditor = ({ existingForm }: Props) => {
                             removeQuestionOptions={removeQuestionOptions}
                             removeQuestion={removeQuestion}
                             optionLabel={optionLabel}
-                            setRadioQuantity={setRadioQuantity}
+                            handleRadioQuantityChange={handleRadioQuantityChange}
                             updateQuestionLabel={updateQuestionLabel}
-                            radioQuantity={radioQuantity}
+                            radioQuantities={radioQuantities}
                         />
                     ))}
                 </div>

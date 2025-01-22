@@ -13,13 +13,13 @@ interface Props {
     removeQuestion: (questionId: number) => void;
     removeQuestionOptions: (questionId: number, optionId: number) => void;
     optionLabel: string;
-    setRadioQuantity: React.Dispatch<React.SetStateAction<number>>;
+    handleRadioQuantityChange: (questionId: number, value: string) => void;
     updateQuestionLabel: (id: number, newLabel: string) => void;
-    radioQuantity: number;
+    radioQuantities: { [key: number]: number };
 }
 
 
-export const FormQuestion = ({ question, styles, setOptionLabel, updateQuestionOptions, removeQuestionOptions, removeQuestion, optionLabel, setRadioQuantity, updateQuestionLabel, radioQuantity }: Props) => {
+export const FormQuestion = ({ question, styles, setOptionLabel, updateQuestionOptions, removeQuestionOptions, removeQuestion, optionLabel, handleRadioQuantityChange, updateQuestionLabel, radioQuantities }: Props) => {
     return (
         <React.Fragment key={question.id}>
             <div className={styles.questionContainer}>
@@ -72,11 +72,10 @@ export const FormQuestion = ({ question, styles, setOptionLabel, updateQuestionO
 
                 {question.type === "radio" &&
                     <div className={styles.radioContainer}>
-
                         <>
                             <label>
                                 Cantidad de opciones
-                                <input className={styles.radioInput} value={radioQuantity || question.options.length} type="text" onChange={(e) => setRadioQuantity(Number(e.target.value))} />
+                                <input className={styles.radioInput} value={radioQuantities[question.id] || ""} type="text" onChange={(e) => handleRadioQuantityChange(question.id, e.target.value)} />
                             </label>
                             <Button className={styles.addOptionBtn} onClick={() => updateQuestionOptions(question.id, null, question.type)}>
                                 Confirmar
