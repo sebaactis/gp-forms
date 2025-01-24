@@ -79,7 +79,7 @@ export const FormEditor = ({ existingForm }: Props) => {
 
         } catch {
             toast({
-                title: 'Error al editar formulario!',
+                title: `Error al editar formulario!`,
                 className: 'bg-red-800',
                 duration: 3000
             })

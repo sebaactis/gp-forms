@@ -37,9 +37,11 @@ export const useQuestions = () => {
             return;
         }
 
+        const newQuestions = [...questions, { id: questions.length + 1, type: typeQuestion, label: labelQuestion, options: []}]
+
         setLabelQuestion("")
         setTypeQuestion("text")
-        setQuestions([...questions, { id: questions.length + 1, type: typeQuestion, label: labelQuestion, options: [] }])
+        setQuestions(newQuestions)
 
     }
 
@@ -99,7 +101,7 @@ export const useQuestions = () => {
 
         if (type === "radio") {
             const quantity = radioQuantities[id];
-            
+
             console.log(quantity)
 
             if (!quantity || quantity <= 0) {

@@ -25,7 +25,6 @@ export const FormBuilder = () => {
         setTypeQuestion, setOptionLabel, setName, handleRadioQuantityChange,
         addQuestion, removeQuestion, updateQuestionOptions, removeQuestionOptions, labelQuestion, updateQuestionLabel, radioQuantities } = useQuestions();
 
-
     const createForm = async () => {
         if (!name) {
             toast({

@@ -36,31 +36,35 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     try {
 
 
-        await db.question.deleteMany({
-            where: {
-                formId: id
-            },
-        });
-
-        await db.form.update({
-            where: { id },
-            data: { name },
-        });
-
-        for (const question of questions) {
-            await db.question.create({
-                data: {
-                    label: question.label,
-                    type: question.type,
-                    formId: id,
-                    options: {
-                        create: question.options.map((option: Option) => ({
-                            label: option.label
-                        })),
-                    },
-                },
+        await db.$transaction(async (prisma) => {
+            await prisma.question.deleteMany({
+                where: { formId: id },
             });
-        }
+
+            await prisma.form.update({
+                where: { id },
+                data: { name },
+            });
+
+            const questionsWithOptions = questions.map((question) => ({
+                label: question.label,
+                type: question.type,
+                formId: id,
+                options: {
+                    create: question.options.map((option: Option) => ({
+                        label: option.label,
+                    })),
+                },
+            }));
+
+            await Promise.all(
+                questionsWithOptions.map((question) =>
+                    prisma.question.create({
+                        data: question,
+                    })
+                )
+            );
+        });
 
         return NextResponse.json({ message: "Formulario actualizado con éxito" }, { status: 200 });
     } catch (error) {
