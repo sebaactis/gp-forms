@@ -1,7 +1,0 @@
-{
-    "functions": {
-        "api/forms/[id]/route.ts": {
-            "runtime": "edge"
-        }
-    }
-}
