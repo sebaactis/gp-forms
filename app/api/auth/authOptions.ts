@@ -1,10 +1,7 @@
 import { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-const baseUrl = process.env.NEXTAUTH_URL || '';
-
 export const authOptions: AuthOptions = {
-    secret: process.env.NEXTAUTH_SECRET,
     providers: [
         CredentialsProvider({
             name: "Credentials",
@@ -20,7 +17,7 @@ export const authOptions: AuthOptions = {
 
                 const { email, password } = credentials;
 
-                const response = await fetch(`${baseUrl}/api/users`, {
+                const response = await fetch("https://gp-forms-sigma.vercel.app/api/users", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ email, password }),
