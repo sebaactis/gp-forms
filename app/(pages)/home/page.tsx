@@ -1,20 +1,25 @@
+"use client"
+
 import HomeTable from "@/app/components/Home/HomeTable/HomeTable";
 import styles from "./home.module.css"
 import WelcomeBanner from "@/app/components/Globals/Welcome/WelcomeBanner";
-import { MenuSquare } from "lucide-react"
+import { useSession } from "next-auth/react";
 
 export default function Home() {
-    return (
-        <section className={styles.mainContainer}>
-            <WelcomeBanner
-                title="Inicio"
-                bagde="Testing User"
-                icon={MenuSquare}
-            />
 
-            <article className={styles.infoContainer}>
-                <HomeTable />
-            </article>
-        </section>
+    const { data: session } = useSession();
+
+    return (
+            <section className={styles.mainContainer}>
+                <WelcomeBanner
+                    title="Inicio"
+                    bagde={session?.user?.email}
+                    icon="menu-square"
+                />
+
+                <article className={styles.infoContainer}>
+                    <HomeTable />
+                </article>
+            </section>
     )
 }

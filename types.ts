@@ -1,4 +1,5 @@
 import { CompletedForm, Employee, Form, Question, Option, Response } from "@prisma/client";
+import { DefaultSession } from "next-auth";
 
 export interface CompletedFormWithRelations extends CompletedForm {
     employee: Employee | null;
@@ -26,6 +27,18 @@ export enum questionTypes {
     radio = "Radio",
     checkbox = "Checkbox",
     description = "Descripción"
+}
+
+declare module "next-auth" {
+    interface Session {
+        user: {
+            id: string; // ✅ Agregamos 'id' al usuario
+        } & DefaultSession["user"];
+    }
+
+    interface JWT {
+        id: string;
+    }
 }
 
 

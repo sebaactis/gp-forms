@@ -11,7 +11,7 @@ datasource db {
 
 model User {
   id       String  @id @default(uuid())
-  email    String
+  email    String @unique
   password String
   nombre   String?
   apellido String?
@@ -25,7 +25,7 @@ model User {
 }
 
 model Employee {
-  id        String @id @default(uuid())
+  id        String   @id @default(dbgenerated("gen_random_uuid()"))
   nombre    String
   apellido  String
   email     String
@@ -40,8 +40,8 @@ model Employee {
   userId String
   user   User   @relation(fields: [userId], references: [id])
 
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
+  createdAt     DateTime?        @default(now())
+  updatedAt     DateTime?        @updatedAt
   CompletedForm CompletedForm[]
 }
 

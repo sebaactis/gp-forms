@@ -2,6 +2,28 @@
     background-color: #44444419;
 }
 
+.sidebarFooter {
+    display: flex;
+    gap: 1rem;
+}
+
+.logoutButton {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background-color: #008566;
+    padding: 0.4rem 0;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.logoutButton:hover {
+    background-color: #00b98e;
+}
+
 .image {
     width: 6.5rem;
     height: 5rem;

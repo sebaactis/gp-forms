@@ -3,7 +3,6 @@
 import WelcomeBanner from '@/app/components/Globals/Welcome/WelcomeBanner';
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react';
-import { PenBoxIcon } from "lucide-react"
 import HistoryEdit from '@/app/components/History/Edit/HistoryEdit';
 import { CompletedFormWithRelations } from '@/types';
 
@@ -35,7 +34,7 @@ const Page = () => {
             <WelcomeBanner
                 title='Editar evaluación'
                 bagde="Testing User"
-                icon={PenBoxIcon}
+                icon="pen-box"
             />
 
             <HistoryEdit evaluation={evaluation} setEvaluation={setEvaluation} />

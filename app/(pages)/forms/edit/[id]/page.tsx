@@ -2,7 +2,6 @@
 
 import WelcomeBanner from '@/app/components/Globals/Welcome/WelcomeBanner';
 import { useParams } from 'next/navigation'
-import { EditIcon } from 'lucide-react'
 import FormEdit from '@/app/components/Forms/FormMain/FormEdit/FormEdit';
 import { useEffect, useState } from 'react';
 import { FormWithRelations } from '@/types';
@@ -60,7 +59,7 @@ const Edit = () => {
             <WelcomeBanner
                 title={`Editar formulario: ${form?.name}`}
                 bagde="RRHH"
-                icon={EditIcon}
+                icon="edit"
             />
             <FormEdit existingForm={form} />
         </div>

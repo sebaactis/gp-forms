@@ -2,17 +2,10 @@ import { db } from "@/data/prisma";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 
-export async function GET() {
-    const users = await db.user.findMany({
-    })
-
-    return NextResponse.json(users)
-}
-
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        const { email, password } = body;
+        const { email, password, nombre, apellido } = body;
 
         if (!email || !password) {
             return NextResponse.json(
@@ -22,39 +15,45 @@ export async function POST(request: Request) {
         }
 
         if (!email.endsWith("@globalprocessing.com.ar")) {
-
             return NextResponse.json(
                 { error: "El correo debe pertenecer al dominio @globalprocessing.com.ar" },
                 { status: 400 }
             );
         }
 
-        const user = await db.user.findUnique({
+        const existingUser = await db.user.findUnique({
             where: {
                 email: email
             }
         });
 
-
-        if (!user) {
+        if (existingUser) {
             return NextResponse.json(
-                { error: "Usuario no encontrado" },
-                { status: 401 }
+                { error: "El correo ya está registrado" },
+                { status: 409 }
             );
         }
 
-        if (!await bcrypt.compare(password, user.password)) {
-            return NextResponse.json(
-                { error: "Contraseña incorrecta" },
-                { status: 401 }
-            );
-        }
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const newUser = await db.user.create({
+            data: {
+                email: email,
+                password: hashedPassword,
+                nombre: nombre,
+                apellido: apellido,
+                role: "USER"
+            }
+        });
 
         return NextResponse.json({
-            id: user.id,
-            name: user.nombre,
-            email: user.email,
-        });
+            id: newUser.id,
+            email: newUser.email,
+            nombre: newUser.nombre,
+            apellido: newUser.apellido,
+            role: newUser.role
+        }, { status: 201 });
+
     } catch (error) {
         console.error(error);
         return NextResponse.json(
@@ -62,22 +61,4 @@ export async function POST(request: Request) {
             { status: 500 }
         );
     }
-}
-
-export async function PUT(request: Request) {
-
-    const body = await request.json();
-    const { userId, role } = body;
-
-    await db.user.update({
-        where: { id: userId },
-        data: {
-            role
-        }
-    })
-
-    return NextResponse.json({
-        message: "User updated successfully",
-        status: 200
-    })
 }

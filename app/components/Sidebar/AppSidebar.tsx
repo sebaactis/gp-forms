@@ -1,12 +1,14 @@
 "use client"
 
-import { UserPen, BookOpenText, UsersRoundIcon, History, LockKeyholeIcon } from "lucide-react"
+import { UserPen, BookOpenText, UsersRoundIcon, History, LockKeyholeIcon, LogOutIcon } from "lucide-react"
 import {
     Sidebar,
     SidebarContent,
     SidebarFooter,
     SidebarHeader,
 } from "@/components/ui/sidebar"
+
+import { signOut } from "next-auth/react"
 
 import Image from "next/image"
 import logo from "@/public/gp-logo.png"
@@ -15,6 +17,7 @@ import { ModeToggle } from "@/components/theme/theme-toggle"
 import SideBarItem from "./SideBarItem"
 import Link from "next/link"
 import { Separator } from "@/components/ui/separator"
+import { useToast } from "@/hooks/use-toast"
 
 const itemsRRHH = [
     {
@@ -54,6 +57,18 @@ const items = [
 
 export function AppSidebar() {
 
+    const { toast } = useToast();
+
+    const handleLogout = () => {
+        toast({
+            title: 'Sesión cerrada correctamente',
+            className: 'bg-green-800',
+            duration: 3000
+        })
+
+        signOut({ callbackUrl: "/" })
+    }
+
     return (
         <Sidebar >
             <SidebarHeader className={styles.sidebar}>
@@ -67,8 +82,12 @@ export function AppSidebar() {
             <SidebarContent className={styles.sidebar}>
                 <SideBarItem title="Tus evaluaciones" items={items} />
                 <SideBarItem title="RRHH" items={itemsRRHH} />
-                <SidebarFooter className={styles.sidebar}>
+                <SidebarFooter className={styles.sidebarFooter}>
                     <ModeToggle />
+                    <button className={styles.logoutButton} onClick={handleLogout}>
+                        <LogOutIcon />
+                        <p>Cerrar Sesión</p>
+                    </button>
                 </SidebarFooter>
             </SidebarContent>
 

@@ -6,7 +6,6 @@ import { CompletedFormWithRelations } from '@/types';
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react';
 import ClockLoader from 'react-spinners/ClockLoader';
-import { LucideEye } from 'lucide-react';
 
 const Page = () => {
     const { id } = useParams();
@@ -51,7 +50,7 @@ const Page = () => {
             <WelcomeBanner
                 title="Ver evaluacion"
                 bagde="Testing User"
-                icon={LucideEye}
+                icon="eye"
             />
             <HistoryView evaluation={evaluation} />
         </div>

@@ -3,7 +3,6 @@
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import WelcomeBanner from '@/app/components/Globals/Welcome/WelcomeBanner';
-import { LucideScanEye } from 'lucide-react';
 import FormView from '@/app/components/Forms/FormMain/FormView/FormView';
 import { FormWithRelations } from '@/types';
 import ClockLoader from 'react-spinners/ClockLoader';
@@ -59,7 +58,7 @@ const FormPage = () => {
             <WelcomeBanner
                 title={`Preguntas formulario: ${form?.name}`}
                 bagde="RRHH"
-                icon={LucideScanEye}
+                icon="scan-eye"
             />
 
             {form?.questions?.map((question) => (

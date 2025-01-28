@@ -1,17 +1,66 @@
 import { db } from "@/data/prisma";
+import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+import { Employee, FormStatus } from "@prisma/client";
+import { authOptions } from "../auth/authOptions";
 
 export async function GET() {
-    const employees = await db.employee.findMany({
-        include: {
-            CompletedForm: true
-        },
-        orderBy: {
-            nombre: "asc"
-        }
-    })
+    const session = await getServerSession(authOptions);
+    let employees: (Employee & {
+        CompletedForm: {
+            status: FormStatus;
+            id: string;
+            formId: string | null;
+            userId: string;
+            createdAt: Date;
+            updatedAt: Date;
+            employeeId: string;
+            formTitle: string | null;
+            period: string;
+            completedAt: Date | null;
+            startDate: Date;
+            endDate: Date;
+        }[];
+    })[];
 
-    return NextResponse.json(employees)
+    if (!session || !session.user) {
+        return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+    }
+
+    const user = await db.user.findUnique({
+        where: {
+            email: session.user.email as string,
+        }
+    });
+
+    if (!user) {
+        return NextResponse.json({ error: "Usuario no encontrado" }, { status: 404 });
+    }
+
+    if (user.role === "RRHH") {
+        employees = await db.employee.findMany({
+            include: {
+                CompletedForm: true,
+            },
+            orderBy: {
+                nombre: "asc",
+            },
+        });
+    } else {
+        employees = await db.employee.findMany({
+            where: {
+                userId: user.id
+            },
+            include: {
+                CompletedForm: true,
+            },
+            orderBy: {
+                nombre: "asc",
+            },
+        });
+    }
+
+    return NextResponse.json(employees);
 }
 
 export async function POST(request: Request) {

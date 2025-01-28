@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import WelcomeBanner from "../../Globals/Welcome/WelcomeBanner";
-import { UserPenIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -109,7 +108,7 @@ const EmployeeEdit = ({ id }) => {
             <WelcomeBanner
                 title={isLoading ? "Cargando..." : `Editar empleado`}
                 bagde="RRHH"
-                icon={UserPenIcon}
+                icon="user-pen"
             />
 
             {isLoading ? (

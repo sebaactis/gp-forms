@@ -1,6 +1,5 @@
 import React from 'react'
 import WelcomeBanner from '../../Globals/Welcome/WelcomeBanner'
-import { LucideTextSelection } from 'lucide-react'
 import Evaluations from './Evaluations'
 
 const EvaluationsMain = () => {
@@ -9,7 +8,7 @@ const EvaluationsMain = () => {
             <WelcomeBanner
                 title="Evaluaciones"
                 bagde="Testing User"
-                icon={LucideTextSelection}
+                icon="text-selection"
             />
 
             <Evaluations />

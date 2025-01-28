@@ -1,6 +1,5 @@
 import WelcomeBanner from "@/app/components/Globals/Welcome/WelcomeBanner";
 import RoleMain from "@/app/components/Role/RoleMain";
-import { ShieldQuestionIcon } from "lucide-react"
 
 export default function Roles() {
     return (
@@ -8,7 +7,7 @@ export default function Roles() {
             <WelcomeBanner
                 title="Roles"
                 bagde="RRHH"
-                icon={ShieldQuestionIcon}
+                icon="shield-question"
             />
 
             <RoleMain />

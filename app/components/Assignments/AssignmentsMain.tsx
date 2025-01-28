@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import WelcomeBanner from "../Globals/Welcome/WelcomeBanner";
-import { ListCollapseIcon } from "lucide-react";
 import AssignmentsBoss from "./AssignmentsBoss";
 import { Separator } from "@/components/ui/separator";
 import AssignmentsForms from "./AssignmentsForms";
@@ -51,7 +50,10 @@ const AssignmentsMain = () => {
 
     return (
         <div>
-            <WelcomeBanner title="Asignaciones" bagde="RRHH" icon={ListCollapseIcon} />
+            <WelcomeBanner
+                title="Asignaciones"
+                bagde="RRHH"
+                icon="list-collapse" />
 
             <AssignmentsBoss />
             <Separator />

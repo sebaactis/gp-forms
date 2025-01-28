@@ -4,7 +4,6 @@ import EvaluationComplete from '@/app/components/Evaluations/EvaluationComplete/
 import WelcomeBanner from '@/app/components/Globals/Welcome/WelcomeBanner'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { CheckSquareIcon } from "lucide-react"
 import ClockLoader from 'react-spinners/ClockLoader'
 import { EmployeeWithRelations } from '@/types'
 
@@ -53,7 +52,7 @@ const Evaluation = () => {
             <WelcomeBanner
                 title={`Evaluacion de ${empleado.nombre} ${empleado.apellido}`}
                 bagde="Testing User"
-                icon={CheckSquareIcon}
+                icon="check-square"
             />
             <EvaluationComplete empleado={empleado} formId={formId} />
         </div>

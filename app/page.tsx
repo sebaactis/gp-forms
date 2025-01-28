@@ -1,36 +1,39 @@
-"use client"
+"use client";
 
-import Image from 'next/image';
-import styles from './home.module.css'
-import logo from '@/public/gp-logo.png'
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import PulseLoader from 'react-spinners/PulseLoader';
-export default function Home() {
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { LoginComponent } from "./components/LoginComponent";
+import { RegisterComponent } from "./components/RegisterComponent";
 
+export default function AuthPage() {
+  
+  const { data: session, status } = useSession();
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
+  const [error, setError] = useState("");
 
-  const onLogin = () => {
-    // TO DO LOGIN...
-
-    setLoading(true);
-
-    setTimeout(() => {
-      router.push('/home')
-      setLoading(false);
-    }, 2000) 
-  }
+  useEffect(() => {
+    if (session) {
+      router.push("/home");
+    }
+  }, [session, router, status]);
 
   return (
-    <div className={styles.mainContainer}>
-      <Image src={logo} alt="logo de gp" className={styles.image} />
-      <button
-        className={styles.button}
-        onClick={onLogin}
-      >
-        {loading ? <PulseLoader size={10} color="white" /> : "Iniciar sesión con Microsoft"}
-      </button>
+    <div className="flex items-center justify-center min-h-screen m-auto flex-col gap-3">
+      
+      {isLogin ? (
+        <LoginComponent
+          onSwitch={() => setIsLogin(false)}
+          setError={setError}
+        />
+      ) : (
+        <RegisterComponent
+          onSwitch={() => setIsLogin(true)}
+          setError={setError}
+        />
+      )}
+      {error && <p className="mt-4 text-red-500 font-bold">{error}</p>}
     </div>
   );
 }

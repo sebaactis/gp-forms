@@ -2,7 +2,6 @@
 
 import styles from "./forms-builder.module.css"
 import { Separator } from "@/components/ui/separator";
-import { BookPlus } from "lucide-react"
 import FormAddQuestion from "./FormAddQuestion";
 import { FormQuestion } from "./FormQuestion";
 import WelcomeBanner from "../../Globals/Welcome/WelcomeBanner";
@@ -86,7 +85,7 @@ export const FormBuilder = () => {
             <WelcomeBanner
                 title="Creacion de formulario"
                 bagde="RRHH"
-                icon={BookPlus}
+                icon="book-plus"
             />
 
             <section className={styles.mainContainer}>

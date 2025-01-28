@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast"
 import SyncLoader from "react-spinners/SyncLoader"
 
 export default function HomeTable() {
+
     const { toast } = useToast();
     const [empleados, setEmpleados] = useState<EmployeeWithRelations[]>([]);
     const [pagination, setPagination] = useState<PaginationState>({
