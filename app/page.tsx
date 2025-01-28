@@ -7,7 +7,7 @@ import { LoginComponent } from "./components/LoginComponent";
 import { RegisterComponent } from "./components/RegisterComponent";
 
 export default function AuthPage() {
-  
+
   const { data: session, status } = useSession();
   const router = useRouter();
   const [isLogin, setIsLogin] = useState(true);
@@ -21,7 +21,7 @@ export default function AuthPage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen m-auto flex-col gap-3">
-      
+
       {isLogin ? (
         <LoginComponent
           onSwitch={() => setIsLogin(false)}

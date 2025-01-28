@@ -17,7 +17,7 @@ export const authOptions: AuthOptions = {
 
                 const { email, password } = credentials;
 
-                const response = await fetch("https://gp-forms-sigma.vercel.app/api/users", {
+                const response = await fetch("http://localhost:3000/api/users", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ email, password }),
@@ -50,6 +50,7 @@ export const authOptions: AuthOptions = {
                 token.id = user.id;
                 token.email = user.email;
                 token.name = user.name;
+                token.role = user.role;
             }
             return token;
         },
@@ -58,6 +59,7 @@ export const authOptions: AuthOptions = {
                 session.user.id = token.id as string;
                 session.user.email = token.email as string;
                 session.user.name = token.name as string;
+                session.user.role = token.role as string;
             }
             return session;
         },

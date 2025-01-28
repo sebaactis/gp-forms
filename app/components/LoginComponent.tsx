@@ -40,7 +40,7 @@ export function LoginComponent({ onSwitch, setError }) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="w-full p-2 border rounded"
-          placeholder="correo@midominio.com"
+          placeholder="Ingresa tu correo..."
           required
         />
       </div>
@@ -51,6 +51,7 @@ export function LoginComponent({ onSwitch, setError }) {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="w-full p-2 border rounded"
+          placeholder="Ingresa tu contraseña..."
           required
         />
       </div>

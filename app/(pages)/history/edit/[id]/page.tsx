@@ -5,8 +5,11 @@ import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react';
 import HistoryEdit from '@/app/components/History/Edit/HistoryEdit';
 import { CompletedFormWithRelations } from '@/types';
+import { useSession } from 'next-auth/react';
 
 const Page = () => {
+
+    const { data: session } = useSession();
 
     const { id } = useParams();
     const [evaluation, setEvaluation] = useState<CompletedFormWithRelations | null>(null);
@@ -33,7 +36,7 @@ const Page = () => {
         <div>
             <WelcomeBanner
                 title='Editar evaluación'
-                bagde="Testing User"
+                bagde={session?.user?.email}
                 icon="pen-box"
             />
 

@@ -1,7 +1,20 @@
+import { getServerSession } from 'next-auth';
+import { NextResponse } from 'next/server';
 import { db } from "@/data/prisma";
-import { NextResponse } from "next/server";
+import { authOptions } from '../auth/authOptions';
 
 export async function GET(req: Request) {
+    const session = await getServerSession(authOptions);
+
+    if (!session || !session.user) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const user = await db.user.findUnique({
+        where: {
+            email: session.user.email as string,
+        }
+    });
 
     const { searchParams } = new URL(req.url);
     const statusFilter = searchParams.get('status');
@@ -20,6 +33,13 @@ export async function GET(req: Request) {
                 status: statusFilter,
             };
         }
+    }
+
+    if (user?.role !== 'RRHH') {
+        whereClause = {
+            ...whereClause,
+            userId: user?.id,
+        };
     }
 
     const forms = await db.completedForm.findMany({
@@ -62,7 +82,7 @@ export async function POST(req: Request) {
 
         await db.completedForm.create({
             data: {
-                userId: 'c17beaba-4535-4ee8-9674-8c251b849f71',
+                userId: employee.userId,
                 employeeId: body.employeeId,
                 formId: employee.formId,
                 formTitle: employee.form?.name,

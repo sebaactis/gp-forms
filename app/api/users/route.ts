@@ -54,6 +54,7 @@ export async function POST(request: Request) {
             id: user.id,
             name: user.nombre,
             email: user.email,
+            role: user.role
         });
     } catch (error) {
         console.error(error);

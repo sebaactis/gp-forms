@@ -6,8 +6,11 @@ import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import ClockLoader from 'react-spinners/ClockLoader'
 import { EmployeeWithRelations } from '@/types'
+import { useSession } from 'next-auth/react'
 
 const Evaluation = () => {
+
+    const { data: session } = useSession();
 
     const [empleado, setEmpleado] = useState<EmployeeWithRelations>({} as EmployeeWithRelations);
     const [loading, setLoading] = useState<boolean>(false);
@@ -51,7 +54,7 @@ const Evaluation = () => {
         <div>
             <WelcomeBanner
                 title={`Evaluacion de ${empleado.nombre} ${empleado.apellido}`}
-                bagde="Testing User"
+                bagde={session?.user?.email}
                 icon="check-square"
             />
             <EvaluationComplete empleado={empleado} formId={formId} />

@@ -8,7 +8,7 @@ import {
     SidebarHeader,
 } from "@/components/ui/sidebar"
 
-import { signOut } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 
 import Image from "next/image"
 import logo from "@/public/gp-logo.png"
@@ -57,6 +57,8 @@ const items = [
 
 export function AppSidebar() {
 
+    const { data: session } = useSession();
+
     const { toast } = useToast();
 
     const handleLogout = () => {
@@ -81,7 +83,9 @@ export function AppSidebar() {
 
             <SidebarContent className={styles.sidebar}>
                 <SideBarItem title="Tus evaluaciones" items={items} />
-                <SideBarItem title="RRHH" items={itemsRRHH} />
+                {session?.user?.role === 'RRHH' && (
+                    <SideBarItem title="RRHH" items={itemsRRHH} />
+                )}
                 <SidebarFooter className={styles.sidebarFooter}>
                     <ModeToggle />
                     <button className={styles.logoutButton} onClick={handleLogout}>

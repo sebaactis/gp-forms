@@ -3,11 +3,15 @@
 import WelcomeBanner from '@/app/components/Globals/Welcome/WelcomeBanner';
 import HistoryView from '@/app/components/History/View/HistoryView';
 import { CompletedFormWithRelations } from '@/types';
+import { useSession } from 'next-auth/react';
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react';
 import ClockLoader from 'react-spinners/ClockLoader';
 
 const Page = () => {
+
+    const { data: session } = useSession();
+
     const { id } = useParams();
 
     const [evaluation, setEvaluation] = useState<CompletedFormWithRelations | undefined>();
@@ -49,7 +53,7 @@ const Page = () => {
         <div>
             <WelcomeBanner
                 title="Ver evaluacion"
-                bagde="Testing User"
+                bagde={session?.user?.email}
                 icon="eye"
             />
             <HistoryView evaluation={evaluation} />
