@@ -1,0 +1,29 @@
+.profileContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.profileAvatar {
+    height: 2.3rem;
+    width: 2.3rem;
+    background-color: #95007c;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
+}
+
+.profileConfig {
+    font-size: 0.9rem;
+    background-color: #121212af;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease-in-out;
+}
+
+.profileConfig:hover {
+    background-color: #000000;
+}

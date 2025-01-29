@@ -1,0 +1,49 @@
+.profileTitle {
+    text-align: center;
+    margin-top: 4rem;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 1.4rem;
+}
+
+.profileInfo {
+    background-color: #2e2e2e3c;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    width: fit-content;
+    margin-top: 2rem;
+    padding: 2rem;
+    padding-bottom: 0.7rem;
+    border-radius: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.profileInfoTitle {
+    font-weight: 800;
+}
+
+.profileButtons {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.profileButton {
+    background-color: #00ac7664;
+    padding: 0.4rem 0.7rem;
+    border-radius: 0.3rem;
+    transition: all 0.3s ease;
+}
+
+.profileButton:hover {
+    background-color: #00ffae64;
+}
+
+.profileInfoNote {
+    font-size: 0.8rem;
+    color: #ff0000de;
+    text-align: start;
+    margin-left: -0.5rem;
+}

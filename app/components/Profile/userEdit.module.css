@@ -1,0 +1,57 @@
+.userEditContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3rem;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.userEditMainTitle {
+    font-size: 1.3rem;
+    font-weight: 900;
+    font-style: italic;
+}
+
+.userEditForm {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.userEditLabel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-size: 1.1rem;
+    font-style: italic;
+}
+
+.userEditInput {
+    padding: 0.3rem 0.5rem;
+    border-radius: 0.3rem;
+    border: none;
+    background-color: #000000;
+    color: #fff;
+}
+
+.userEditFormContainer {
+    background-color: #2a2a2aab;
+    padding: 1rem 5rem;
+    border-radius: 0.5rem;
+    width: 30rem;
+}
+
+.userEditTitle {
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+}
+
+.submitBtn {
+    background-color: #007b5270;
+    margin-top: 1rem;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+}

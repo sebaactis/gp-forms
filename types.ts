@@ -33,19 +33,26 @@ declare module "next-auth" {
     interface Session {
         user: {
             id: string;
-            role: string; // Add 'role' to the session user
+            role: string;
+            nombre?: string;  // 👈 Agregamos nombre
+            apellido?: string; // 👈 Agregamos apellido
         } & DefaultSession["user"];
     }
 
     interface User extends DefaultUser {
         id: string;
         role: string;
+        nombre?: string;  // 👈 Agregamos nombre
+        apellido?: string; // 👈 Agregamos apellido
     }
 
     interface JWT {
         id: string;
         role: string;
+        nombre?: string;  // 👈 Agregamos nombre
+        apellido?: string; // 👈 Agregamos apellido
     }
 }
+
 
 

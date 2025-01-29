@@ -49,7 +49,8 @@ export const authOptions: AuthOptions = {
             if (user) {
                 token.id = user.id;
                 token.email = user.email;
-                token.name = user.name;
+                token.nombre = user.nombre;
+                token.apellido = user.apellido;
                 token.role = user.role;
             }
             return token;
@@ -58,7 +59,8 @@ export const authOptions: AuthOptions = {
             if (token) {
                 session.user.id = token.id as string;
                 session.user.email = token.email as string;
-                session.user.name = token.name as string;
+                session.user.nombre = token.nombre as string;
+                session.user.apellido = token.apellido as string;
                 session.user.role = token.role as string;
             }
             return session;

@@ -11,7 +11,7 @@ const iconMap = {
     "menu-square": MenuSquare,
     "text-selection": LucideTextSelection,
     "timer-reset": TimerResetIcon,
-    "user-pen-": UserPenIcon,
+    "user-pen": UserPenIcon,
     "user-plus": UserPlusIcon,
     "check-square": CheckSquareIcon,
     "edit": EditIcon,
@@ -36,7 +36,6 @@ const WelcomeBanner = ({ title, icon, bagde }: Props) => {
             {IconComponent ? <IconComponent className={styles.titleIcon} /> : null}
             <h1 className={styles.title}>{title}</h1>
             <p className={styles.titleBagde}>{bagde}</p>
-
         </div>
     )
 }

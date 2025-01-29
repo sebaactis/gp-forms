@@ -18,6 +18,7 @@ import SideBarItem from "./SideBarItem"
 import Link from "next/link"
 import { Separator } from "@/components/ui/separator"
 import { useToast } from "@/hooks/use-toast"
+import Profile from "./Profile"
 
 const itemsRRHH = [
     {
@@ -87,15 +88,17 @@ export function AppSidebar() {
                     <SideBarItem title="RRHH" items={itemsRRHH} />
                 )}
                 <SidebarFooter className={styles.sidebarFooter}>
-                    <ModeToggle />
+
+                    <Profile />
                     <button className={styles.logoutButton} onClick={handleLogout}>
                         <LogOutIcon />
                         <p>Cerrar Sesión</p>
                     </button>
                 </SidebarFooter>
             </SidebarContent>
-
-
+            <section className="bg-[#44444419]">
+                <ModeToggle />
+            </section>
         </Sidebar>
     )
 }
