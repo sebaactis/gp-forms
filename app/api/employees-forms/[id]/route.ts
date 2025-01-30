@@ -2,15 +2,6 @@ import { db } from "@/data/prisma";
 import { randomUUID } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 
-type ResponseType = {
-  id: string;
-  questionId: number | null;
-  questionText: string | null;
-  questionType: string | null;
-  optionsJson: string | null;
-  completedFormId: string;
-  answer: string;
-};
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
 
@@ -46,20 +37,24 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 
   try {
     await db.$transaction(async (db) => {
-
       const existingResponses = await db.response.findMany({
         where: { completedFormId: id },
       });
 
-      const existingResponsesMap = existingResponses.reduce<Record<string, ResponseType>>((map, response) => {
-        if (response.questionText != null) {
-          map[response.questionText] = response;
-        } else {
-          console.warn('response.questionText es nulo o indefinido:', response);
-        }
-        return map;
-      }, {});
+      const existingResponsesMap = new Map(
+        existingResponses.map((response) => [response.questionText, response])
+      );
 
+      const questionIds = newResponses
+        .map((r) => r.questionId)
+        .filter(Boolean);
+
+      const questions = await db.question.findMany({
+        where: { id: { in: questionIds } },
+        include: { options: true },
+      });
+
+      const questionMap = new Map(questions.map((q) => [q.id, q]));
 
       for (const response of newResponses) {
         const { questionId, questionText, questionType, answer } = response;
@@ -70,24 +65,20 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 
         let optionsJson: string | null = response.optionsJson || null;
 
-        if (questionId) {
-          const question = await db.question.findUnique({
-            where: { id: questionId },
-            include: { options: true },
-          });
+        if (questionId && questionMap.has(questionId)) {
+          const question = questionMap.get(questionId)!;
 
-          optionsJson = question
-            ? JSON.stringify(question.options.map((option) => ({
+          optionsJson = JSON.stringify(
+            question.options.map((option) => ({
               id: option.id,
               label: option.label,
-            })))
-            : optionsJson;
+            }))
+          );
         }
 
-        const existingResponse = existingResponsesMap[questionText];
+        const existingResponse = existingResponsesMap.get(questionText);
 
         if (existingResponse) {
-
           await db.response.update({
             where: { id: existingResponse.id },
             data: {
@@ -98,7 +89,6 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
             },
           });
         } else {
-
           await db.response.create({
             data: {
               id: randomUUID(),
@@ -113,7 +103,6 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
         }
       }
 
-
       await db.completedForm.update({
         where: { id },
         data: {
@@ -125,20 +114,14 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 
     return NextResponse.json({ message: 'Formulario actualizado con éxito' }, { status: 200 });
   } catch (error) {
-    if (error instanceof Error) {
-      console.log(error)
-      return NextResponse.json(
-        { message: 'Error al procesar el formulario', error: error.message },
-        { status: 500 }
-      );
-    } else {
-      console.log(error)
-      return NextResponse.json(
-        { message: 'Error desconocido', error: "" },
-        { status: 500 }
-      );
-    }
-
+    console.error(error);
+    return NextResponse.json(
+      {
+        message: 'Error al procesar el formulario',
+        error: error instanceof Error ? error.message : 'Error desconocido',
+      },
+      { status: 500 }
+    );
   }
 }
 
