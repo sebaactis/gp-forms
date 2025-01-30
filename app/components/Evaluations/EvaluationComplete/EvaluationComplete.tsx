@@ -155,7 +155,8 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
             });
 
             if (!response.ok) {
-                throw new Error("Error al actualizar el formulario");
+                const errorData = await response.json();
+                throw new Error(errorData.error || "Error al actualizar el formulario");
             }
 
             toast({
