@@ -126,11 +126,13 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     return NextResponse.json({ message: 'Formulario actualizado con éxito' }, { status: 200 });
   } catch (error) {
     if (error instanceof Error) {
+      console.log(error)
       return NextResponse.json(
         { message: 'Error al procesar el formulario', error: error.message },
         { status: 500 }
       );
     } else {
+      console.log(error)
       return NextResponse.json(
         { message: 'Error desconocido', error: "" },
         { status: 500 }
