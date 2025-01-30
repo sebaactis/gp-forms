@@ -166,11 +166,12 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
 
             router.push("/evaluations");
         } catch (error) {
-            console.log(error)
-            console.log(error.message)
+            console.log("Error al enviar la evaluación:", error);
+
+            const errorMessage = error instanceof Error ? error.message : JSON.stringify(error);
             toast({
                 title: "Error al enviar la evaluación",
-                description: `${error.message}`,
+                description: errorMessage,
                 duration: 2000,
                 className: "bg-red-300",
             });
