@@ -51,3 +51,9 @@
 .itemButton:hover {
     background-color: var(--sidebar-item-color)
 }
+
+@media (width < 1367px) {
+    .sidebarFooter {
+        margin-bottom: 0.3rem;
+    }
+}
