@@ -3,8 +3,11 @@
 }
 
 .sidebarFooter {
+    position: absolute;
+    bottom: 0;
     display: flex;
     gap: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .logoutButton {

@@ -8,7 +8,8 @@ const protectedRoutes = [
     "/employees",
     "/assignments",
     "/forms",
-    "/roles"
+    "/roles",
+    "/profile"
 ];
 
 export async function middleware(req) {

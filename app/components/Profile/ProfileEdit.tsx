@@ -12,7 +12,7 @@ interface Props {
 const ProfileEdit = ({ email, role, nombre, apellido, id }: Props) => {
 
     return (
-        <div className="flex flex-col justify-center items-center gap-2">
+        <div className="flex flex-col justify-center items-center gap-2 pb-16">
             <h1 className={styles.profileTitle}>Información de usuario</h1>
             <div className={styles.profileInfo}>
                 <p><span className={styles.profileInfoTitle}>Email: </span>{email}</p>
