@@ -5,16 +5,24 @@ import { useState } from "react";
 import PulseLoader from "react-spinners/PulseLoader";
 import Image from "next/image"
 import logo from "@/public/gp-logo.png"
+import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
 
 export function LoginComponent({ onSwitch, setError }) {
+
+  const router = useRouter();
+  const { toast } = useToast();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setError("");
     setIsLoading(true);
+
     const result = await signIn("credentials", {
       email,
       password,
@@ -24,7 +32,14 @@ export function LoginComponent({ onSwitch, setError }) {
     if (result?.error) {
       setError(result.error);
     } else {
-      window.location.href = "/home";
+
+      toast({
+        title: 'Ingreso exitoso!',
+        className: 'bg-green-800',
+        duration: 3000
+      })
+
+      router.push("/home");
     }
     setIsLoading(false);
   };

@@ -90,7 +90,7 @@ export async function POST(request: Request) {
 
 export async function PUT(req: Request) {
     try {
-        const body = await req.json(); // Parsear el cuerpo de la solicitud
+        const body = await req.json();
         const { bossId, employeeId } = body;
 
         // Validación de parámetros
