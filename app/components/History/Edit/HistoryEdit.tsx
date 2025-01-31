@@ -124,7 +124,7 @@ const HistoryEdit = ({ evaluation, setEvaluation }: Props) => {
                     {evaluation?.employee?.nombre} {evaluation?.employee?.apellido}</h3>
                 <p><span className={styles.titleInfo}>Completada el dia:</span>  {new Date(evaluation?.completedAt ?? new Date()).toLocaleDateString()}</p>
                 <p><span className={styles.titleInfo}>Formulario:</span>  {evaluation?.formTitle}</p>
-                <p><span className={styles.titleInfo}>Cantidad de preguntas respondidas:</span>  {evaluation?.responses.length}</p>
+                <p><span className={styles.titleInfo}>Cantidad de preguntas respondidas:</span>  {evaluation?.responses.filter(r => r.questionType !== "description").length}</p>
             </div>
 
             <Separator />
@@ -134,12 +134,12 @@ const HistoryEdit = ({ evaluation, setEvaluation }: Props) => {
 
                     if (response.questionType === "description") {
                         return (
-                            <div className={styles.inputTextContainer} key={response.id}>
+                            <div className={styles.inputDescriptionContainer} key={response.id}>
                                 <TextSelectIcon />
                                 <textarea
                                     value={response.questionText}
                                     rows={response.questionText.split("\n").length || 1}
-                                    className={`bg-transparent my-2`}
+                                    className={`bg-transparent my-2 min-h-32`}
                                     disabled
                                 />
                             </div>

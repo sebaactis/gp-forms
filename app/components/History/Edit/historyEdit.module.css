@@ -12,7 +12,7 @@
     gap: 0.7rem;
     background-color: var(--evaluation-card-color);
     border-radius: 5px;
-    width: 30%;
+    width: 90%;
     padding: 1.3rem;
     margin-top: 2rem;
 }
@@ -38,6 +38,17 @@
     border-radius: 5px;
 }
 
+.inputDescriptionContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    background-color: var(--evaluation-card-color);
+    padding: 1rem;
+    border-radius: 5px;
+    background-color: #00918069;
+    font-size: 1.1rem;
+}
+
 .inputTextLabel {
     font-weight: bold;
     font-size: 1.1rem;
@@ -60,7 +71,6 @@
 }
 
 .inputRadioLabel {
-    font-weight: bold;
     font-size: 1.1rem;
 }
 

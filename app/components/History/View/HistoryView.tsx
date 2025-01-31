@@ -22,10 +22,10 @@ const HistoryView = ({ evaluation }: Props) => {
                     {evaluation?.employee?.nombre} {evaluation?.employee?.apellido}</h3>
                 <p><span className={styles.titleInfo}>Completada el dia:</span>  {evaluation?.completedAt ? new Date(evaluation.completedAt).toLocaleDateString() : 'No completada'}</p>
                 <p><span className={styles.titleInfo}>Formulario:</span>  {evaluation?.formTitle}</p>
-                <p><span className={styles.titleInfo}>Cantidad de preguntas respondidas:</span>  {evaluation?.responses.length}</p>
+                <p><span className={styles.titleInfo}>Cantidad de preguntas respondidas:</span>  {evaluation?.responses.filter(r => r.questionType !== "description").length}</p>
                 <div className={styles.exportBtnContainer}>
                     <button className={styles.exportBtnPDF} onClick={() => exportToPDF(evaluation)}><FaFilePdf size={20} /> Exportar a PDF  </button>
-                    <button className={styles.exportBtnExcel} onClick={() => exportToExcel(evaluation)}> <PiMicrosoftExcelLogoFill size={20}/> Exportar a Excel</button>
+                    <button className={styles.exportBtnExcel} onClick={() => exportToExcel(evaluation)}> <PiMicrosoftExcelLogoFill size={20} /> Exportar a Excel</button>
                 </div>
             </div>
 

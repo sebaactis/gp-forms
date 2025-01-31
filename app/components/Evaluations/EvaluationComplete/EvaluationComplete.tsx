@@ -194,7 +194,7 @@ const EvaluationComplete = ({ empleado, formId }: Props) => {
                                     <TextSelect className='h-7 w-7 mb-4' />
                                     <textarea
                                         value={question.label}
-                                        className={styles.questionLabel}
+                                        className={styles.questionLabelDescription}
                                         rows={question.label.split("\n").length || 1}
                                         disabled
                                     />
